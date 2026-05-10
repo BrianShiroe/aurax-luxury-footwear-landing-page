@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom'; // Added for routing
 import { motion } from 'motion/react';
 import { ProductCard } from '../product/ProductCard';
 import { PRODUCTS } from '../../constants';
@@ -10,7 +11,20 @@ interface FeaturedProductsProps {
 }
 
 export const FeaturedProducts: React.FC<FeaturedProductsProps> = ({ onProductClick, onNavigate }) => {
+  const navigate = useNavigate(); // Initialize navigation hook
   const featured = PRODUCTS.filter(p => p.isFeatured).slice(0, 3);
+
+  const handleProductNavigation = (product: Product) => {
+    // 1. Set the active product in parent state (for immediate UI updates)
+    onProductClick(product);
+    
+    // 2. Change the route to the specific product path
+    // We pass the product object in 'state' so the details page loads instantly
+    navigate(`/product/${product.id}`, { state: { product } });
+    
+    // 3. Scroll to top to ensure the user sees the product image first
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   return (
     <section className="py-20 md:py-32 px-6 md:px-12 bg-white">
@@ -26,7 +40,6 @@ export const FeaturedProducts: React.FC<FeaturedProductsProps> = ({ onProductCli
               Curated Selection
             </motion.span>
             
-            {/* Reduced h2 size: From 5xl/7xl to 3xl/6xl */}
             <motion.h2 
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -49,7 +62,6 @@ export const FeaturedProducts: React.FC<FeaturedProductsProps> = ({ onProductCli
           </motion.button>
         </div>
 
-        {/* Adjusted vertical gap for mobile (gap-y-16) to keep products closer */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-16 md:gap-y-24">
           {featured.map((product, index) => (
             <motion.div
@@ -57,9 +69,13 @@ export const FeaturedProducts: React.FC<FeaturedProductsProps> = ({ onProductCli
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: index * 0.1 }} // Slightly faster delay for better feel
+              transition={{ delay: index * 0.08 }}
             >
-              <ProductCard product={product} onClick={onProductClick} />
+              {/* Updated the onClick to use our new navigation handler */}
+              <ProductCard 
+                product={product} 
+                onClick={() => handleProductNavigation(product)} 
+              />
             </motion.div>
           ))}
         </div>
