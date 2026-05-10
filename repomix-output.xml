@@ -75,12 +75,14 @@ src/lib/utils.ts
 src/main.tsx
 src/pages/CheckoutPage.tsx
 src/pages/CollectionsPage.tsx
+src/pages/FeaturedPage.tsx
 src/pages/HomePage.tsx
 src/pages/InnovationPage.tsx
 src/pages/ProductPage.tsx
 src/pages/ShopPage.tsx
 src/pages/StoryPage.tsx
 src/types.ts
+src/vite-env.d.ts
 tsconfig.json
 vite.config.ts
 </directory_structure>
@@ -111,71 +113,12 @@ coverage/
 !.env.example
 </file>
 
-<file path="index.html">
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>My Google AI Studio App</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
-</html>
-</file>
-
 <file path="metadata.json">
 {
   "name": "AURAX | Luxury Footwear",
   "description": "A premium minimalist ecommerce experience for AURAX, featuring high-end footwear with cinematic presentation and editorial design.",
   "requestFramePermissions": [],
   "majorCapabilities": []
-}
-</file>
-
-<file path="package.json">
-{
-  "name": "react-example",
-  "private": true,
-  "version": "0.0.0",
-  "type": "module",
-  "scripts": {
-    "dev": "vite --port=3000 --host=0.0.0.0",
-    "build": "vite build",
-    "preview": "vite preview",
-    "clean": "rm -rf dist",
-    "lint": "tsc --noEmit"
-  },
-  "dependencies": {
-    "@google/genai": "^1.29.0",
-    "@react-three/drei": "^10.7.7",
-    "@react-three/fiber": "^9.6.1",
-    "@tailwindcss/vite": "^4.1.14",
-    "@types/three": "^0.184.1",
-    "@vitejs/plugin-react": "^5.0.4",
-    "clsx": "^2.1.1",
-    "dotenv": "^17.2.3",
-    "express": "^4.21.2",
-    "lucide-react": "^0.546.0",
-    "motion": "^12.23.24",
-    "react": "^19.0.1",
-    "react-dom": "^19.0.1",
-    "react-router-dom": "^7.15.0",
-    "tailwind-merge": "^3.5.0",
-    "three": "^0.184.0",
-    "vite": "^6.2.3"
-  },
-  "devDependencies": {
-    "@types/express": "^4.17.21",
-    "@types/node": "^22.14.0",
-    "autoprefixer": "^10.4.21",
-    "tailwindcss": "^4.1.14",
-    "tsx": "^4.21.0",
-    "typescript": "~5.8.2",
-    "vite": "^6.2.3"
-  }
 }
 </file>
 
@@ -387,257 +330,6 @@ export const Campaign: React.FC = () => {
         <button className="mt-16 bg-white text-brand-black px-16 py-6 text-[11px] uppercase font-bold tracking-[0.4em] hover:bg-brand-black hover:text-white transition-all duration-500 shadow-2xl cursor-pointer">
           Read The Journal
         </button>
-      </div>
-    </section>
-  );
-};
-</file>
-
-<file path="src/components/home/Collections.tsx">
-import React from 'react';
-import { motion } from 'motion/react';
-import { ArrowRight } from 'lucide-react';
-
-const collections = [
-  {
-    title: 'Performance',
-    subtitle: 'Elite Engineering',
-    image: 'https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?auto=format&fit=crop&q=80&w=1000',
-    hoverImage: 'https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?auto=format&fit=crop&q=80&w=1000',
-    color: '#F9F9FB'
-  },
-  {
-    title: 'Minimal',
-    subtitle: 'Pure Form',
-    image: 'https://images.unsplash.com/photo-1549298916-b41d501d3772?auto=format&fit=crop&q=80&w=1000',
-    hoverImage: 'https://images.unsplash.com/photo-1514989940723-e8e51635b782?auto=format&fit=crop&q=80&w=1000',
-    color: '#FFFFFF'
-  },
-  {
-    title: 'Limited',
-    subtitle: 'Rare Archives',
-    image: 'https://images.unsplash.com/photo-1539185441755-769473a23570?auto=format&fit=crop&q=80&w=1000',
-    hoverImage: 'https://images.unsplash.com/photo-1552346154-21d32810aba3?auto=format&fit=crop&q=80&w=1000',
-    color: '#F2F2F2'
-  }
-];
-
-interface CollectionsProps {
-  onNavigate: (view: 'collections' | 'shop') => void;
-}
-
-export const Collections: React.FC<CollectionsProps> = ({ onNavigate }) => {
-  return (
-    <section className="py-20 px-6 md:px-12 bg-[#F9F9FB]">
-      <div className="max-w-screen-2xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
-        {collections.map((col, index) => (
-          <motion.div
-            key={col.title}
-            initial={{ opacity: 0, scale: 0.95 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ delay: index * 0.1 }}
-            onClick={() => onNavigate('shop')}
-            className="group relative h-[600px] overflow-hidden cursor-pointer rounded-sm"
-          >
-            {/* Background Image Layer */}
-            <div className="absolute inset-0">
-              <motion.img 
-                src={col.image} 
-                alt={col.title}
-                className="w-full h-full object-cover transition-all duration-700 ease-out group-hover:scale-110"
-                style={{ opacity: 1 }}
-                whileHover={{ opacity: 0 }}
-                transition={{ duration: 0.4 }}
-              />
-              <motion.img 
-                src={col.hoverImage} 
-                alt={`${col.title} hover`}
-                className="absolute inset-0 w-full h-full object-cover scale-110 transition-all duration-700 ease-out opacity-0 group-hover:opacity-100 group-hover:scale-105"
-                transition={{ duration: 0.4 }}
-              />
-            </div>
-            
-            {/* Overlay */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-60 group-hover:opacity-80 transition-opacity" />
-            
-            {/* Content */}
-            <div className="absolute inset-0 p-12 flex flex-col justify-end">
-              <span className="text-[10px] uppercase tracking-[0.4em] font-bold text-white/60 mb-2 block translate-y-4 group-hover:translate-y-0 transition-all duration-500 opacity-0 group-hover:opacity-100">
-                {col.subtitle}
-              </span>
-              <h3 className="text-4xl font-bold tracking-tight text-white mb-6 uppercase">
-                {col.title}
-              </h3>
-              
-              <button 
-                onClick={(e) => { e.stopPropagation(); onNavigate('shop'); }}
-                className="flex items-center gap-3 text-white text-[10px] uppercase tracking-widest font-black opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-700 delay-100 cursor-pointer"
-              >
-                Explore Collection
-                <div className="w-8 h-[1px] bg-white group-hover:w-12 transition-all" />
-                <ArrowRight className="w-4 h-4" />
-              </button>
-            </div>
-
-            {/* Glass Card Accent */}
-            <div className="absolute top-6 right-6 w-12 h-12 bg-white/10 backdrop-blur-md rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-              <ArrowRight className="w-4 h-4 text-white transform -rotate-45" />
-            </div>
-          </motion.div>
-        ))}
-      </div>
-    </section>
-  );
-};
-</file>
-
-<file path="src/components/home/FeaturedProducts.tsx">
-import React from 'react';
-import { motion } from 'motion/react';
-import { ProductCard } from '../product/ProductCard';
-import { PRODUCTS } from '../../constants';
-import { Product } from '../../types';
-
-interface FeaturedProductsProps {
-  onProductClick: (product: Product) => void;
-  onNavigate: (view: 'shop') => void;
-}
-
-export const FeaturedProducts: React.FC<FeaturedProductsProps> = ({ onProductClick, onNavigate }) => {
-  const featured = PRODUCTS.filter(p => p.isFeatured).slice(0, 3);
-
-  return (
-    <section className="py-32 px-6 md:px-12 bg-white">
-      <div className="max-w-screen-2xl mx-auto">
-        <div className="flex flex-col md:flex-row justify-between items-end mb-20 gap-8">
-          <div className="max-w-2xl">
-            <motion.span 
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              className="text-[10px] uppercase tracking-[0.5em] font-bold text-black/30 mb-4 block"
-            >
-              Curated Selection
-            </motion.span>
-            <motion.h2 
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.1 }}
-              className="text-5xl md:text-7xl font-bold tracking-tight text-black leading-tight"
-            >
-              SEASON <span className="text-black/10 italic">ESSENTIALS</span>
-            </motion.h2>
-          </div>
-          
-          <motion.button 
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            onClick={() => onNavigate('shop')}
-            className="text-[11px] uppercase tracking-[0.3em] font-bold border-b border-black pb-2 hover:italic transition-all cursor-pointer"
-          >
-            View Entire Catalog
-          </motion.button>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-24">
-          {featured.map((product, index) => (
-            <motion.div
-              key={product.id}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: index * 0.2 }}
-            >
-              <ProductCard product={product} onClick={onProductClick} />
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-};
-</file>
-
-<file path="src/components/home/Mission.tsx">
-import React from 'react';
-import { motion } from 'motion/react';
-
-export const Mission: React.FC = () => {
-  return (
-    <section className="py-60 px-6 md:px-12 bg-white text-center">
-      <div className="max-w-5xl mx-auto">
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="text-4xl md:text-6xl font-bold tracking-tighter-plus leading-[1.1] text-brand-black"
-        >
-          AURAX IS THE PRODUCT OF <span className="italic text-black/10">KINETIC</span> ENGINEERING AND ARCHITECTURAL BRUTALISM.
-        </motion.p>
-        <motion.div
-          initial={{ width: 0 }}
-          whileInView={{ width: '120px' }}
-          viewport={{ once: true }}
-          transition={{ duration: 1, delay: 0.5 }}
-          className="h-[1px] bg-brand-black mx-auto mt-16"
-        />
-      </div>
-    </section>
-  );
-};
-</file>
-
-<file path="src/components/home/TechnicalShowcase.tsx">
-import React from 'react';
-import { motion } from 'motion/react';
-
-export const TechnicalShowcase: React.FC = () => {
-  return (
-    <section className="py-40 px-6 md:px-12 bg-black text-white">
-      <div className="max-w-screen-2xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-32 items-center">
-          <div className="space-y-12">
-              <span className="text-white/40 text-[10px] uppercase tracking-[0.6em] font-bold">Engineering Specs</span>
-              <h3 className="text-7xl font-bold tracking-tighter leading-none">BUILT FOR <br />PERFORMANCE</h3>
-              <p className="text-white/60 text-lg leading-relaxed max-w-xl">
-                  Every AURAX silhouette is developed over 18 months, undergoing rigorous stress testing across extreme climates and terrains.
-              </p>
-              <div className="grid grid-cols-2 gap-8 pt-8">
-                  <div className="border-l border-white/20 pl-6">
-                      <span className="text-3xl font-mono block mb-2">-15%</span>
-                      <span className="text-[9px] uppercase tracking-widest text-white/40">Weight reduction</span>
-                  </div>
-                  <div className="border-l border-white/20 pl-6">
-                      <span className="text-3xl font-mono block mb-2">+42%</span>
-                      <span className="text-[9px] uppercase tracking-widest text-white/40">Energy return</span>
-                  </div>
-              </div>
-          </div>
-          <div className="relative group cursor-crosshair">
-              <motion.div 
-                  animate={{ rotate: 360 }}
-                  transition={{ duration: 40, repeat: Infinity, ease: "linear" }}
-                  className="absolute inset-0 border border-white/5 rounded-full"
-              />
-              <div className="relative z-10 w-full aspect-square overflow-hidden">
-                <motion.img 
-                    src="https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?auto=format&fit=crop&q=80&w=1000" 
-                    alt="Technical" 
-                    className="w-full h-full object-contain filter grayscale invert transition-all duration-700 ease-out group-hover:scale-110"
-                    animate={{ opacity: 1 }}
-                    whileHover={{ opacity: 0 }}
-                    transition={{ duration: 0.4 }}
-                />
-                <motion.img 
-                    src="https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?auto=format&fit=crop&q=80&w=1000" 
-                    alt="Technical Detail" 
-                    className="absolute inset-0 w-full h-full object-contain filter grayscale invert scale-110 transition-all duration-700 ease-out opacity-0 group-hover:opacity-100 group-hover:scale-100"
-                    transition={{ duration: 0.4 }}
-                />
-              </div>
-          </div>
       </div>
     </section>
   );
@@ -1265,22 +957,6 @@ body {
 }
 </file>
 
-<file path="src/lib/utils.ts">
-import { clsx, type ClassValue } from 'clsx';
-import { twMerge } from 'tailwind-merge';
-
-export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs));
-}
-
-export function formatCurrency(amount: number) {
-  return new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-  }).format(amount);
-}
-</file>
-
 <file path="src/pages/CollectionsPage.tsx">
 import React from 'react';
 import { motion } from 'motion/react';
@@ -1350,6 +1026,132 @@ export const CollectionsPage: React.FC = () => {
 };
 
 import { cn } from '../lib/utils';
+</file>
+
+<file path="src/pages/FeaturedPage.tsx">
+import React, { useEffect } from 'react';
+import { motion } from 'motion/react';
+import { ArrowRight } from 'lucide-react';
+import { Link } from 'react-router-dom';
+
+export const FeaturedPage: React.FC = () => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+  const features = [
+    {
+      id: '01',
+      title: 'THE PHANTOM SERIES',
+      category: 'Limited Drop',
+      image: 'https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?auto=format&fit=crop&q=80&w=1000',
+      description: 'Triple-black engineering meets kinetic energy return. Developed for low-light urban environments.'
+    },
+    {
+      id: '02',
+      title: 'KINETIC ARCHIVE',
+      category: 'Editorial',
+      image: 'https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?auto=format&fit=crop&q=80&w=1000',
+      description: 'A deep dive into the silhouettes that defined our first year of architectural exploration.'
+    }
+  ];
+
+  return (
+    <main className="bg-white pt-24 md:pt-40 pb-20 px-6 md:px-12 selection:bg-black selection:text-white">
+      <div className="max-w-screen-2xl mx-auto">
+        
+        {/* Editorial Header */}
+        <motion.div 
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+          className="mb-20 md:mb-40"
+        >
+          <div className="flex items-center gap-4 mb-6 md:mb-8">
+            <div className="h-[1px] w-12 bg-black/20" />
+            <span className="text-[10px] md:text-[11px] uppercase tracking-[0.5em] text-black/40 font-black">
+              Laboratory / Curated
+            </span>
+          </div>
+          <h1 className="text-[15vw] md:text-[10vw] font-black tracking-tighter uppercase leading-[0.85] text-black">
+            FEATURED <br /> 
+            <span className="italic text-black/10 transition-colors hover:text-black/20">EDITIONS</span>
+          </h1>
+        </motion.div>
+
+        {/* Features List */}
+        <div className="grid grid-cols-1 gap-32 md:gap-64">
+          {features.map((item, idx) => (
+            <motion.section 
+              key={item.id}
+              initial={{ opacity: 0, y: 60 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-10%" }}
+              transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
+              className={`flex flex-col ${idx % 2 !== 0 ? 'md:flex-row-reverse' : 'md:flex-row'} gap-10 md:gap-24 items-start md:items-center`}
+            >
+              {/* Image Container: Taller on mobile for better focus */}
+              <div className="w-full md:w-3/5 overflow-hidden bg-gray-50 aspect-[3/4] md:aspect-video relative group border border-black/5">
+                <img 
+                  src={item.image} 
+                  alt={item.title} 
+                  className="w-full h-full object-cover transition-transform duration-1000 ease-out group-hover:scale-110 grayscale" 
+                />
+                <div className="absolute inset-0 bg-black/5 group-hover:bg-transparent transition-colors duration-500" />
+                <div className="absolute top-6 left-6 md:top-10 md:left-10 text-white z-10 font-mono text-3xl md:text-5xl font-light opacity-30">
+                  {item.id}
+                </div>
+              </div>
+              
+              {/* Content Box */}
+              <div className="w-full md:w-2/5 space-y-6 md:space-y-10 px-2 md:px-0">
+                <div className="space-y-4">
+                  <span className="text-[10px] md:text-[11px] uppercase tracking-[0.3em] font-black text-black/40 flex items-center gap-3">
+                    <span className="w-1.5 h-1.5 bg-black rounded-full" />
+                    {item.category}
+                  </span>
+                  <h2 className="text-4xl md:text-6xl font-bold tracking-tighter leading-none">
+                    {item.title}
+                  </h2>
+                </div>
+                
+                <p className="text-black/60 text-sm md:text-lg leading-relaxed font-medium max-w-sm">
+                  {item.description}
+                </p>
+                
+                <Link 
+                  to="/shop" 
+                  className="inline-flex items-center gap-6 group"
+                >
+                  <div className="relative">
+                    <span className="text-[11px] md:text-[12px] uppercase tracking-[0.3em] font-black pb-2 block">
+                      Explore Drop
+                    </span>
+                    <div className="absolute bottom-0 left-0 w-full h-[2px] bg-black scale-x-100 group-hover:scale-x-50 transition-transform duration-500 origin-left" />
+                  </div>
+                  <div className="p-3 border border-black/10 rounded-full group-hover:bg-black group-hover:text-white transition-all duration-500">
+                    <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+                  </div>
+                </Link>
+              </div>
+            </motion.section>
+          ))}
+        </div>
+
+        {/* Bottom CTA */}
+        <motion.div 
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          className="mt-40 md:mt-64 text-center border-t border-black/5 pt-20"
+        >
+          <Link to="/shop" className="text-[8vw] md:text-[4vw] font-black tracking-tighter hover:italic transition-all uppercase">
+            View All Archives
+          </Link>
+        </motion.div>
+      </div>
+    </main>
+  );
+};
 </file>
 
 <file path="src/pages/InnovationPage.tsx">
@@ -1476,32 +1278,10 @@ export interface CartItem extends Product {
 export type Category = 'Running' | 'Streetwear' | 'Luxury Sneakers' | 'Minimal Essentials' | 'Performance' | 'Limited Edition';
 </file>
 
-<file path="tsconfig.json">
-{
-  "compilerOptions": {
-    "target": "ES2022",
-    "experimentalDecorators": true,
-    "useDefineForClassFields": false,
-    "module": "ESNext",
-    "lib": [
-      "ES2022",
-      "DOM",
-      "DOM.Iterable"
-    ],
-    "skipLibCheck": true,
-    "moduleResolution": "bundler",
-    "isolatedModules": true,
-    "moduleDetection": "force",
-    "allowJs": true,
-    "jsx": "react-jsx",
-    "paths": {
-      "@/*": [
-        "./*"
-      ]
-    },
-    "allowImportingTsExtensions": true,
-    "noEmit": true
-  }
+<file path="src/vite-env.d.ts">
+declare module "*.css" {
+  const content: { [className: string]: string };
+  export default content;
 }
 </file>
 
@@ -1530,6 +1310,52 @@ export default defineConfig(({mode}) => {
     },
   };
 });
+</file>
+
+<file path="package.json">
+{
+  "name": "react-example",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --port=3000 --host=0.0.0.0",
+    "build": "vite build",
+    "preview": "vite preview",
+    "clean": "rm -rf dist",
+    "lint": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@google/genai": "^1.29.0",
+    "@react-three/drei": "^10.7.7",
+    "@react-three/fiber": "^9.6.1",
+    "@tailwindcss/vite": "^4.1.14",
+    "@types/three": "^0.184.1",
+    "@vitejs/plugin-react": "^5.0.4",
+    "clsx": "^2.1.1",
+    "dotenv": "^17.2.3",
+    "express": "^4.21.2",
+    "lucide-react": "^0.546.0",
+    "motion": "^12.23.24",
+    "react": "^19.0.1",
+    "react-dom": "^19.0.1",
+    "react-router-dom": "^7.15.0",
+    "tailwind-merge": "^3.5.0",
+    "three": "^0.184.0",
+    "vite": "^6.2.3"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "@types/node": "^22.14.0",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "autoprefixer": "^10.4.21",
+    "tailwindcss": "^4.1.14",
+    "tsx": "^4.21.0",
+    "typescript": "~5.8.2",
+    "vite": "^6.2.3"
+  }
+}
 </file>
 
 <file path="src/components/cart/CartDrawer.tsx">
@@ -1684,425 +1510,201 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({ isOpen, onClose }) => {
 };
 </file>
 
-<file path="src/components/home/Hero.tsx">
-import React, { useState } from 'react';
-import { motion, AnimatePresence, useScroll, useTransform } from 'motion/react';
-import { Play, X } from 'lucide-react';
+<file path="src/components/home/Collections.tsx">
+import React from 'react';
+import { motion } from 'motion/react';
+import { ArrowRight } from 'lucide-react';
 
-interface HeroProps {
-  onNavigate: (view: 'shop' | 'innovation') => void;
+const collections = [
+  {
+    title: 'Performance',
+    subtitle: 'Elite Engineering',
+    image: 'https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?auto=format&fit=crop&q=80&w=1000',
+    hoverImage: 'https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?auto=format&fit=crop&q=80&w=1000',
+  },
+  {
+    title: 'Minimal',
+    subtitle: 'Pure Form',
+    image: 'https://images.unsplash.com/photo-1549298916-b41d501d3772?auto=format&fit=crop&q=80&w=1000',
+    hoverImage: 'https://images.unsplash.com/photo-1514989940723-e8e51635b782?auto=format&fit=crop&q=80&w=1000',
+  },
+  {
+    title: 'Limited',
+    subtitle: 'Rare Archives',
+    image: 'https://images.unsplash.com/photo-1539185441755-769473a23570?auto=format&fit=crop&q=80&w=1000',
+    hoverImage: 'https://images.unsplash.com/photo-1552346154-21d32810aba3?auto=format&fit=crop&q=80&w=1000',
+  }
+];
+
+interface CollectionsProps {
+  onNavigate: (view: 'collections' | 'shop') => void;
 }
 
-export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
-  const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
-  const { scrollY } = useScroll();
-  const y1 = useTransform(scrollY, [0, 500], [0, 200]);
-  const opacity = useTransform(scrollY, [0, 300], [1, 0]);
-
+export const Collections: React.FC<CollectionsProps> = ({ onNavigate }) => {
   return (
-    <section className="relative min-h-screen lg:h-screen flex flex-col lg:flex-row pt-20 overflow-hidden bg-white">
-      {/* Left: Editorial Content */}
-      <div className="w-full lg:w-1/2 p-6 md:p-12 lg:p-24 flex flex-col justify-between relative z-10 order-2 lg:order-1 bg-white/10 lg:bg-transparent">
-        <div className="mt-8 lg:mt-0">
-          <motion.p 
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            className="text-[10px] lg:text-[11px] uppercase tracking-[0.3em] text-black/40 mb-6 lg:mb-12 block font-bold"
-          >
-            New Arrival / Series I
-          </motion.p>
-          <div className="overflow-hidden">
-            <motion.h1 
-              initial={{ opacity: 0, y: 100 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
-              className="text-[16vw] lg:text-[110px] leading-[0.85] font-bold tracking-tighter mb-8 lg:mb-12 text-brand-black"
-            >
-              THE<br />AURAX<br />SHIFT
-            </motion.h1>
-          </div>
-          <motion.p 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.6, duration: 1 }}
-            className="max-w-xs text-sm lg:text-base leading-relaxed text-black/50 mb-8 lg:mb-12 italic font-serif"
-          >
-            Engineered for the modern nomad. A synthesis of high-performance kinetics and Scandinavian brutalist architecture.
-          </motion.p>
-          
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.8 }}
-            className="flex flex-col sm:flex-row gap-4 lg:gap-6"
-          >
-            <button 
-              onClick={() => onNavigate('shop')}
-              className="w-full sm:w-auto group relative overflow-hidden bg-brand-black text-white px-8 lg:px-12 py-4 lg:py-5 text-[10px] lg:text-[11px] uppercase tracking-[0.3em] font-bold transition-all shadow-xl hover:shadow-2xl cursor-pointer"
-            >
-              <span className="relative z-10">Shop Collection</span>
-              <motion.div 
-                className="absolute inset-0 bg-white/20 translate-x-[-100%] group-hover:translate-x-0 transition-transform duration-500" 
-              />
-            </button>
-            <button 
-              onClick={() => setIsVideoModalOpen(true)}
-              className="w-full sm:w-auto flex items-center justify-center gap-4 border border-gray-200 text-brand-black px-8 lg:px-12 py-4 lg:py-5 text-[10px] lg:text-[11px] uppercase tracking-[0.3em] font-bold hover:bg-gray-50 transition-all group cursor-pointer"
-            >
-              <div className="w-5 h-5 flex items-center justify-center bg-brand-black/5 group-hover:bg-brand-black group-hover:text-white rounded-full transition-colors">
-                <Play className="w-2.5 h-2.5 fill-current" />
-              </div>
-              The Film
-            </button>
-          </motion.div>
-        </div>
-
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1 }}
-          className="grid grid-cols-3 gap-4 md:gap-16 mt-12 lg:mt-auto"
-        >
-          <div className="flex flex-col">
-            <span className="text-[18px] lg:text-[28px] font-light tracking-tighter">0.42</span>
-            <span className="text-[8px] lg:text-[9px] uppercase tracking-widest text-black/30 font-bold">Weight (kg)</span>
-          </div>
-          <div className="flex flex-col">
-            <span className="text-[18px] lg:text-[28px] font-light tracking-tighter">100%</span>
-            <span className="text-[8px] lg:text-[9px] uppercase tracking-widest text-black/30 font-bold">Neutral</span>
-          </div>
-          <div className="flex flex-col">
-            <span className="text-[18px] lg:text-[28px] font-light tracking-tighter">EVO-2</span>
-            <span className="text-[8px] lg:text-[9px] uppercase tracking-widest text-black/30 font-bold">Sole Tech</span>
-          </div>
-        </motion.div>
-      </div>
-
-      {/* Right: Visual Showcase - Optimized for Responsive Scaling */}
-      <div className="w-full lg:w-1/2 flex-1 relative flex items-center justify-center py-12 lg:py-0 overflow-hidden order-1 lg:order-2">
-        <motion.div
-          initial={{ opacity: 0, scale: 0.8, rotate: 10 }}
-          animate={{ opacity: 1, scale: 1, rotate: -5 }}
-          transition={{ 
-            duration: 1.8, 
-            ease: [0.22, 1, 0.36, 1],
-            delay: 0.2 
-          }}
-          className="relative w-[75%] md:w-[60%] lg:w-[110%] flex justify-center"
-        >
-          <img
-            src="/images/pair-of-colorful-sports-shoes-for-active-lifestyle-no-background-png.png"
-            alt="Aurax Series I Shoe"
-            className="w-full h-auto object-contain drop-shadow-[0_20px_50px_rgba(0,0,0,0.15)] lg:drop-shadow-[0_35px_35px_rgba(0,0,0,0.12)] z-20"
-          />
-          {/* Subtle background glow to replace the blob's depth */}
-          <div className="absolute inset-0 bg-brand-black/5 blur-[100px] rounded-full -z-10 scale-150 opacity-50" />
-        </motion.div>
-      </div>
-
-      {/* Video Modal Overlay */}
-      <AnimatePresence>
-        {isVideoModalOpen && (
+    <section className="py-20 px-6 md:px-12 bg-[#F9F9FB]">
+      <div className="max-w-screen-2xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
+        {collections.map((col, index) => (
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[100] flex items-center justify-center bg-black/95 p-4 md:p-6"
+            key={col.title}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: index * 0.1 }}
+            onClick={() => onNavigate('shop')}
+            className="group relative h-[450px] md:h-[600px] overflow-hidden cursor-pointer rounded-xl bg-gray-200"
           >
-            <button 
-              onClick={() => setIsVideoModalOpen(false)}
-              className="absolute top-6 right-6 lg:top-10 lg:right-10 text-white/50 hover:text-white transition-colors"
-            >
-              <X className="w-6 h-6 lg:w-8 lg:h-8" />
-            </button>
-            
-            <motion.div 
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.9, opacity: 0 }}
-              className="w-full max-w-5xl aspect-video relative"
-            >
-              <iframe 
-                src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1" 
-                className="w-full h-full"
-                allow="autoplay; encrypted-media"
-                allowFullScreen
+            {/* Optimized Background Image Layer */}
+            <div className="absolute inset-0">
+              {/* Default Image */}
+              <img 
+                src={col.image} 
+                alt={col.title}
+                className="w-full h-full object-cover transition-all duration-700 ease-out group-hover:opacity-0 group-hover:scale-110"
               />
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+              {/* Hover Image */}
+              <img 
+                src={col.hoverImage} 
+                alt={`${col.title} hover`}
+                className="absolute inset-0 w-full h-full object-cover scale-110 transition-all duration-700 ease-out opacity-0 group-hover:opacity-100 group-hover:scale-100"
+              />
+            </div>
+            
+            {/* Dynamic Overlay */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-60 group-hover:opacity-90 transition-opacity duration-500" />
+            
+            {/* Content Container */}
+            <div className="absolute inset-0 p-8 md:p-12 flex flex-col justify-end">
+              <span className="text-[9px] md:text-[10px] uppercase tracking-[0.4em] font-bold text-white/70 mb-2 block translate-y-4 group-hover:translate-y-0 transition-all duration-500 opacity-0 group-hover:opacity-100">
+                {col.subtitle}
+              </span>
+              
+              {/* Reduced size: 2xl on mobile, 4xl on desktop */}
+              <h3 className="text-2xl md:text-4xl font-bold tracking-tight text-white mb-4 md:mb-6 uppercase">
+                {col.title}
+              </h3>
+              
+              <button 
+                onClick={(e) => { e.stopPropagation(); onNavigate('shop'); }}
+                className="flex items-center gap-3 text-white text-[9px] md:text-[10px] uppercase tracking-widest font-black opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-700 delay-100"
+              >
+                Explore
+                <div className="w-6 h-[1px] bg-white group-hover:w-10 transition-all" />
+                <ArrowRight className="w-3 h-3 md:w-4 md:h-4" />
+              </button>
+            </div>
 
-      {/* Floating Badge - Hidden on very small screens for clarity */}
-      <motion.div 
-        initial={{ y: 100, x: '-50%' }}
-        animate={{ y: 0, x: '-50%' }}
-        transition={{ delay: 2, type: 'spring' }}
-        className="fixed bottom-6 lg:bottom-12 left-1/2 flex items-center gap-3 lg:gap-4 px-6 lg:px-8 py-3 lg:py-4 bg-white border border-brand-gray-border shadow-2xl rounded-full z-40 whitespace-nowrap"
-      >
-        <div className="w-2 h-2 lg:w-2.5 lg:h-2.5 bg-green-500 rounded-full animate-pulse shadow-[0_0_10px_rgba(34,197,94,0.5)]"></div>
-        <span className="text-[8px] lg:text-[10px] uppercase tracking-[0.2em] font-black text-brand-black/80">Live Drop: Only 42 pairs remaining</span>
-      </motion.div>
+            {/* Top Right Accent - Hidden on small mobile to reduce clutter */}
+            <div className="absolute top-4 right-4 md:top-6 md:right-6 w-10 h-10 md:w-12 md:h-12 bg-white/10 backdrop-blur-md rounded-full hidden sm:flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+              <ArrowRight className="w-3 h-3 md:w-4 md:h-4 text-white transform -rotate-45" />
+            </div>
+          </motion.div>
+        ))}
+      </div>
     </section>
   );
 };
 </file>
 
-<file path="src/components/layout/Footer.tsx">
+<file path="src/components/home/FeaturedProducts.tsx">
 import React from 'react';
-import { Link } from 'react-router-dom';
-import { Instagram, Twitter, Facebook, ArrowUpRight } from 'lucide-react';
+import { motion } from 'motion/react';
+import { ProductCard } from '../product/ProductCard';
+import { PRODUCTS } from '../../constants';
+import { Product } from '../../types';
 
-export const Footer: React.FC = () => {
+interface FeaturedProductsProps {
+  onProductClick: (product: Product) => void;
+  onNavigate: (view: 'shop') => void;
+}
+
+export const FeaturedProducts: React.FC<FeaturedProductsProps> = ({ onProductClick, onNavigate }) => {
+  const featured = PRODUCTS.filter(p => p.isFeatured).slice(0, 3);
+
   return (
-    <footer className="bg-white pt-24 pb-16 px-6 md:px-12 border-t border-gray-50">
+    <section className="py-20 md:py-32 px-6 md:px-12 bg-white">
       <div className="max-w-screen-2xl mx-auto">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12 mb-20">
-          <div className="space-y-8">
-            <Link to="/" className="text-3xl font-bold tracking-widest italic cursor-pointer">AURAX</Link>
-            <p className="text-black/50 text-sm leading-relaxed max-w-xs">
-              Defining the interface between engineering precision and athletic motion. Luxury engineered for the modern athlete.
-            </p>
-            <div className="flex gap-6">
-              <a href="#" className="p-3 bg-gray-50 rounded-full hover:bg-black hover:text-white transition-all duration-300">
-                <Instagram className="w-4 h-4" />
-              </a>
-              <a href="#" className="p-3 bg-gray-50 rounded-full hover:bg-black hover:text-white transition-all duration-300">
-                <Twitter className="w-4 h-4" />
-              </a>
-              <a href="#" className="p-3 bg-gray-50 rounded-full hover:bg-black hover:text-white transition-all duration-300">
-                <Facebook className="w-4 h-4" />
-              </a>
-            </div>
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-12 md:mb-20 gap-6 md:gap-8">
+          <div className="max-w-2xl">
+            <motion.span 
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              className="text-[10px] uppercase tracking-[0.5em] font-bold text-black/30 mb-3 md:mb-4 block"
+            >
+              Curated Selection
+            </motion.span>
+            
+            {/* Reduced h2 size: From 5xl/7xl to 3xl/6xl */}
+            <motion.h2 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.1 }}
+              className="text-3xl md:text-6xl font-bold tracking-tight text-black leading-[1.1]"
+            >
+              SEASON <span className="text-black/20 italic">ESSENTIALS</span>
+            </motion.h2>
           </div>
-
-          <div>
-            <h3 className="text-[10px] uppercase tracking-[0.4em] font-bold text-black mb-8">Navigation</h3>
-            <ul className="space-y-4">
-              {[
-                { name: 'Shop All', path: '/shop' },
-                { name: 'Featured', path: '/' },
-                { name: 'Collections', path: '/collections' },
-                { name: 'Innovation', path: '/innovation' },
-                { name: 'Story', path: '/story' }
-              ].map(item => (
-                <li key={item.name}>
-                  <Link 
-                    to={item.path}
-                    className="text-black/50 hover:text-black text-sm flex items-center group transition-colors cursor-pointer"
-                  >
-                    {item.name}
-                    <ArrowUpRight className="w-3 h-3 ml-2 opacity-0 group-hover:opacity-100 transition-all -translate-y-1 group-hover:translate-y-0" />
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div>
-            <h3 className="text-[10px] uppercase tracking-[0.4em] font-bold text-black mb-8">Support</h3>
-            <ul className="space-y-4">
-              {['Order Status', 'Shipping & Delivery', 'Returns', 'Payment Options', 'Contact Us'].map(item => (
-                <li key={item}>
-                  <a href="#" className="text-black/50 hover:text-black text-sm transition-colors">
-                    {item}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div>
-            <h3 className="text-[10px] uppercase tracking-[0.4em] font-bold text-black mb-8">Journal</h3>
-            <p className="text-sm text-black/50 mb-6 leading-relaxed">
-              Sign up for exclusive access to limited edition drops and future releases.
-            </p>
-            <form className="relative group">
-              <input 
-                type="email" 
-                placeholder="Email Address" 
-                className="w-full bg-gray-50 border-none px-6 py-4 text-sm focus:ring-1 focus:ring-black transition-all outline-none"
-              />
-              <button 
-                type="submit"
-                className="absolute right-4 top-1/2 -translate-y-1/2 text-[9px] uppercase font-bold tracking-widest border-b border-black h-fit pb-0.5 hover:italic transition-all"
-              >
-                Join
-              </button>
-            </form>
-          </div>
+          
+          <motion.button 
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            onClick={() => onNavigate('shop')}
+            className="text-[10px] md:text-[11px] uppercase tracking-[0.3em] font-bold border-b border-black pb-2 hover:italic transition-all cursor-pointer"
+          >
+            View Entire Catalog
+          </motion.button>
         </div>
 
-        <div className="pt-12 border-t border-gray-100 flex flex-col md:flex-row justify-between items-center gap-8">
-          <p className="text-[10px] uppercase tracking-widest text-black/30 font-medium font-mono">
-            © 2026 AURAX DESIGN LABS. ALL RIGHTS RESERVED.
-          </p>
-          <div className="flex gap-8 text-[10px] uppercase tracking-widest font-bold">
-            <a href="#" className="hover:text-black text-black/30 transition-colors">Privacy Policy</a>
-            <a href="#" className="hover:text-black text-black/30 transition-colors">Terms of Use</a>
-            <a href="#" className="hover:text-black text-black/30 transition-colors">Cookie Settings</a>
-          </div>
+        {/* Adjusted vertical gap for mobile (gap-y-16) to keep products closer */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-16 md:gap-y-24">
+          {featured.map((product, index) => (
+            <motion.div
+              key={product.id}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: index * 0.1 }} // Slightly faster delay for better feel
+            >
+              <ProductCard product={product} onClick={onProductClick} />
+            </motion.div>
+          ))}
         </div>
       </div>
-    </footer>
+    </section>
   );
 };
 </file>
 
-<file path="src/components/layout/Navbar.tsx">
-import React, { useState, useEffect } from 'react';
-import { ShoppingBag, Search, Menu, X, User } from 'lucide-react';
-import { Link } from 'react-router-dom';
-import { motion, AnimatePresence } from 'motion/react';
-import { useCart } from '../../context/CartContext';
-import { cn } from '../../lib/utils';
+<file path="src/components/home/Mission.tsx">
+import React from 'react';
+import { motion } from 'motion/react';
 
-interface NavbarProps {
-  onOpenCart: () => void;
-  isDarkPage?: boolean;
-}
-
-export const Navbar: React.FC<NavbarProps> = ({ onOpenCart, isDarkPage }) => {
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const { totalItems } = useCart();
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  const navLinks = [
-    { name: 'Shop All', path: '/shop' },
-    { name: 'Collections', path: '/collections' },
-    { name: 'Innovation', path: '/innovation' },
-    { name: 'Story', path: '/story' },
-  ];
-
-  const themeColors = isScrolled 
-    ? 'text-brand-black' 
-    : (isDarkPage ? 'text-white' : 'text-brand-black');
-
-  const secondaryColors = isScrolled 
-    ? 'text-brand-black/60' 
-    : (isDarkPage ? 'text-white/60' : 'text-brand-black/60');
-
-  const borderColors = isScrolled 
-    ? 'border-brand-black' 
-    : (isDarkPage ? 'border-white' : 'border-brand-black');
-
+export const Mission: React.FC = () => {
   return (
-    <>
-      <nav
-        className={cn(
-          'fixed top-0 left-0 w-full h-20 z-50 transition-all duration-500 px-6 md:px-12 flex items-center justify-between',
-          isScrolled 
-            ? 'bg-white/70 backdrop-blur-md border-b border-brand-gray-border' 
-            : 'bg-transparent'
-        )}
-      >
-        <Link 
-          to="/"
-          className={cn(
-            "text-2xl font-bold tracking-tighter italic cursor-pointer transition-colors duration-500",
-            themeColors
-          )}
+    <section className="py-32 md:py-60 px-6 md:px-12 bg-white text-center">
+      <div className="max-w-5xl mx-auto">
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="text-3xl md:text-6xl font-bold tracking-tighter leading-[1.2] md:leading-[1.1] text-black"
         >
-          AURAX
-        </Link>
+          AURAX IS THE PRODUCT OF <br className="md:hidden" />
+          <span className="italic text-black/20">KINETIC</span> ENGINEERING AND ARCHITECTURAL BRUTALISM.
+        </motion.p>
         
-        {/* Nav Links - Desktop */}
-        <div className="hidden md:flex items-center gap-12 text-[11px] uppercase tracking-[0.2em] font-medium">
-          {navLinks.map((link) => (
-            <Link
-              key={link.name}
-              to={link.path}
-              className={cn(
-                "transition-all duration-500 cursor-pointer hover:text-current",
-                secondaryColors
-              )}
-            >
-              {link.name}
-            </Link>
-          ))}
-        </div>
-
-        {/* Right Side Icons */}
-        <div className="flex items-center gap-6">
-          <button 
-            onClick={onOpenCart}
-            className="flex items-center gap-2 group cursor-pointer"
-          >
-            <div className={cn(
-              "w-5 h-5 border rounded-full flex items-center justify-center transition-all duration-500 group-hover:bg-brand-black group-hover:text-white group-hover:border-brand-black",
-              borderColors,
-              themeColors
-            )}>
-              <span className="text-[8px] font-bold">{totalItems}</span>
-            </div>
-            <span className={cn(
-              "text-[11px] uppercase tracking-widest font-semibold hidden sm:inline transition-colors duration-500",
-              themeColors
-            )}>
-              Bag
-            </span>
-          </button>
-          
-          <button 
-            className={cn("md:hidden p-2 transition-colors duration-500", themeColors)}
-            onClick={() => setIsMobileMenuOpen(true)}
-          >
-            <Menu className="w-5 h-5" />
-          </button>
-        </div>
-      </nav>
-
-      {/* Mobile Menu Overlay */}
-      <AnimatePresence>
-        {isMobileMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0, x: '-100%' }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: '-100%' }}
-            transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-            className="fixed inset-0 z-[60] bg-white p-6 md:hidden"
-          >
-            <div className="flex justify-between items-center mb-16">
-              <Link 
-                to="/"
-                className="text-2xl font-bold tracking-[0.1em] italic"
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                AURAX
-              </Link>
-              <button onClick={() => setIsMobileMenuOpen(false)}>
-                <X className="w-6 h-6" />
-              </button>
-            </div>
-            <div className="flex flex-col space-y-8">
-              {navLinks.map((link) => (
-                <Link
-                  key={link.name}
-                  to={link.path}
-                  className="text-4xl font-light tracking-tight hover:italic text-left transition-all"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  {link.name}
-                </Link>
-              ))}
-            </div>
-            <div className="absolute bottom-12 left-6 right-6 pt-8 border-t border-gray-100 flex justify-between uppercase text-[10px] tracking-[0.2em] font-medium text-black/40">
-              <button onClick={() => setIsMobileMenuOpen(false)}>Account</button>
-              <button onClick={() => setIsMobileMenuOpen(false)}>Support</button>
-              <button onClick={() => setIsMobileMenuOpen(false)}>Legal</button>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </>
+        <motion.div
+          initial={{ width: 0 }}
+          whileInView={{ width: '80px' }} // Slightly smaller line for mobile
+          viewport={{ once: true }}
+          transition={{ duration: 1, delay: 0.5 }}
+          className="md:w-[120px] h-[1px] bg-black mx-auto mt-12 md:mt-16"
+        />
+      </div>
+    </section>
   );
 };
 </file>
@@ -2213,6 +1815,24 @@ export const CATEGORIES = [
 ];
 </file>
 
+<file path="src/lib/utils.ts">
+import { clsx, type ClassValue } from 'clsx';
+import { twMerge } from 'tailwind-merge';
+
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs));
+}
+
+export function formatCurrency(amount: number) {
+  return new Intl.NumberFormat('en-AE', {
+    style: 'currency',
+    currency: 'AED',
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+  }).format(amount);
+}
+</file>
+
 <file path="src/main.tsx">
 import {StrictMode} from 'react';
 import {createRoot} from 'react-dom/client';
@@ -2263,45 +1883,6 @@ export const CheckoutPage: React.FC = () => {
         </div>
       </div>
     </div>
-  );
-};
-</file>
-
-<file path="src/pages/HomePage.tsx">
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Hero } from '../components/home/Hero';
-import { Collections } from '../components/home/Collections';
-import { FeaturedProducts } from '../components/home/FeaturedProducts';
-import { Mission } from '../components/home/Mission';
-import { Campaign } from '../components/home/Campaign';
-import { TechnicalShowcase } from '../components/home/TechnicalShowcase';
-import { Product } from '../types';
-
-interface HomePageProps {
-  onProductClick: (product: Product) => void;
-}
-
-export const HomePage: React.FC<HomePageProps> = ({ onProductClick }) => {
-  const navigate = useNavigate();
-
-  const navigateTo = (path: string) => {
-    navigate(path);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-
-  return (
-    <main className="bg-white min-h-screen">
-      <Hero onNavigate={navigateTo} />
-      <Mission />
-      <Collections onNavigate={navigateTo} />
-      <FeaturedProducts 
-        onProductClick={onProductClick} 
-        onNavigate={navigateTo}
-      />
-      <Campaign />
-      <TechnicalShowcase />
-    </main>
   );
 };
 </file>
@@ -2380,6 +1961,657 @@ export const ProductPage: React.FC<ProductPageProps> = ({ product }) => {
 };
 </file>
 
+<file path="index.html">
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    
+    <title>AURAX | Architectural Footwear & Kinetic Engineering</title>
+    <meta name="description" content="High-performance footwear developed with architectural brutalism and kinetic engineering." />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet" />
+
+    <style>
+      /* Prevent horizontal scroll and handle smooth background scaling */
+      html, body {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        overflow-x: hidden;
+        background-color: #ffffff;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+
+      /* Custom Scrollbar for Luxury Aesthetic */
+      ::-webkit-scrollbar {
+        width: 6px;
+      }
+      ::-webkit-scrollbar-track {
+        background: #ffffff;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #000000;
+        border-radius: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
+</file>
+
+<file path="src/components/home/Hero.tsx">
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
+import { Play, X } from 'lucide-react';
+
+interface HeroProps {
+  onNavigate: (view: 'shop' | 'innovation') => void;
+}
+
+export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
+  const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
+
+  return (
+    <section className="relative min-h-screen lg:h-screen flex flex-col lg:flex-row pt-16 md:pt-20 overflow-hidden bg-white">
+      
+      {/* Visual Showcase - Top on Mobile, Right on Desktop */}
+      <div className="w-full lg:w-1/2 flex-1 relative flex items-center justify-center py-10 lg:py-0 overflow-hidden order-1 lg:order-2 px-6">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9, rotate: 5 }}
+          animate={{ opacity: 1, scale: 1, rotate: -5 }}
+          transition={{ 
+            duration: 1.4, 
+            ease: [0.22, 1, 0.36, 1],
+            delay: 0.2 
+          }}
+          className="relative w-full max-w-[300px] md:max-w-[450px] lg:max-w-none lg:w-[110%] flex justify-center"
+        >
+          <img
+            src="/images/pair-of-colorful-sports-shoes-for-active-lifestyle-no-background-png.png"
+            alt="Aurax Series I Shoe"
+            className="w-full h-auto object-contain drop-shadow-[0_20px_50px_rgba(0,0,0,0.12)] z-20"
+          />
+          {/* Subtle background glow */}
+          <div className="absolute inset-0 bg-black/5 blur-[80px] md:blur-[120px] rounded-full -z-10 scale-125 md:scale-150 opacity-40" />
+        </motion.div>
+      </div>
+
+      {/* Editorial Content - Bottom on Mobile, Left on Desktop */}
+      <div className="w-full lg:w-1/2 p-6 md:p-12 lg:p-24 flex flex-col justify-between relative z-10 order-2 lg:order-1">
+        <div className="mt-4 lg:mt-0">
+          <motion.p 
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            className="text-[9px] md:text-[11px] uppercase tracking-[0.3em] text-black/40 mb-6 md:mb-10 block font-bold"
+          >
+            New Arrival / Series I
+          </motion.p>
+          
+          <div className="overflow-hidden">
+            <motion.h1 
+              initial={{ opacity: 0, y: 100 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
+              className="text-[14vw] md:text-[16vw] lg:text-[110px] leading-[0.85] font-bold tracking-tighter mb-8 lg:mb-12 text-black"
+            >
+              THE<br />AURAX<br />SHIFT
+            </motion.h1>
+          </div>
+
+          <motion.p 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.6, duration: 1 }}
+            className="max-w-xs text-xs md:text-base leading-relaxed text-black/50 mb-8 lg:mb-12 italic font-serif"
+          >
+            Engineered for the modern nomad. A synthesis of high-performance kinetics and Scandinavian brutalist architecture.
+          </motion.p>
+          
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.8 }}
+            className="flex flex-col sm:flex-row gap-4 lg:gap-6"
+          >
+            <button 
+              onClick={() => onNavigate('shop')}
+              className="w-full sm:w-auto group relative overflow-hidden bg-black text-white px-10 py-4 md:py-5 text-[10px] md:text-[11px] uppercase tracking-[0.3em] font-bold transition-all shadow-xl hover:shadow-2xl cursor-pointer"
+            >
+              <span className="relative z-10">Shop Collection</span>
+              <div className="absolute inset-0 bg-white/10 translate-x-[-100%] group-hover:translate-x-0 transition-transform duration-500" />
+            </button>
+            
+            <button 
+              onClick={() => setIsVideoModalOpen(true)}
+              className="w-full sm:w-auto flex items-center justify-center gap-4 border border-black/10 text-black px-10 py-4 md:py-5 text-[10px] md:text-[11px] uppercase tracking-[0.3em] font-bold hover:bg-black/5 transition-all group cursor-pointer"
+            >
+              <div className="w-5 h-5 flex items-center justify-center bg-black/5 group-hover:bg-black group-hover:text-white rounded-full transition-colors">
+                <Play className="w-2.5 h-2.5 fill-current" />
+              </div>
+              The Film
+            </button>
+          </motion.div>
+        </div>
+
+        {/* Specs Bar */}
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1 }}
+          className="grid grid-cols-3 gap-8 md:gap-16 mt-12 lg:mt-auto border-t border-black/5 pt-8"
+        >
+          <div className="flex flex-col">
+            <span className="text-[18px] lg:text-[28px] font-light tracking-tighter">0.42</span>
+            <span className="text-[8px] lg:text-[9px] uppercase tracking-widest text-black/30 font-bold">Weight (kg)</span>
+          </div>
+          <div className="flex flex-col">
+            <span className="text-[18px] lg:text-[28px] font-light tracking-tighter">100%</span>
+            <span className="text-[8px] lg:text-[9px] uppercase tracking-widest text-black/30 font-bold">Neutral</span>
+          </div>
+          <div className="flex flex-col">
+            <span className="text-[18px] lg:text-[28px] font-light tracking-tighter">EVO-2</span>
+            <span className="text-[8px] lg:text-[9px] uppercase tracking-widest text-black/30 font-bold">Sole Tech</span>
+          </div>
+        </motion.div>
+      </div>
+
+      {/* Video Modal Overlay */}
+      <AnimatePresence>
+        {isVideoModalOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[100] flex items-center justify-center bg-black/95 p-4"
+          >
+            <button 
+              onClick={() => setIsVideoModalOpen(false)}
+              className="absolute top-6 right-6 text-white/50 hover:text-white transition-colors p-2"
+            >
+              <X className="w-8 h-8" />
+            </button>
+            
+            <motion.div 
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              className="w-full max-w-5xl aspect-video bg-black"
+            >
+              <iframe 
+                src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1" 
+                className="w-full h-full"
+                allow="autoplay; encrypted-media"
+                allowFullScreen
+              />
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Floating Badge - Responsive adjustment */}
+      <motion.div 
+        initial={{ y: 100, x: '-50%' }}
+        animate={{ y: 0, x: '-50%' }}
+        transition={{ delay: 2, type: 'spring' }}
+        className="fixed bottom-6 lg:bottom-12 left-1/2 flex items-center gap-3 px-6 py-3 bg-white border border-black/5 shadow-2xl rounded-full z-40 whitespace-nowrap scale-90 md:scale-100"
+      >
+        <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+        <span className="text-[8px] md:text-[10px] uppercase tracking-[0.2em] font-black text-black/80">
+          Live Drop: Only 42 pairs remaining
+        </span>
+      </motion.div>
+    </section>
+  );
+};
+</file>
+
+<file path="src/components/layout/Navbar.tsx">
+import React, { useState, useEffect } from 'react';
+import { ShoppingBag, Search, Menu, X, User } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { motion, AnimatePresence } from 'motion/react';
+import { useCart } from '../../context/CartContext';
+import { cn } from '../../lib/utils';
+
+interface NavbarProps {
+  onOpenCart: () => void;
+  isDarkPage?: boolean;
+}
+
+export const Navbar: React.FC<NavbarProps> = ({ onOpenCart, isDarkPage }) => {
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { totalItems } = useCart();
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 20);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const navLinks = [
+    { name: 'Shop All', path: '/shop' },
+    { name: 'Collections', path: '/collections' },
+    { name: 'Innovation', path: '/innovation' },
+    { name: 'Story', path: '/story' },
+  ];
+
+  // Refined Color Logic
+  const themeColors = isScrolled 
+    ? 'text-black' 
+    : (isDarkPage ? 'text-white' : 'text-black');
+
+  const secondaryColors = isScrolled 
+    ? 'text-black/60' 
+    : (isDarkPage ? 'text-white/60' : 'text-black/60');
+
+  const borderColors = isScrolled 
+    ? 'border-black' 
+    : (isDarkPage ? 'border-white' : 'border-black');
+
+  return (
+    <>
+      <nav
+        className={cn(
+          'fixed top-0 left-0 w-full h-16 md:h-20 z-50 transition-all duration-500 px-6 md:px-12 flex items-center justify-between',
+          isScrolled 
+            ? 'bg-white/80 backdrop-blur-lg border-b border-black/5' 
+            : 'bg-transparent'
+        )}
+      >
+        <Link 
+          to="/"
+          className={cn(
+            "text-xl md:text-2xl font-bold tracking-tighter italic cursor-pointer transition-colors duration-500",
+            themeColors
+          )}
+        >
+          AURAX
+        </Link>
+        
+        {/* Nav Links - Desktop */}
+        <div className="hidden md:flex items-center gap-12 text-[11px] uppercase tracking-[0.2em] font-medium">
+          {navLinks.map((link) => (
+            <Link
+              key={link.name}
+              to={link.path}
+              className={cn(
+                "transition-all duration-500 cursor-pointer hover:opacity-50",
+                secondaryColors
+              )}
+            >
+              {link.name}
+            </Link>
+          ))}
+        </div>
+
+        {/* Right Side Icons */}
+        <div className="flex items-center gap-4 md:gap-6">
+          <button 
+            onClick={onOpenCart}
+            className="flex items-center gap-2 group cursor-pointer"
+          >
+            <div className={cn(
+              "w-5 h-5 border rounded-full flex items-center justify-center transition-all duration-500 group-hover:bg-black group-hover:text-white group-hover:border-black",
+              borderColors,
+              themeColors
+            )}>
+              <span className="text-[8px] font-bold">{totalItems}</span>
+            </div>
+            <span className={cn(
+              "text-[10px] md:text-[11px] uppercase tracking-widest font-semibold hidden sm:inline transition-colors duration-500",
+              themeColors
+            )}>
+              Bag
+            </span>
+          </button>
+          
+          <button 
+            className={cn("p-2 transition-colors duration-500", themeColors)}
+            onClick={() => setIsMobileMenuOpen(true)}
+          >
+            <Menu className="w-5 h-5 md:w-6 md:h-6" />
+          </button>
+        </div>
+      </nav>
+
+      {/* Mobile Menu Overlay */}
+      <AnimatePresence>
+        {isMobileMenuOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            className="fixed inset-0 z-[60] bg-white p-6 flex flex-col"
+          >
+            <div className="flex justify-between items-center h-16 mb-12">
+              <Link 
+                to="/"
+                className="text-xl font-bold tracking-tighter italic"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                AURAX
+              </Link>
+              <button onClick={() => setIsMobileMenuOpen(false)} className="p-2">
+                <X className="w-6 h-6" />
+              </button>
+            </div>
+
+            <div className="flex flex-col space-y-6">
+              {navLinks.map((link, idx) => (
+                <motion.div
+                  key={link.name}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: idx * 0.1 }}
+                >
+                  <Link
+                    to={link.path}
+                    className="text-4xl font-bold tracking-tighter uppercase hover:italic"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    {link.name}
+                  </Link>
+                </motion.div>
+              ))}
+            </div>
+
+            <div className="mt-auto pb-10 flex flex-col gap-8">
+              <div className="h-[1px] bg-black/5 w-full" />
+              <div className="flex justify-between uppercase text-[9px] tracking-[0.2em] font-bold text-black/40">
+                <button onClick={() => setIsMobileMenuOpen(false)}>Account</button>
+                <button onClick={() => setIsMobileMenuOpen(false)}>Support</button>
+                <button onClick={() => setIsMobileMenuOpen(false)}>Dubai, UAE</button>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
+  );
+};
+</file>
+
+<file path="src/pages/HomePage.tsx">
+import React, { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Hero } from '../components/home/Hero';
+import { Collections } from '../components/home/Collections';
+import { FeaturedProducts } from '../components/home/FeaturedProducts';
+import { Mission } from '../components/home/Mission';
+import { Campaign } from '../components/home/Campaign';
+import { TechnicalShowcase } from '../components/home/TechnicalShowcase';
+import { Product } from '../types';
+
+interface HomePageProps {
+  onProductClick: (product: Product) => void;
+}
+
+export const HomePage: React.FC<HomePageProps> = ({ onProductClick }) => {
+  const navigate = useNavigate();
+
+  // Ensure scroll starts at top on initial mount
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+  const handleNavigation = (view: string) => {
+    // If your navigateTo logic uses specific keys like 'shop' or 'collections', 
+    // ensure the routing paths match your App.tsx setup.
+    const path = view === 'shop' ? '/shop' : `/${view}`;
+    navigate(path);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  return (
+    <main className="bg-white min-h-screen selection:bg-black selection:text-white">
+      {/* Hero Section: The primary entry point */}
+      <Hero onNavigate={() => handleNavigation('shop')} />
+      
+      {/* Mission: Brand philosophy and architectural statement */}
+      <Mission />
+      
+      {/* Collections: Category-based navigation cards */}
+      <Collections onNavigate={() => handleNavigation('shop')} />
+      
+      {/* Featured Products: Direct e-commerce interaction */}
+      <FeaturedProducts 
+        onProductClick={onProductClick} 
+        onNavigate={() => handleNavigation('shop')}
+      />
+      
+      {/* Campaign: High-impact editorial visuals */}
+      <Campaign />
+      
+      {/* Technical Showcase: Deep dive into engineering specs */}
+      <TechnicalShowcase />
+    </main>
+  );
+};
+</file>
+
+<file path="tsconfig.json">
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "experimentalDecorators": true,
+    "useDefineForClassFields": true,
+    "module": "ESNext",
+    "lib": [
+      "ES2022",
+      "DOM",
+      "DOM.Iterable"
+    ],
+    "skipLibCheck": true,
+
+    /* Bundler mode */
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "jsx": "react-jsx",
+
+    /* Linting */
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+
+    /* Modern Path Aliases (No baseUrl) */
+    "paths": {
+      "@/*": ["./src/*"]
+    },
+    
+    "allowJs": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true
+  },
+  "include": ["src"]
+}
+</file>
+
+<file path="src/components/home/TechnicalShowcase.tsx">
+import React from 'react';
+
+// CRITICAL: The "export" keyword must be here for the build to find it
+export const TechnicalShowcase: React.FC = () => {
+  return (
+    <section className="py-20 md:py-40 px-6 md:px-12 bg-black text-white">
+      <div className="max-w-screen-2xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 items-stretch">
+        
+        {/* TEXT CARD */}
+        <div className="flex flex-col justify-center bg-[#0A0A0A] p-8 md:p-20 rounded-3xl border border-white/10">
+          <div className="space-y-4 md:space-y-6">
+            <span className="text-white/40 text-[10px] uppercase tracking-[0.6em] font-bold">Engineering Specs</span>
+            <h3 className="text-2xl md:text-5xl font-bold tracking-tighter leading-[1.2] md:leading-[1.1]">
+              BUILT FOR <br className="hidden md:block" /> PERFORMANCE
+            </h3>
+            <p className="text-white/60 text-sm md:text-lg leading-relaxed max-w-xl">
+              Every AURAX silhouette is developed over 18 months, undergoing rigorous stress testing.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-2 gap-4 md:gap-8 pt-8 md:pt-12">
+            <div className="border-l border-white/20 pl-4 md:pl-6">
+              <span className="text-xl md:text-3xl font-mono block mb-1 md:mb-2">-15%</span>
+              <span className="text-[8px] md:text-[9px] uppercase tracking-widest text-white/40">Weight reduction</span>
+            </div>
+            <div className="border-l border-white/20 pl-4 md:pl-6">
+              <span className="text-xl md:text-3xl font-mono block mb-1 md:mb-2">+42%</span>
+              <span className="text-[8px] md:text-[9px] uppercase tracking-widest text-white/40">Energy return</span>
+            </div>
+          </div>
+        </div>
+
+        {/* IMAGE CARD */}
+        <div className="relative group cursor-crosshair bg-[#0A0A0A] rounded-3xl border border-white/10 overflow-hidden flex items-center justify-center p-8 md:p-20 min-h-[350px] md:min-h-[600px]">
+          <div className="absolute inset-0 border border-white/[0.03] rounded-full scale-110 animate-[spin_40s_linear_infinite]" />
+          
+          <div className="relative z-10 w-full aspect-square overflow-hidden rounded-xl">
+            {/* Primary Image */}
+            <img 
+              src="https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?auto=format&fit=crop&q=80&w=1000" 
+              alt="Technical Detail" 
+              className="w-full h-full object-cover grayscale invert scale-90 transition-all duration-500 ease-out group-hover:opacity-0 group-hover:scale-110"
+            />
+            {/* Hover Image */}
+            <img 
+              src="https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?auto=format&fit=crop&q=80&w=1000" 
+              alt="Technical" 
+              className="absolute inset-0 w-full h-full object-cover grayscale invert scale-110 transition-all duration-500 ease-out opacity-0 group-hover:opacity-100 group-hover:scale-100"
+            />
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+</file>
+
+<file path="src/components/layout/Footer.tsx">
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { Instagram, Twitter, Facebook, ArrowUpRight } from 'lucide-react';
+
+export const Footer: React.FC = () => {
+  return (
+    <footer className="bg-white pt-20 md:pt-32 pb-10 px-6 md:px-12 border-t border-gray-100">
+      <div className="max-w-screen-2xl mx-auto">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12 md:gap-16 mb-20 md:mb-32">
+          
+          {/* Brand Info */}
+          <div className="space-y-6 md:space-y-8">
+            <Link to="/" className="text-2xl md:text-3xl font-bold tracking-tighter italic cursor-pointer">AURAX</Link>
+            <p className="text-black/50 text-xs md:text-sm leading-relaxed max-w-xs font-medium">
+              Defining the interface between engineering precision and kinetic motion. Luxury footwear developed for the modern nomad.
+            </p>
+            <div className="flex gap-4 md:gap-6">
+              {[Instagram, Twitter, Facebook].map((Icon, i) => (
+                <a key={i} href="#" className="p-3 bg-gray-50 rounded-full hover:bg-black hover:text-white transition-all duration-500">
+                  <Icon className="w-4 h-4" />
+                </a>
+              ))}
+            </div>
+          </div>
+
+          {/* Navigation */}
+          <div>
+            <h3 className="text-[10px] uppercase tracking-[0.4em] font-black text-black mb-6 md:mb-8">Navigation</h3>
+            <ul className="space-y-4">
+              {[
+                { name: 'Shop All', path: '/shop' },
+                { name: 'Featured', path: '/featured' },
+                { name: 'Collections', path: '/collections' },
+                { name: 'Innovation', path: '/innovation' },
+                { name: 'Story', path: '/story' }
+              ].map(item => (
+                <li key={item.name}>
+                  <Link 
+                    to={item.path}
+                    className="text-black/40 hover:text-black text-sm flex items-center group transition-colors cursor-pointer font-bold uppercase tracking-widest text-[11px]"
+                  >
+                    {item.name}
+                    <ArrowUpRight className="w-3 h-3 ml-2 opacity-0 group-hover:opacity-100 transition-all -translate-y-0.5 group-hover:translate-y-0" />
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Support */}
+          <div>
+            <h3 className="text-[10px] uppercase tracking-[0.4em] font-black text-black mb-6 md:mb-8">Support</h3>
+            <ul className="space-y-4">
+              {['Order Status', 'Shipping', 'Returns', 'Payment', 'Contact'].map(item => (
+                <li key={item}>
+                  <a href="#" className="text-black/40 hover:text-black text-[11px] font-bold uppercase tracking-widest transition-colors">
+                    {item}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Journal Signup */}
+          <div>
+            <h3 className="text-[10px] uppercase tracking-[0.4em] font-black text-black mb-6 md:mb-8">Journal</h3>
+            <p className="text-xs md:text-sm text-black/50 mb-6 leading-relaxed font-medium">
+              Join the laboratory. Exclusive access to limited edition drops and future releases.
+            </p>
+            <form className="relative group">
+              <input 
+                type="email" 
+                placeholder="Email Address" 
+                className="w-full bg-gray-50 border-none px-5 py-4 text-xs focus:ring-1 focus:ring-black transition-all outline-none rounded-none"
+              />
+              <button 
+                type="submit"
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-[9px] uppercase font-black tracking-widest border-b-2 border-black h-fit pb-0.5 hover:italic transition-all"
+              >
+                Join
+              </button>
+            </form>
+          </div>
+        </div>
+
+        {/* Bottom Bar & Credits */}
+        <div className="pt-10 border-t border-black/5 flex flex-col gap-10">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+            <div className="space-y-2">
+              <p className="text-[9px] md:text-[10px] uppercase tracking-[0.2em] text-black/30 font-bold font-mono">
+                © 2026 AURAX DESIGN LABS. ALL RIGHTS RESERVED.
+              </p>
+              <p className="text-[9px] md:text-[10px] uppercase tracking-[0.2em] text-black/40 font-bold">
+                Developed by <a href="https://github.com/brianshiroe" className="text-black hover:italic transition-all">brianshiroe</a> / Brian Haw
+              </p>
+            </div>
+            
+            <div className="flex flex-wrap gap-x-6 gap-y-3 text-[9px] md:text-[10px] uppercase tracking-widest font-black">
+              <a href="#" className="hover:text-black text-black/30 transition-colors">Privacy</a>
+              <a href="#" className="hover:text-black text-black/30 transition-colors">Terms</a>
+              <a href="#" className="hover:text-black text-black/30 transition-colors">Dubai, UAE</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+  );
+};
+</file>
+
 <file path="src/App.tsx">
 import React, { useState, useEffect } from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
@@ -2394,22 +2626,24 @@ import { ShopPage } from './pages/ShopPage';
 import { CollectionsPage } from './pages/CollectionsPage';
 import { InnovationPage } from './pages/InnovationPage';
 import { StoryPage } from './pages/StoryPage';
+// 1. IMPORT the new page
+import { FeaturedPage } from './pages/FeaturedPage'; 
 import { Product } from './types';
 import { motion, AnimatePresence } from 'motion/react';
 
 const AppContent: React.FC = () => {
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [currentProduct, setCurrentProduct] = useState<Product | null>(null);
-  const [displayKey, setDisplayKey] = useState(0);
+  
   const location = useLocation();
   const state = location.state as { product?: Product } | null;
 
   useEffect(() => {
-    setDisplayKey(prev => prev + 1);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [location.pathname]);
 
-  const isDarkPage = location.pathname === '/innovation';
+  // 2. OPTIONAL: Add to dark page logic if the featured page has a black background
+  const isDarkPage = location.pathname === '/innovation' || location.pathname === '/featured';
 
   return (
     <div className="relative font-sans text-black overflow-x-hidden">
@@ -2421,15 +2655,19 @@ const AppContent: React.FC = () => {
       <main className="min-h-screen">
         <AnimatePresence mode="wait">
           <motion.div
-            key={displayKey}
+            key={location.pathname}
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.4, ease: "easeInOut" }}
           >
-            <Routes>
-              <Route path="/" element={<HomePage onProductClick={(p) => setCurrentProduct(p)} />} />
-              <Route path="/shop" element={<ShopPage onProductClick={(p) => setCurrentProduct(p)} />} />
+            <Routes location={location}>
+              <Route path="/" element={<HomePage onProductClick={setCurrentProduct} />} />
+              <Route path="/shop" element={<ShopPage onProductClick={setCurrentProduct} />} />
+              
+              {/* 3. REGISTER the new route */}
+              <Route path="/featured" element={<FeaturedPage />} />
+              
               <Route path="/product/:id" element={<ProductPage product={state?.product || currentProduct} />} />
               <Route path="/collections" element={<CollectionsPage />} />
               <Route path="/innovation" element={<InnovationPage />} />
@@ -2437,7 +2675,6 @@ const AppContent: React.FC = () => {
               <Route path="/checkout" element={<CheckoutPage />} />
             </Routes>
 
-            {/* Global Footer - hide on checkout */}
             {location.pathname !== '/checkout' && <Footer />}
           </motion.div>
         </AnimatePresence>
@@ -2448,9 +2685,12 @@ const AppContent: React.FC = () => {
         onClose={() => setIsCartOpen(false)}
       />
       
-      {/* Floating Checkout Trigger */}
       {!isCartOpen && location.pathname !== '/checkout' && (
-        <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} className="fixed bottom-6 right-6 z-40 md:hidden">
+        <motion.div 
+          initial={{ scale: 0 }} 
+          animate={{ scale: 1 }} 
+          className="fixed bottom-6 right-6 z-40 md:hidden"
+        >
           <button 
             onClick={() => setIsCartOpen(true)}
             className="bg-black text-white p-6 rounded-full shadow-2xl flex items-center justify-center hover:scale-105 transition-transform"
