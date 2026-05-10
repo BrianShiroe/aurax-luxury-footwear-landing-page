@@ -11,6 +11,8 @@ import { ShopPage } from './pages/ShopPage';
 import { CollectionsPage } from './pages/CollectionsPage';
 import { InnovationPage } from './pages/InnovationPage';
 import { StoryPage } from './pages/StoryPage';
+// 1. IMPORT the new page
+import { FeaturedPage } from './pages/FeaturedPage'; 
 import { Product } from './types';
 import { motion, AnimatePresence } from 'motion/react';
 
@@ -21,12 +23,12 @@ const AppContent: React.FC = () => {
   const location = useLocation();
   const state = location.state as { product?: Product } | null;
 
-  // Handles smooth scroll to top on every route change
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [location.pathname]);
 
-  const isDarkPage = location.pathname === '/innovation';
+  // 2. OPTIONAL: Add to dark page logic if the featured page has a black background
+  const isDarkPage = location.pathname === '/innovation' || location.pathname === '/featured';
 
   return (
     <div className="relative font-sans text-black overflow-x-hidden">
@@ -44,10 +46,13 @@ const AppContent: React.FC = () => {
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.4, ease: "easeInOut" }}
           >
-            {/* location={location} is critical for smooth AnimatePresence transitions */}
             <Routes location={location}>
               <Route path="/" element={<HomePage onProductClick={setCurrentProduct} />} />
               <Route path="/shop" element={<ShopPage onProductClick={setCurrentProduct} />} />
+              
+              {/* 3. REGISTER the new route */}
+              <Route path="/featured" element={<FeaturedPage />} />
+              
               <Route path="/product/:id" element={<ProductPage product={state?.product || currentProduct} />} />
               <Route path="/collections" element={<CollectionsPage />} />
               <Route path="/innovation" element={<InnovationPage />} />
@@ -65,7 +70,6 @@ const AppContent: React.FC = () => {
         onClose={() => setIsCartOpen(false)}
       />
       
-      {/* Floating Checkout Trigger (Mobile) */}
       {!isCartOpen && location.pathname !== '/checkout' && (
         <motion.div 
           initial={{ scale: 0 }} 
