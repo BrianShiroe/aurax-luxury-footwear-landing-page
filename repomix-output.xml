@@ -40,7 +40,6 @@ The content is organized as follows:
 </file_summary>
 
 <directory_structure>
-.env.example
 .gitignore
 index.html
 metadata.json
@@ -90,18 +89,6 @@ vite.config.ts
 <files>
 This section contains the contents of the repository's files.
 
-<file path=".env.example">
-# GEMINI_API_KEY: Required for Gemini AI API calls.
-# AI Studio automatically injects this at runtime from user secrets.
-# Users configure this via the Secrets panel in the AI Studio UI.
-GEMINI_API_KEY="MY_GEMINI_API_KEY"
-
-# APP_URL: The URL where this applet is hosted.
-# AI Studio automatically injects this at runtime with the Cloud Run service URL.
-# Used for self-referential links, OAuth callbacks, and API endpoints.
-APP_URL="MY_APP_URL"
-</file>
-
 <file path=".gitignore">
 node_modules/
 build/
@@ -123,166 +110,58 @@ coverage/
 </file>
 
 <file path="README.md">
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+AURAX | Architectural Footwear & Kinetic Engineering
 
-# Run and deploy your AI Studio app
+AURAX is a premium, minimalist e-commerce experience designed for high-end architectural footwear. The project blends cinematic editorial presentation with precise engineering, offering a "Laboratory" aesthetic that mirrors the technical innovation of the products themselves.
 
-This contains everything you need to run your app locally.
+🧪 The Concept
+AURAX was born in a modular studio in Stockholm with a singular vision: to destroy the boundary between athletic performance and high-fashion aesthetics. Every silhouette is designed as an interface for human movement, treating shoe design with the same rigor as tectonic architecture.
 
-View your app in AI Studio: https://ai.studio/apps/a031c9bd-fca1-4dd3-be10-e6bfc528363d
+Key Innovations:
+- EVO-SOLE: Proprietary carbon-infused polymer providing 42% more energy return.
+- AURAX-KNIT: Sustainably sourced technical fibers that adapt to the foot’s unique topography.
+- T-STABILITY: Architectural heel counters for stability during high-impact motion.
 
-## Run Locally
+🚀 Live Demo
+Experience the editorial interface and kinetic showcase here: 
+https://aurax-luxury-footwear-landing-page.vercel.app/
 
-**Prerequisites:**  Node.js
+🛠️ Technical Stack
+- Frontend: React 19 (TypeScript)
+- Styling: Tailwind CSS 4.0
+- Animations: Framer Motion (via motion/react)
+- Build Tool: Vite
+- Icons: Lucide React
+- AI Integration: Google Gemini API (for intelligent features)
 
+💻 Local Setup
+Follow these steps to run the AURAX environment locally:
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
-</file>
+Prerequisites:
+- Node.js (LTS version recommended)
 
-<file path="src/components/checkout/CheckoutForm.tsx">
-import React from 'react';
-import { ArrowLeft, ChevronRight } from 'lucide-react';
-import { cn } from '../../lib/utils';
+Installation:
+1. Clone the repository and enter the directory.
+2. Install dependencies:
+   npm install
+3. Environment Configuration:
+   - Create a .env.local file in the root directory.
+   - Add your Gemini API key:
+     GEMINI_API_KEY="YOUR_GEMINI_API_KEY_HERE"
+4. Launch the development server:
+   npm run dev
+5. The application will be available at http://localhost:3000.
 
-interface CheckoutFormProps {
-  onBack: () => void;
-  step: number;
-}
+📂 Project Structure
+- /src/components/innovation: Technical showcases and the "Lab" experience.
+- /src/components/product: High-end product galleries and selection interfaces.
+- /src/context: Global cart and state management.
+- /src/pages: Editorial-style pages including "Story" and "Innovation".
 
-export const CheckoutForm: React.FC<CheckoutFormProps> = ({ onBack, step }) => {
-  return (
-    <div className="flex-1 space-y-16">
-      <div className="space-y-4">
-          <button onClick={onBack} className="text-[10px] uppercase tracking-widest font-bold text-black/40 hover:text-black flex items-center gap-2 mb-8 group transition-all cursor-pointer">
-              <ArrowLeft className="w-3 h-3 group-hover:-translate-x-1 transition-transform" />
-              Back
-          </button>
-          <div className="flex items-center gap-12">
-             <div className={cn("flex items-center gap-3", step >= 1 ? "text-black" : "text-black/20")}>
-                  <span className="w-6 h-6 rounded-full border border-current flex items-center justify-center text-[10px] font-bold">1</span>
-                  <span className="text-[10px] uppercase tracking-widest font-bold">Shipping</span>
-             </div>
-             <div className="w-12 h-[1px] bg-gray-100" />
-             <div className={cn("flex items-center gap-3", step >= 2 ? "text-black" : "text-black/20")}>
-                  <span className="w-6 h-6 rounded-full border border-current flex items-center justify-center text-[10px] font-bold">2</span>
-                  <span className="text-[10px] uppercase tracking-widest font-bold">Payment</span>
-             </div>
-          </div>
-      </div>
-
-      <section className="space-y-12">
-          <h1 className="text-5xl font-bold tracking-tighter uppercase">Secure <span className="italic text-black/20">Checkout</span></h1>
-          
-          <div className="space-y-10">
-              <div className="grid grid-cols-2 gap-6">
-                  <div className="col-span-2 space-y-2">
-                      <label className="text-[10px] uppercase tracking-widest font-bold text-black/40">Email Address</label>
-                      <input type="email" className="w-full bg-gray-50 border-none p-5 text-sm focus:ring-1 focus:ring-black outline-none" placeholder="architect@aurax.com" />
-                  </div>
-                  <div className="space-y-2">
-                      <label className="text-[10px] uppercase tracking-widest font-bold text-black/40">First Name</label>
-                      <input type="text" className="w-full bg-gray-50 border-none p-5 text-sm focus:ring-1 focus:ring-black outline-none" />
-                  </div>
-                  <div className="space-y-2">
-                      <label className="text-[10px] uppercase tracking-widest font-bold text-black/40">Last Name</label>
-                      <input type="text" className="w-full bg-gray-50 border-none p-5 text-sm focus:ring-1 focus:ring-black outline-none" />
-                  </div>
-                  <div className="col-span-2 space-y-2">
-                       <label className="text-[10px] uppercase tracking-widest font-bold text-black/40">Shipping Address</label>
-                       <input type="text" className="w-full bg-gray-50 border-none p-5 text-sm focus:ring-1 focus:ring-black outline-none" placeholder="123 Luxury Lane" />
-                  </div>
-                  <div className="space-y-2">
-                      <label className="text-[10px] uppercase tracking-widest font-bold text-black/40">City</label>
-                      <input type="text" className="w-full bg-gray-50 border-none p-5 text-sm focus:ring-1 focus:ring-black outline-none" />
-                  </div>
-                  <div className="space-y-2">
-                      <label className="text-[10px] uppercase tracking-widest font-bold text-black/40">Postal Code</label>
-                      <input type="text" className="w-full bg-gray-50 border-none p-5 text-sm focus:ring-1 focus:ring-black outline-none" />
-                  </div>
-              </div>
-
-              <button className="w-full md:w-fit bg-black text-white px-16 py-6 text-[10px] uppercase font-bold tracking-[0.4em] hover:bg-black/90 transition-all flex items-center justify-center gap-4 group cursor-pointer">
-                  Proceed To Payment
-                  <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-              </button>
-          </div>
-      </section>
-    </div>
-  );
-};
-</file>
-
-<file path="src/components/checkout/CheckoutSummary.tsx">
-import React from 'react';
-import { ShieldCheck, CreditCard } from 'lucide-react';
-import { CartItem } from '../../types';
-import { formatCurrency } from '../../lib/utils';
-
-interface CheckoutSummaryProps {
-  cart: CartItem[];
-  totalPrice: number;
-}
-
-export const CheckoutSummary: React.FC<CheckoutSummaryProps> = ({ cart, totalPrice }) => {
-  return (
-    <div className="w-full lg:w-[400px] space-y-12 h-fit lg:sticky lg:top-32">
-       <div className="bg-[#F9F9FB] p-8 md:p-12 space-y-10 rounded-sm">
-          <h3 className="text-xl font-bold tracking-tight uppercase">Order Summary</h3>
-          
-          <div className="space-y-8 max-h-[400px] overflow-y-auto pr-4 scrollbar-thin scrollbar-thumb-gray-200">
-              {cart.map(item => (
-                  <div key={`${item.id}-${item.selectedSize}`} className="flex gap-6 group">
-                      <div className="w-20 h-20 bg-white overflow-hidden rounded-sm flex-shrink-0 border border-gray-100">
-                          <img src={item.images[0]} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt={item.name} />
-                      </div>
-                      <div className="flex-1 space-y-1">
-                          <h4 className="text-[12px] font-bold uppercase truncate group-hover:italic transition-all">{item.name}</h4>
-                          <p className="text-[9px] text-black/40 uppercase tracking-widest">Qty: {item.quantity} / Size {item.selectedSize}</p>
-                          <p className="text-[11px] font-mono font-medium pt-2">{formatCurrency(item.price)}</p>
-                      </div>
-                  </div>
-              ))}
-          </div>
-
-          <div className="pt-8 border-t border-gray-200 space-y-4">
-              <div className="flex justify-between text-xs tracking-widest text-black/40 uppercase">
-                  <span>Subtotal</span>
-                  <span className="font-mono">{formatCurrency(totalPrice)}</span>
-              </div>
-              <div className="flex justify-between text-xs tracking-widest text-black/40 uppercase">
-                  <span>Express Shipping</span>
-                  <span className="font-mono">FREE</span>
-              </div>
-              <div className="flex justify-between text-xs tracking-widest text-black/40 uppercase">
-                  <span>Tax</span>
-                  <span className="font-mono">$0.00</span>
-              </div>
-              <div className="pt-4 flex justify-between text-2xl font-bold tracking-tight uppercase">
-                  <span>Total</span>
-                  <span className="font-mono">{formatCurrency(totalPrice)}</span>
-              </div>
-          </div>
-
-          <div className="space-y-4 pt-6">
-              <div className="flex items-center gap-3 text-[9px] uppercase tracking-widest font-bold text-black/40">
-                  <ShieldCheck className="w-4 h-4 text-emerald-500" />
-                  SSL SECURED ENCRYPTION
-              </div>
-              <div className="flex items-center gap-3 text-[9px] uppercase tracking-widest font-bold text-black/40">
-                  <CreditCard className="w-4 h-4" />
-                  PCI COMPLIANT PAYMENTS
-              </div>
-          </div>
-       </div>
-    </div>
-  );
-};
+🏛️ Project Metadata
+- Project Name: AURAX | Luxury Footwear
+- Design Language: Cinematic, Minimalist, Editorial
+- Core Capabilities: Motion engineering, dynamic cart systems, and responsive architectural layouts.
 </file>
 
 <file path="src/components/home/Campaign.tsx">
@@ -957,77 +836,6 @@ body {
 }
 </file>
 
-<file path="src/pages/CollectionsPage.tsx">
-import React from 'react';
-import { motion } from 'motion/react';
-import { ArrowRight } from 'lucide-react';
-
-const collections = [
-  {
-    title: 'Performance',
-    desc: 'Elite engineering for the modern athlete.',
-    image: 'https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?auto=format&fit=crop&q=80&w=1000',
-  },
-  {
-    title: 'Minimal Essentials',
-    desc: 'Hand-crafted purity of form and function.',
-    image: 'https://images.unsplash.com/photo-1549298916-b41d501d3772?auto=format&fit=crop&q=80&w=1000',
-  },
-  {
-    title: 'Streetwear',
-    desc: 'Futuristic silhouettes for the urban landscape.',
-    image: 'https://images.unsplash.com/photo-1514989940723-e8e51635b782?auto=format&fit=crop&q=80&w=1000',
-  },
-    {
-    title: 'Limited Edition',
-    desc: 'Exclusive collaborative drops and rare archives.',
-    image: 'https://images.unsplash.com/photo-1539185441755-769473a23570?auto=format&fit=crop&q=80&w=1000',
-  },
-];
-
-export const CollectionsPage: React.FC = () => {
-  return (
-    <div className="bg-white min-h-screen pt-32 pb-20 px-6 md:px-12">
-      <div className="max-w-screen-2xl mx-auto">
-        <h1 className="text-6xl md:text-8xl font-bold tracking-tighter mb-24 uppercase">
-          THE <span className="italic text-black/10">COLLECTIONS</span>
-        </h1>
-
-        <div className="space-y-32">
-          {collections.map((col, i) => (
-            <motion.div 
-              key={col.title}
-              initial={{ opacity: 0, y: 50 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className={cn(
-                "flex flex-col lg:flex-row items-center gap-16 lg:gap-32",
-                i % 2 === 1 ? "lg:flex-row-reverse" : ""
-              )}
-            >
-              <div className="w-full lg:w-1/2 aspect-[4/5] bg-gray-50 overflow-hidden">
-                <img src={col.image} alt={col.title} className="w-full h-full object-cover hover:scale-105 transition-transform duration-[3s]" />
-              </div>
-              <div className="w-full lg:w-1/3 space-y-8">
-                <span className="text-[10px] uppercase tracking-[0.5em] font-bold text-black/40">Series 0{i + 1}</span>
-                <h2 className="text-5xl md:text-7xl font-bold tracking-tighter uppercase">{col.title}</h2>
-                <p className="text-lg text-black/60 leading-relaxed italic">{col.desc}</p>
-                <button className="flex items-center gap-4 text-[11px] uppercase tracking-[0.3em] font-bold pb-2 border-b border-black group transition-all">
-                  Shop Collection
-                  <ArrowRight className="w-4 h-4 group-hover:translate-x-2 transition-transform" />
-                </button>
-              </div>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-};
-
-import { cn } from '../lib/utils';
-</file>
-
 <file path="src/pages/FeaturedPage.tsx">
 import React, { useEffect } from 'react';
 import { motion } from 'motion/react';
@@ -1167,71 +975,6 @@ export const InnovationPage: React.FC = () => {
         <InnovationHero />
         <TechGrid />
         <LabShowcase />
-      </div>
-    </div>
-  );
-};
-</file>
-
-<file path="src/pages/ShopPage.tsx">
-import React from 'react';
-import { motion } from 'motion/react';
-import { ProductCard } from '../components/product/ProductCard';
-import { PRODUCTS, CATEGORIES } from '../constants';
-import { Product } from '../types';
-import { cn } from '../lib/utils';
-
-interface ShopPageProps {
-  onProductClick: (product: Product) => void;
-}
-
-export const ShopPage: React.FC<ShopPageProps> = ({ onProductClick }) => {
-  const [activeCategory, setActiveCategory] = React.useState('All');
-
-  const filteredProducts = activeCategory === 'All' 
-    ? PRODUCTS 
-    : PRODUCTS.filter(p => p.category === activeCategory);
-
-  return (
-    <div className="bg-white min-h-screen pt-32 pb-20 px-6 md:px-12">
-      <div className="max-w-screen-2xl mx-auto">
-        <header className="mb-20">
-          <motion.h1 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-6xl md:text-8xl font-bold tracking-tighter mb-8"
-          >
-            SHOP <span className="italic text-black/10">ALL</span>
-          </motion.h1>
-          
-          <div className="flex flex-wrap gap-x-8 gap-y-4 border-b border-gray-100 pb-8">
-            {CATEGORIES.map(cat => (
-              <button
-                key={cat}
-                onClick={() => setActiveCategory(cat)}
-                className={cn(
-                  "text-[10px] uppercase tracking-[0.3em] font-bold transition-all",
-                  activeCategory === cat ? "text-black italic underline underline-offset-8" : "text-black/30 hover:text-black"
-                )}
-              >
-                {cat}
-              </button>
-            ))}
-          </div>
-        </header>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-8 gap-y-20">
-          {filteredProducts.map((product, index) => (
-            <motion.div
-              key={product.id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.05 }}
-            >
-              <ProductCard product={product} onClick={onProductClick} />
-            </motion.div>
-          ))}
-        </div>
       </div>
     </div>
   );
@@ -1510,6 +1253,149 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({ isOpen, onClose }) => {
 };
 </file>
 
+<file path="src/components/checkout/CheckoutForm.tsx">
+import React from 'react';
+import { ArrowLeft, Lock } from 'lucide-react';
+import { cn } from '../../lib/utils';
+
+interface CheckoutFormProps {
+  onBack: () => void;
+  step: number;
+}
+
+export const CheckoutForm: React.FC<CheckoutFormProps> = ({ onBack, step }) => {
+  return (
+    <div className="flex-1 space-y-12 md:space-y-16">
+      {/* Progress Header */}
+      <div className="space-y-6">
+          <button 
+            onClick={onBack} 
+            className="text-[10px] uppercase tracking-widest font-black text-black/40 hover:text-black flex items-center gap-2 group transition-all cursor-pointer"
+          >
+              <ArrowLeft className="w-3 h-3 group-hover:-translate-x-1 transition-transform" />
+              Back
+          </button>
+          
+          <div className="flex items-center gap-8 md:gap-12">
+             <div className={cn("flex items-center gap-3", step >= 1 ? "text-black" : "text-black/20")}>
+                  <span className="w-5 h-5 md:w-6 md:h-6 rounded-full border border-current flex items-center justify-center text-[9px] md:text-[10px] font-bold">1</span>
+                  <span className="text-[9px] md:text-[10px] uppercase tracking-[0.3em] font-black">Shipping</span>
+             </div>
+             <div className="w-8 md:w-12 h-[1px] bg-gray-100" />
+             <div className={cn("flex items-center gap-3", step >= 2 ? "text-black" : "text-black/20")}>
+                  <span className="w-5 h-5 md:w-6 md:h-6 rounded-full border border-current flex items-center justify-center text-[9px] md:text-[10px] font-bold">2</span>
+                  <span className="text-[9px] md:text-[10px] uppercase tracking-[0.3em] font-black">Payment</span>
+             </div>
+          </div>
+      </div>
+
+      <section className="space-y-10 md:space-y-12">
+          <h1 className="text-[10vw] md:text-5xl font-black tracking-tighter uppercase leading-[0.9]">
+            Secure <br className="md:hidden" />
+            <span className="italic text-black/10 transition-colors hover:text-black/20">Checkout</span>
+          </h1>
+          
+          <div className="space-y-8">
+              <div className="grid grid-cols-2 gap-4 md:gap-6">
+                  <div className="col-span-2 space-y-2">
+                      <label className="text-[9px] md:text-[10px] uppercase tracking-widest font-black text-black/40">Email Address</label>
+                      <input type="email" className="w-full bg-gray-50 border-none p-4 md:p-5 text-sm focus:ring-1 focus:ring-black outline-none transition-all" placeholder="architect@aurax.com" />
+                  </div>
+                  <div className="space-y-2">
+                      <label className="text-[9px] md:text-[10px] uppercase tracking-widest font-black text-black/40">First Name</label>
+                      <input type="text" className="w-full bg-gray-50 border-none p-4 md:p-5 text-sm focus:ring-1 focus:ring-black outline-none" />
+                  </div>
+                  <div className="space-y-2">
+                      <label className="text-[9px] md:text-[10px] uppercase tracking-widest font-black text-black/40">Last Name</label>
+                      <input type="text" className="w-full bg-gray-50 border-none p-4 md:p-5 text-sm focus:ring-1 focus:ring-black outline-none" />
+                  </div>
+                  <div className="col-span-2 space-y-2">
+                       <label className="text-[9px] md:text-[10px] uppercase tracking-widest font-black text-black/40">Shipping Address</label>
+                       <input type="text" className="w-full bg-gray-50 border-none p-4 md:p-5 text-sm focus:ring-1 focus:ring-black outline-none" placeholder="123 Luxury Lane" />
+                  </div>
+              </div>
+
+              {/* Status Change: "In Development" */}
+              <button 
+                disabled
+                className="w-full md:w-fit bg-black/10 text-black/40 px-12 py-6 text-[10px] uppercase font-black tracking-[0.4em] transition-all flex items-center justify-center gap-4 cursor-not-allowed border border-black/5"
+              >
+                  <Lock className="w-3 h-3 opacity-30" />
+                  In Development
+              </button>
+              <p className="text-[9px] uppercase tracking-widest text-black/30 font-bold text-center md:text-left">
+                Payment gateway connection is currently being architecturalized.
+              </p>
+          </div>
+      </section>
+    </div>
+  );
+};
+</file>
+
+<file path="src/components/checkout/CheckoutSummary.tsx">
+import React from 'react';
+import { ShieldCheck, CreditCard } from 'lucide-react';
+import { CartItem } from '../../types';
+import { formatCurrency } from '../../lib/utils';
+
+interface CheckoutSummaryProps {
+  cart: CartItem[];
+  totalPrice: number;
+}
+
+export const CheckoutSummary: React.FC<CheckoutSummaryProps> = ({ cart, totalPrice }) => {
+  return (
+    <div className="w-full lg:w-[400px] space-y-8 h-fit lg:sticky lg:top-32">
+       <div className="bg-[#F9F9FB] p-6 md:p-10 space-y-8 rounded-sm">
+          <h3 className="text-lg md:text-xl font-black tracking-tighter uppercase">Order Summary</h3>
+          
+          <div className="space-y-6 max-h-[300px] md:max-h-[400px] overflow-y-auto pr-2 no-scrollbar">
+              {cart.map(item => (
+                  <div key={`${item.id}-${item.selectedSize}`} className="flex gap-4 md:gap-6 group">
+                      <div className="w-16 h-16 md:w-20 md:h-20 bg-white overflow-hidden rounded-sm flex-shrink-0 border border-gray-100">
+                          <img src={item.images[0]} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt={item.name} />
+                      </div>
+                      <div className="flex-1 space-y-1">
+                          <h4 className="text-[10px] md:text-[11px] font-black uppercase truncate leading-tight">{item.name}</h4>
+                          <p className="text-[8px] md:text-[9px] text-black/40 uppercase tracking-widest">Size {item.selectedSize} / Qty {item.quantity}</p>
+                          <p className="text-[10px] md:text-[11px] font-mono font-bold pt-1">{formatCurrency(item.price)}</p>
+                      </div>
+                  </div>
+              ))}
+          </div>
+
+          <div className="pt-6 border-t border-black/5 space-y-3">
+              <div className="flex justify-between text-[9px] md:text-[10px] tracking-widest text-black/40 uppercase font-bold">
+                  <span>Subtotal</span>
+                  <span className="font-mono">{formatCurrency(totalPrice)}</span>
+              </div>
+              <div className="flex justify-between text-[9px] md:text-[10px] tracking-widest text-emerald-600 uppercase font-bold">
+                  <span>Express Shipping</span>
+                  <span className="font-mono">FREE</span>
+              </div>
+              <div className="pt-4 flex justify-between text-xl md:text-2xl font-black tracking-tighter uppercase">
+                  <span>Total</span>
+                  <span className="font-mono">{formatCurrency(totalPrice)}</span>
+              </div>
+          </div>
+
+          <div className="space-y-3 pt-4">
+              <div className="flex items-center gap-3 text-[8px] md:text-[9px] uppercase tracking-[0.2em] font-black text-black/30">
+                  <ShieldCheck className="w-3.5 h-3.5 text-emerald-500/50" />
+                  SSL SECURED ENCRYPTION
+              </div>
+              <div className="flex items-center gap-3 text-[8px] md:text-[9px] uppercase tracking-[0.2em] font-black text-black/30">
+                  <CreditCard className="w-3.5 h-3.5" />
+                  PCI COMPLIANT PAYMENTS
+              </div>
+          </div>
+       </div>
+    </div>
+  );
+};
+</file>
+
 <file path="src/components/home/Collections.tsx">
 import React from 'react';
 import { motion } from 'motion/react';
@@ -1600,78 +1486,6 @@ export const Collections: React.FC<CollectionsProps> = ({ onNavigate }) => {
             </div>
           </motion.div>
         ))}
-      </div>
-    </section>
-  );
-};
-</file>
-
-<file path="src/components/home/FeaturedProducts.tsx">
-import React from 'react';
-import { motion } from 'motion/react';
-import { ProductCard } from '../product/ProductCard';
-import { PRODUCTS } from '../../constants';
-import { Product } from '../../types';
-
-interface FeaturedProductsProps {
-  onProductClick: (product: Product) => void;
-  onNavigate: (view: 'shop') => void;
-}
-
-export const FeaturedProducts: React.FC<FeaturedProductsProps> = ({ onProductClick, onNavigate }) => {
-  const featured = PRODUCTS.filter(p => p.isFeatured).slice(0, 3);
-
-  return (
-    <section className="py-20 md:py-32 px-6 md:px-12 bg-white">
-      <div className="max-w-screen-2xl mx-auto">
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-12 md:mb-20 gap-6 md:gap-8">
-          <div className="max-w-2xl">
-            <motion.span 
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              className="text-[10px] uppercase tracking-[0.5em] font-bold text-black/30 mb-3 md:mb-4 block"
-            >
-              Curated Selection
-            </motion.span>
-            
-            {/* Reduced h2 size: From 5xl/7xl to 3xl/6xl */}
-            <motion.h2 
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.1 }}
-              className="text-3xl md:text-6xl font-bold tracking-tight text-black leading-[1.1]"
-            >
-              SEASON <span className="text-black/20 italic">ESSENTIALS</span>
-            </motion.h2>
-          </div>
-          
-          <motion.button 
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            onClick={() => onNavigate('shop')}
-            className="text-[10px] md:text-[11px] uppercase tracking-[0.3em] font-bold border-b border-black pb-2 hover:italic transition-all cursor-pointer"
-          >
-            View Entire Catalog
-          </motion.button>
-        </div>
-
-        {/* Adjusted vertical gap for mobile (gap-y-16) to keep products closer */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-16 md:gap-y-24">
-          {featured.map((product, index) => (
-            <motion.div
-              key={product.id}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: index * 0.1 }} // Slightly faster delay for better feel
-            >
-              <ProductCard product={product} onClick={onProductClick} />
-            </motion.div>
-          ))}
-        </div>
       </div>
     </section>
   );
@@ -1849,38 +1663,132 @@ createRoot(document.getElementById('root')!).render(
 );
 </file>
 
-<file path="src/pages/CheckoutPage.tsx">
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useCart } from '../context/CartContext';
-import { CheckoutForm } from '../components/checkout/CheckoutForm';
-import { CheckoutSummary } from '../components/checkout/CheckoutSummary';
+<file path="src/pages/CollectionsPage.tsx">
+import React from 'react';
+import { motion } from 'motion/react';
+import { ArrowRight } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { cn } from '../lib/utils';
 
-export const CheckoutPage: React.FC = () => {
-  const navigate = useNavigate();
-  const { cart, totalPrice } = useCart();
-  const [step] = useState(1);
+const collections = [
+  {
+    title: 'Performance',
+    desc: 'Elite engineering for the modern athlete.',
+    image: 'https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?auto=format&fit=crop&q=80&w=1000',
+  },
+  {
+    title: 'Minimal Essentials',
+    desc: 'Hand-crafted purity of form and function.',
+    image: 'https://images.unsplash.com/photo-1549298916-b41d501d3772?auto=format&fit=crop&q=80&w=1000',
+  },
+  {
+    title: 'Streetwear',
+    desc: 'Futuristic silhouettes for the urban landscape.',
+    image: 'https://images.unsplash.com/photo-1514989940723-e8e51635b782?auto=format&fit=crop&q=80&w=1000',
+  },
+  {
+    title: 'Limited Edition',
+    desc: 'Exclusive collaborative drops and rare archives.',
+    image: 'https://images.unsplash.com/photo-1539185441755-769473a23570?auto=format&fit=crop&q=80&w=1000',
+  },
+];
 
-  const handleBack = () => {
-    navigate('/');
-  };
-
-  if (cart.length === 0) {
-    return (
-        <div className="min-h-screen flex flex-col items-center justify-center bg-white p-6">
-            <h2 className="text-3xl font-bold mb-8 uppercase tracking-widest italic">Bag is empty</h2>
-            <button onClick={handleBack} className="bg-black text-white px-8 py-4 text-[10px] uppercase font-bold tracking-widest cursor-pointer">Return to Shop</button>
-        </div>
-    );
-  }
-
+export const CollectionsPage: React.FC = () => {
   return (
-    <div className="bg-white min-h-screen pt-32 pb-32">
-      <div className="max-w-screen-xl mx-auto px-6">
-        <div className="flex flex-col lg:flex-row gap-24">
-          <CheckoutForm onBack={handleBack} step={step} />
-          <CheckoutSummary cart={cart} totalPrice={totalPrice} />
+    <div className="bg-white min-h-screen pt-24 md:pt-40 pb-20 px-6 md:px-12">
+      <div className="max-w-screen-2xl mx-auto">
+        
+        {/* Responsive Header: Uses vw units for fluid mobile scaling */}
+        <header className="mb-16 md:mb-32">
+          <motion.h1 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-[14vw] md:text-8xl font-black tracking-tighter uppercase leading-[0.85] text-black"
+          >
+            THE <br className="md:hidden" />
+            <span className="italic text-black/10">COLLECTIONS</span>
+          </motion.h1>
+        </header>
+
+        <div className="space-y-24 md:space-y-64">
+          {collections.map((col, i) => (
+            <motion.div 
+              key={col.title}
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-10%" }}
+              transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+              className={cn(
+                "flex flex-col lg:flex-row items-start lg:items-center gap-8 md:gap-12 lg:gap-32",
+                i % 2 === 1 ? "lg:flex-row-reverse" : ""
+              )}
+            >
+              {/* Image Container: Optimized aspect ratio for mobile scroll flow */}
+              <div className="w-full lg:w-3/5 aspect-[16/10] md:aspect-video bg-gray-50 overflow-hidden relative group">
+                <img 
+                  src={col.image} 
+                  alt={col.title} 
+                  className="w-full h-full object-cover transition-transform duration-[2s] group-hover:scale-110 grayscale" 
+                />
+                <div className="absolute inset-0 bg-black/5 mix-blend-multiply" />
+                <div className="absolute top-4 left-4 md:top-8 md:left-8 font-mono text-[10px] md:text-xs tracking-widest text-white/50 bg-black/20 backdrop-blur-sm px-2 py-1 rounded">
+                  {`VOL_0${i + 1}`}
+                </div>
+              </div>
+
+              {/* Text & Action: Left-aligned on mobile for better readability */}
+              <div className="w-full lg:w-2/5 space-y-5 md:space-y-10 px-2 md:px-0">
+                <div className="space-y-2 md:space-y-4">
+                  <span className="text-[9px] md:text-[11px] uppercase tracking-[0.4em] font-black text-black/30 block">
+                    Available Worldwide
+                  </span>
+                  <h2 className="text-4xl md:text-7xl font-bold tracking-tighter uppercase leading-tight">
+                    {col.title}
+                  </h2>
+                </div>
+                
+                <p className="text-sm md:text-xl text-black/50 leading-relaxed font-medium max-w-md">
+                  {col.desc}
+                </p>
+
+                {/* Mobile-optimized button: Larger touch area with flex-wrap prevention */}
+                <Link 
+                  to="/shop" 
+                  className="inline-flex items-center gap-4 md:gap-6 group pt-4"
+                >
+                  <div className="relative">
+                    <span className="text-[10px] md:text-[12px] uppercase tracking-[0.3em] font-black pb-1.5 block whitespace-nowrap">
+                      Shop Collection
+                    </span>
+                    <div className="absolute bottom-0 left-0 w-full h-[1.5px] bg-black scale-x-100 group-hover:scale-x-50 transition-transform duration-500 origin-left" />
+                  </div>
+                  <div className="w-10 h-10 md:w-12 md:h-12 border border-black/10 rounded-full flex items-center justify-center group-hover:bg-black group-hover:text-white transition-all duration-500">
+                    <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+                  </div>
+                </Link>
+              </div>
+            </motion.div>
+          ))}
         </div>
+
+        {/* Dynamic Footer Link: Clean signature transition */}
+        <motion.div 
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          className="mt-32 md:mt-64 text-center border-t border-black/5 pt-16 md:pt-24"
+        >
+          <Link 
+            to="/story" 
+            className="group inline-flex flex-col items-center gap-4"
+          >
+            <span className="text-[9px] uppercase tracking-[0.6em] text-black/30 font-bold group-hover:text-black transition-colors">
+              Direct Inquiry
+            </span>
+            <span className="text-3xl md:text-5xl font-black tracking-tighter uppercase group-hover:italic transition-all">
+              Contact us
+            </span>
+          </Link>
+        </motion.div>
       </div>
     </div>
   );
@@ -1961,6 +1869,98 @@ export const ProductPage: React.FC<ProductPageProps> = ({ product }) => {
 };
 </file>
 
+<file path="src/pages/ShopPage.tsx">
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import { motion } from 'motion/react';
+import { ProductCard } from '../components/product/ProductCard';
+import { PRODUCTS, CATEGORIES } from '../constants';
+import { Product } from '../types';
+import { cn } from '../lib/utils';
+
+interface ShopPageProps {
+  onProductClick: (product: Product) => void;
+}
+
+export const ShopPage: React.FC<ShopPageProps> = ({ onProductClick }) => {
+  const [activeCategory, setActiveCategory] = React.useState('All');
+  const navigate = useNavigate();
+
+  const filteredProducts = activeCategory === 'All' 
+    ? PRODUCTS 
+    : PRODUCTS.filter(p => p.category === activeCategory);
+
+  const handleProductNavigation = (product: Product) => {
+    // 1. Update legacy context state
+    onProductClick(product);
+    
+    // 2. Trigger URL navigation and pass product in router state
+    navigate(`/product/${product.id}`, { state: { product } });
+    
+    // 3. Ensure window starts at the top of the details page
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  return (
+    <div className="bg-white min-h-screen pt-24 md:pt-32 pb-20 px-6 md:px-12">
+      <div className="max-w-screen-2xl mx-auto">
+        <header className="mb-16 md:mb-24">
+          <motion.h1 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-[12vw] md:text-8xl font-bold tracking-tighter mb-8 md:mb-12"
+          >
+            SHOP <span className="italic text-black/10">ALL</span>
+          </motion.h1>
+          
+          {/* Scrollable categories on mobile for better UX */}
+          <div className="flex flex-row overflow-x-auto no-scrollbar md:flex-wrap gap-x-8 gap-y-4 border-b border-gray-100 pb-6 md:pb-8">
+            {CATEGORIES.map(cat => (
+              <button
+                key={cat}
+                onClick={() => setActiveCategory(cat)}
+                className={cn(
+                  "text-[9px] md:text-[10px] uppercase tracking-[0.3em] font-bold transition-all whitespace-nowrap",
+                  activeCategory === cat ? "text-black italic underline underline-offset-8" : "text-black/30 hover:text-black"
+                )}
+              >
+                {cat}
+              </button>
+            ))}
+          </div>
+        </header>
+
+        {/* Responsive Grid: 1 column on mobile, 4 on desktop */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-8 gap-y-16 md:gap-y-20">
+          {filteredProducts.map((product, index) => (
+            <motion.div
+              key={product.id}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: index * 0.03 }}
+            >
+              <ProductCard 
+                product={product} 
+                onClick={() => handleProductNavigation(product)} 
+              />
+            </motion.div>
+          ))}
+        </div>
+
+        {/* Empty State */}
+        {filteredProducts.length === 0 && (
+          <div className="py-40 text-center">
+            <p className="text-[10px] uppercase tracking-[0.4em] text-black/30 font-bold">
+              No architectural pieces found in this category.
+            </p>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+</file>
+
 <file path="index.html">
 <!doctype html>
 <html lang="en">
@@ -2006,6 +2006,94 @@ export const ProductPage: React.FC<ProductPageProps> = ({ product }) => {
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
+</file>
+
+<file path="src/components/home/FeaturedProducts.tsx">
+import React from 'react';
+import { useNavigate } from 'react-router-dom'; // Added for routing
+import { motion } from 'motion/react';
+import { ProductCard } from '../product/ProductCard';
+import { PRODUCTS } from '../../constants';
+import { Product } from '../../types';
+
+interface FeaturedProductsProps {
+  onProductClick: (product: Product) => void;
+  onNavigate: (view: 'shop') => void;
+}
+
+export const FeaturedProducts: React.FC<FeaturedProductsProps> = ({ onProductClick, onNavigate }) => {
+  const navigate = useNavigate(); // Initialize navigation hook
+  const featured = PRODUCTS.filter(p => p.isFeatured).slice(0, 3);
+
+  const handleProductNavigation = (product: Product) => {
+    // 1. Set the active product in parent state (for immediate UI updates)
+    onProductClick(product);
+    
+    // 2. Change the route to the specific product path
+    // We pass the product object in 'state' so the details page loads instantly
+    navigate(`/product/${product.id}`, { state: { product } });
+    
+    // 3. Scroll to top to ensure the user sees the product image first
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  return (
+    <section className="py-20 md:py-32 px-6 md:px-12 bg-white">
+      <div className="max-w-screen-2xl mx-auto">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-12 md:mb-20 gap-6 md:gap-8">
+          <div className="max-w-2xl">
+            <motion.span 
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              className="text-[10px] uppercase tracking-[0.5em] font-bold text-black/30 mb-3 md:mb-4 block"
+            >
+              Curated Selection
+            </motion.span>
+            
+            <motion.h2 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.1 }}
+              className="text-3xl md:text-6xl font-bold tracking-tight text-black leading-[1.1]"
+            >
+              SEASON <span className="text-black/20 italic">ESSENTIALS</span>
+            </motion.h2>
+          </div>
+          
+          <motion.button 
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            onClick={() => onNavigate('shop')}
+            className="text-[10px] md:text-[11px] uppercase tracking-[0.3em] font-bold border-b border-black pb-2 hover:italic transition-all cursor-pointer"
+          >
+            View Entire Catalog
+          </motion.button>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-16 md:gap-y-24">
+          {featured.map((product, index) => (
+            <motion.div
+              key={product.id}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: index * 0.08 }}
+            >
+              {/* Updated the onClick to use our new navigation handler */}
+              <ProductCard 
+                product={product} 
+                onClick={() => handleProductNavigation(product)} 
+              />
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
 </file>
 
 <file path="src/components/home/Hero.tsx">
@@ -2343,6 +2431,54 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenCart, isDarkPage }) => {
 };
 </file>
 
+<file path="src/pages/CheckoutPage.tsx">
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useCart } from '../context/CartContext';
+import { CheckoutForm } from '../components/checkout/CheckoutForm';
+import { CheckoutSummary } from '../components/checkout/CheckoutSummary';
+
+export const CheckoutPage: React.FC = () => {
+  const navigate = useNavigate();
+  const { cart, totalPrice } = useCart();
+  const [step] = useState(1);
+
+  const handleBack = () => {
+    navigate(-1); // Changed to -1 to return to the previous page (Shop or Product)
+  };
+
+  if (cart.length === 0) {
+    return (
+        <div className="min-h-screen flex flex-col items-center justify-center bg-white p-6">
+            <h2 className="text-2xl md:text-3xl font-bold mb-8 uppercase tracking-[0.3em] italic text-black/20">Bag is empty</h2>
+            <button 
+              onClick={handleBack} 
+              className="bg-black text-white px-10 py-5 text-[10px] uppercase font-black tracking-[0.2em] cursor-pointer hover:scale-105 transition-transform"
+            >
+              Return to Shop
+            </button>
+        </div>
+    );
+  }
+
+  return (
+    <div className="bg-white min-h-screen pt-20 md:pt-32 pb-20 md:pb-32">
+      <div className="max-w-screen-xl mx-auto px-6">
+        {/* Mobile: Summary moves to top or bottom? Standard UX puts summary at bottom on mobile */}
+        <div className="flex flex-col lg:flex-row gap-16 lg:gap-24">
+          <div className="flex-1 order-2 lg:order-1">
+             <CheckoutForm onBack={handleBack} step={step} />
+          </div>
+          <div className="w-full lg:w-[400px] order-1 lg:order-2">
+             <CheckoutSummary cart={cart} totalPrice={totalPrice} />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+</file>
+
 <file path="src/pages/HomePage.tsx">
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -2626,7 +2762,6 @@ import { ShopPage } from './pages/ShopPage';
 import { CollectionsPage } from './pages/CollectionsPage';
 import { InnovationPage } from './pages/InnovationPage';
 import { StoryPage } from './pages/StoryPage';
-// 1. IMPORT the new page
 import { FeaturedPage } from './pages/FeaturedPage'; 
 import { Product } from './types';
 import { motion, AnimatePresence } from 'motion/react';
@@ -2636,17 +2771,21 @@ const AppContent: React.FC = () => {
   const [currentProduct, setCurrentProduct] = useState<Product | null>(null);
   
   const location = useLocation();
+  
+  // Safely extract product from navigation state (used for instant loading)
   const state = location.state as { product?: Product } | null;
 
+  // Handle smooth scroll to top on every route change
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [location.pathname]);
 
-  // 2. OPTIONAL: Add to dark page logic if the featured page has a black background
+  // Navbar theme logic: Innovation and Featured often use dark editorial backgrounds
   const isDarkPage = location.pathname === '/innovation' || location.pathname === '/featured';
 
   return (
     <div className="relative font-sans text-black overflow-x-hidden">
+      {/* Dynamic Navbar */}
       <Navbar 
         onOpenCart={() => setIsCartOpen(true)} 
         isDarkPage={isDarkPage}
@@ -2661,30 +2800,55 @@ const AppContent: React.FC = () => {
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.4, ease: "easeInOut" }}
           >
+            {/* location={location} is passed to Routes to enable AnimatePresence exit animations */}
             <Routes location={location}>
-              <Route path="/" element={<HomePage onProductClick={setCurrentProduct} />} />
-              <Route path="/shop" element={<ShopPage onProductClick={setCurrentProduct} />} />
-              
-              {/* 3. REGISTER the new route */}
-              <Route path="/featured" element={<FeaturedPage />} />
-              
-              <Route path="/product/:id" element={<ProductPage product={state?.product || currentProduct} />} />
-              <Route path="/collections" element={<CollectionsPage />} />
-              <Route path="/innovation" element={<InnovationPage />} />
-              <Route path="/story" element={<StoryPage />} />
-              <Route path="/checkout" element={<CheckoutPage />} />
+              <Route 
+                path="/" 
+                element={<HomePage onProductClick={setCurrentProduct} />} 
+              />
+              <Route 
+                path="/shop" 
+                element={<ShopPage onProductClick={setCurrentProduct} />} 
+              />
+              <Route 
+                path="/featured" 
+                element={<FeaturedPage />} 
+              />
+              <Route 
+                path="/product/:id" 
+                element={<ProductPage product={state?.product || currentProduct} />} 
+              />
+              <Route 
+                path="/collections" 
+                element={<CollectionsPage />} 
+              />
+              <Route 
+                path="/innovation" 
+                element={<InnovationPage />} 
+              />
+              <Route 
+                path="/story" 
+                element={<StoryPage />} 
+              />
+              <Route 
+                path="/checkout" 
+                element={<CheckoutPage />} 
+              />
             </Routes>
 
+            {/* Footer is hidden during checkout for a focused conversion funnel */}
             {location.pathname !== '/checkout' && <Footer />}
           </motion.div>
         </AnimatePresence>
       </main>
 
+      {/* Global Overlays */}
       <CartDrawer 
         isOpen={isCartOpen} 
         onClose={() => setIsCartOpen(false)}
       />
       
+      {/* Floating Action Button: Mobile Cart Trigger */}
       {!isCartOpen && location.pathname !== '/checkout' && (
         <motion.div 
           initial={{ scale: 0 }} 
@@ -2694,6 +2858,7 @@ const AppContent: React.FC = () => {
           <button 
             onClick={() => setIsCartOpen(true)}
             className="bg-black text-white p-6 rounded-full shadow-2xl flex items-center justify-center hover:scale-105 transition-transform"
+            aria-label="Open Cart"
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
