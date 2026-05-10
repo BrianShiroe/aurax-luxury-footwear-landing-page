@@ -25,12 +25,9 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
 
-    /* Path Aliases */
-    "baseUrl": ".",
+    /* Modern Path Aliases (No baseUrl) */
     "paths": {
-      "@/*": [
-        "./src/*"
-      ]
+      "@/*": ["./src/*"]
     },
     
     "allowJs": true,
@@ -39,5 +36,4 @@
     "forceConsistentCasingInFileNames": true
   },
   "include": ["src"]
-  // REMOVED: "references": [{ "path": "./tsconfig.node.json" }]
 }
