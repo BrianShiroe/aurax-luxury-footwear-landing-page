@@ -1,17 +1,14 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Instagram, Twitter, Facebook, ArrowUpRight } from 'lucide-react';
 
-interface FooterProps {
-  onNavigate: (view: 'home' | 'shop' | 'collections' | 'innovation' | 'story') => void;
-}
-
-export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
+export const Footer: React.FC = () => {
   return (
     <footer className="bg-white pt-24 pb-16 px-6 md:px-12 border-t border-gray-50">
       <div className="max-w-screen-2xl mx-auto">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12 mb-20">
           <div className="space-y-8">
-            <button onClick={() => onNavigate('home')} className="text-3xl font-bold tracking-widest italic cursor-pointer">AURAX</button>
+            <Link to="/" className="text-3xl font-bold tracking-widest italic cursor-pointer">AURAX</Link>
             <p className="text-black/50 text-sm leading-relaxed max-w-xs">
               Defining the interface between engineering precision and athletic motion. Luxury engineered for the modern athlete.
             </p>
@@ -32,20 +29,20 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
             <h3 className="text-[10px] uppercase tracking-[0.4em] font-bold text-black mb-8">Navigation</h3>
             <ul className="space-y-4">
               {[
-                { name: 'Shop All', view: 'shop' as const },
-                { name: 'Featured', view: 'home' as const },
-                { name: 'Collections', view: 'collections' as const },
-                { name: 'Innovation', view: 'innovation' as const },
-                { name: 'Story', view: 'story' as const }
+                { name: 'Shop All', path: '/shop' },
+                { name: 'Featured', path: '/' },
+                { name: 'Collections', path: '/collections' },
+                { name: 'Innovation', path: '/innovation' },
+                { name: 'Story', path: '/story' }
               ].map(item => (
                 <li key={item.name}>
-                  <button 
-                    onClick={() => onNavigate(item.view)}
+                  <Link 
+                    to={item.path}
                     className="text-black/50 hover:text-black text-sm flex items-center group transition-colors cursor-pointer"
                   >
                     {item.name}
                     <ArrowUpRight className="w-3 h-3 ml-2 opacity-0 group-hover:opacity-100 transition-all -translate-y-1 group-hover:translate-y-0" />
-                  </button>
+                  </Link>
                 </li>
               ))}
             </ul>

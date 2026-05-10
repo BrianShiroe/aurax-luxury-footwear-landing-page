@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { ShoppingBag, Search, Menu, X, User } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
 import { useCart } from '../../context/CartContext';
 import { cn } from '../../lib/utils';
 
 interface NavbarProps {
   onOpenCart: () => void;
-  onNavigate: (view: 'home' | 'shop' | 'collections' | 'innovation' | 'story') => void;
   isDarkPage?: boolean;
 }
 
-export const Navbar: React.FC<NavbarProps> = ({ onOpenCart, onNavigate, isDarkPage }) => {
+export const Navbar: React.FC<NavbarProps> = ({ onOpenCart, isDarkPage }) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { totalItems } = useCart();
@@ -24,10 +24,10 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenCart, onNavigate, isDarkPa
   }, []);
 
   const navLinks = [
-    { name: 'Shop All', view: 'shop' as const },
-    { name: 'Collections', view: 'collections' as const },
-    { name: 'Innovation', view: 'innovation' as const },
-    { name: 'Story', view: 'story' as const },
+    { name: 'Shop All', path: '/shop' },
+    { name: 'Collections', path: '/collections' },
+    { name: 'Innovation', path: '/innovation' },
+    { name: 'Story', path: '/story' },
   ];
 
   const themeColors = isScrolled 
@@ -52,29 +52,29 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenCart, onNavigate, isDarkPa
             : 'bg-transparent'
         )}
       >
-        <button 
-          onClick={() => onNavigate('home')}
+        <Link 
+          to="/"
           className={cn(
             "text-2xl font-bold tracking-tighter italic cursor-pointer transition-colors duration-500",
             themeColors
           )}
         >
           AURAX
-        </button>
+        </Link>
         
         {/* Nav Links - Desktop */}
         <div className="hidden md:flex items-center gap-12 text-[11px] uppercase tracking-[0.2em] font-medium">
           {navLinks.map((link) => (
-            <button
+            <Link
               key={link.name}
-              onClick={() => onNavigate(link.view)}
+              to={link.path}
               className={cn(
                 "transition-all duration-500 cursor-pointer hover:text-current",
                 secondaryColors
               )}
             >
               {link.name}
-            </button>
+            </Link>
           ))}
         </div>
 
@@ -119,25 +119,27 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenCart, onNavigate, isDarkPa
             className="fixed inset-0 z-[60] bg-white p-6 md:hidden"
           >
             <div className="flex justify-between items-center mb-16">
-              <span 
+              <Link 
+                to="/"
                 className="text-2xl font-bold tracking-[0.1em] italic"
-                onClick={() => { onNavigate('home'); setIsMobileMenuOpen(false); }}
+                onClick={() => setIsMobileMenuOpen(false)}
               >
                 AURAX
-              </span>
+              </Link>
               <button onClick={() => setIsMobileMenuOpen(false)}>
                 <X className="w-6 h-6" />
               </button>
             </div>
             <div className="flex flex-col space-y-8">
               {navLinks.map((link) => (
-                <button
+                <Link
                   key={link.name}
+                  to={link.path}
                   className="text-4xl font-light tracking-tight hover:italic text-left transition-all"
-                  onClick={() => { onNavigate(link.view); setIsMobileMenuOpen(false); }}
+                  onClick={() => setIsMobileMenuOpen(false)}
                 >
                   {link.name}
-                </button>
+                </Link>
               ))}
             </div>
             <div className="absolute bottom-12 left-6 right-6 pt-8 border-t border-gray-100 flex justify-between uppercase text-[10px] tracking-[0.2em] font-medium text-black/40">

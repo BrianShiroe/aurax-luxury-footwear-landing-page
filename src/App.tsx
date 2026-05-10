@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Routes, Route, useLocation } from 'react-router-dom';
 import { CartProvider } from './context/CartContext';
 import { Navbar } from './components/layout/Navbar';
 import { Footer } from './components/layout/Footer';
@@ -13,80 +14,53 @@ import { StoryPage } from './pages/StoryPage';
 import { Product } from './types';
 import { motion, AnimatePresence } from 'motion/react';
 
-type View = 'home' | 'product' | 'checkout' | 'shop' | 'collections' | 'innovation' | 'story';
-
 const AppContent: React.FC = () => {
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [currentProduct, setCurrentProduct] = useState<Product | null>(null);
-  const [view, setView] = useState<View>('home');
+  const location = useLocation();
+  const state = location.state as { product?: Product } | null;
 
-  const navigateTo = (newView: View, product: Product | null = null) => {
-    if (product) setCurrentProduct(product);
-    setView(newView);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-    setIsCartOpen(false);
-  };
-
-  // 1. Refactored Page Switcher
-  const renderView = () => {
-    switch (view) {
-      case 'home':
-        return <HomePage onProductClick={(p) => navigateTo('product', p)} onNavigate={navigateTo} />;
-      case 'shop':
-        return <ShopPage onProductClick={(p) => navigateTo('product', p)} />;
-      case 'collections':
-        return <CollectionsPage />;
-      case 'innovation':
-        return <InnovationPage />;
-      case 'story':
-        return <StoryPage />;
-      case 'product':
-        return currentProduct ? (
-          <ProductPage 
-            product={currentProduct} 
-            onBack={() => setView('shop')} 
-            onProductClick={(p) => navigateTo('product', p)} 
-          />
-        ) : null;
-      case 'checkout':
-        return <CheckoutPage onBack={() => setView('home')} />;
-      default:
-        return null;
-    }
-  };
+  const isDarkPage = location.pathname === '/innovation';
 
   return (
     <div className="relative font-sans text-black overflow-x-hidden">
       <Navbar 
         onOpenCart={() => setIsCartOpen(true)} 
-        onNavigate={navigateTo}
-        isDarkPage={view === 'innovation'}
+        isDarkPage={isDarkPage}
       />
       
       <main className="min-h-screen">
         <AnimatePresence mode="wait">
           <motion.div
-            key={view}
+            key={location.pathname}
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.4, ease: "easeInOut" }}
           >
-            {renderView()}
-            {/* 2. Global Footer: No need to repeat it in every block */}
-            {view !== 'checkout' && <Footer onNavigate={navigateTo} />}
+            <Routes>
+              <Route path="/" element={<HomePage onProductClick={(p) => setCurrentProduct(p)} />} />
+              <Route path="/shop" element={<ShopPage onProductClick={(p) => setCurrentProduct(p)} />} />
+              <Route path="/product/:id" element={<ProductPage product={state?.product || currentProduct} />} />
+              <Route path="/collections" element={<CollectionsPage />} />
+              <Route path="/innovation" element={<InnovationPage />} />
+              <Route path="/story" element={<StoryPage />} />
+              <Route path="/checkout" element={<CheckoutPage />} />
+            </Routes>
+
+            {/* Global Footer - hide on checkout */}
+            {location.pathname !== '/checkout' && <Footer />}
           </motion.div>
         </AnimatePresence>
       </main>
 
       <CartDrawer 
         isOpen={isCartOpen} 
-        onClose={() => setIsCartOpen(false)} 
-        onCheckout={() => navigateTo('checkout')}
+        onClose={() => setIsCartOpen(false)}
       />
       
-      {/* 3. Floating Checkout Trigger */}
-      {!isCartOpen && view !== 'checkout' && (
+      {/* Floating Checkout Trigger */}
+      {!isCartOpen && location.pathname !== '/checkout' && (
         <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} className="fixed bottom-6 right-6 z-40 md:hidden">
           <button 
             onClick={() => setIsCartOpen(true)}

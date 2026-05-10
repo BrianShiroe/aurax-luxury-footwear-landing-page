@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Hero } from '../components/home/Hero';
 import { Collections } from '../components/home/Collections';
 import { FeaturedProducts } from '../components/home/FeaturedProducts';
@@ -9,18 +10,24 @@ import { Product } from '../types';
 
 interface HomePageProps {
   onProductClick: (product: Product) => void;
-  onNavigate: (view: 'shop' | 'collections' | 'innovation' | 'story') => void;
 }
 
-export const HomePage: React.FC<HomePageProps> = ({ onProductClick, onNavigate }) => {
+export const HomePage: React.FC<HomePageProps> = ({ onProductClick }) => {
+  const navigate = useNavigate();
+
+  const navigateTo = (path: string) => {
+    navigate(path);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   return (
     <main className="bg-white min-h-screen">
-      <Hero onNavigate={onNavigate} />
+      <Hero onNavigate={navigateTo} />
       <Mission />
-      <Collections onNavigate={onNavigate} />
+      <Collections onNavigate={navigateTo} />
       <FeaturedProducts 
         onProductClick={onProductClick} 
-        onNavigate={onNavigate}
+        onNavigate={navigateTo}
       />
       <Campaign />
       <TechnicalShowcase />

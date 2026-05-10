@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
 import { X, Minus, Plus, ShoppingBag, ArrowRight } from 'lucide-react';
 import { useCart } from '../../context/CartContext';
@@ -7,11 +8,16 @@ import { formatCurrency } from '../../lib/utils';
 interface CartDrawerProps {
   isOpen: boolean;
   onClose: () => void;
-  onCheckout: () => void;
 }
 
-export const CartDrawer: React.FC<CartDrawerProps> = ({ isOpen, onClose, onCheckout }) => {
+export const CartDrawer: React.FC<CartDrawerProps> = ({ isOpen, onClose }) => {
+  const navigate = useNavigate();
   const { cart, removeFromCart, updateQuantity, totalPrice, totalItems } = useCart();
+
+  const handleCheckout = () => {
+    navigate('/checkout');
+    onClose();
+  };
 
   return (
     <AnimatePresence>
@@ -123,7 +129,7 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({ isOpen, onClose, onCheck
                 </div>
                 
                 <button 
-                  onClick={onCheckout}
+                  onClick={handleCheckout}
                   className="w-full bg-black text-white py-6 text-[10px] uppercase font-bold tracking-[0.4em] flex items-center justify-center gap-3 group hover:shadow-2xl transition-all duration-300 cursor-pointer"
                 >
                   Secure Checkout
