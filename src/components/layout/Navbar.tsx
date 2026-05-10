@@ -30,32 +30,33 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenCart, isDarkPage }) => {
     { name: 'Story', path: '/story' },
   ];
 
+  // Refined Color Logic
   const themeColors = isScrolled 
-    ? 'text-brand-black' 
-    : (isDarkPage ? 'text-white' : 'text-brand-black');
+    ? 'text-black' 
+    : (isDarkPage ? 'text-white' : 'text-black');
 
   const secondaryColors = isScrolled 
-    ? 'text-brand-black/60' 
-    : (isDarkPage ? 'text-white/60' : 'text-brand-black/60');
+    ? 'text-black/60' 
+    : (isDarkPage ? 'text-white/60' : 'text-black/60');
 
   const borderColors = isScrolled 
-    ? 'border-brand-black' 
-    : (isDarkPage ? 'border-white' : 'border-brand-black');
+    ? 'border-black' 
+    : (isDarkPage ? 'border-white' : 'border-black');
 
   return (
     <>
       <nav
         className={cn(
-          'fixed top-0 left-0 w-full h-20 z-50 transition-all duration-500 px-6 md:px-12 flex items-center justify-between',
+          'fixed top-0 left-0 w-full h-16 md:h-20 z-50 transition-all duration-500 px-6 md:px-12 flex items-center justify-between',
           isScrolled 
-            ? 'bg-white/70 backdrop-blur-md border-b border-brand-gray-border' 
+            ? 'bg-white/80 backdrop-blur-lg border-b border-black/5' 
             : 'bg-transparent'
         )}
       >
         <Link 
           to="/"
           className={cn(
-            "text-2xl font-bold tracking-tighter italic cursor-pointer transition-colors duration-500",
+            "text-xl md:text-2xl font-bold tracking-tighter italic cursor-pointer transition-colors duration-500",
             themeColors
           )}
         >
@@ -69,7 +70,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenCart, isDarkPage }) => {
               key={link.name}
               to={link.path}
               className={cn(
-                "transition-all duration-500 cursor-pointer hover:text-current",
+                "transition-all duration-500 cursor-pointer hover:opacity-50",
                 secondaryColors
               )}
             >
@@ -79,20 +80,20 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenCart, isDarkPage }) => {
         </div>
 
         {/* Right Side Icons */}
-        <div className="flex items-center gap-6">
+        <div className="flex items-center gap-4 md:gap-6">
           <button 
             onClick={onOpenCart}
             className="flex items-center gap-2 group cursor-pointer"
           >
             <div className={cn(
-              "w-5 h-5 border rounded-full flex items-center justify-center transition-all duration-500 group-hover:bg-brand-black group-hover:text-white group-hover:border-brand-black",
+              "w-5 h-5 border rounded-full flex items-center justify-center transition-all duration-500 group-hover:bg-black group-hover:text-white group-hover:border-black",
               borderColors,
               themeColors
             )}>
               <span className="text-[8px] font-bold">{totalItems}</span>
             </div>
             <span className={cn(
-              "text-[11px] uppercase tracking-widest font-semibold hidden sm:inline transition-colors duration-500",
+              "text-[10px] md:text-[11px] uppercase tracking-widest font-semibold hidden sm:inline transition-colors duration-500",
               themeColors
             )}>
               Bag
@@ -100,10 +101,10 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenCart, isDarkPage }) => {
           </button>
           
           <button 
-            className={cn("md:hidden p-2 transition-colors duration-500", themeColors)}
+            className={cn("p-2 transition-colors duration-500", themeColors)}
             onClick={() => setIsMobileMenuOpen(true)}
           >
-            <Menu className="w-5 h-5" />
+            <Menu className="w-5 h-5 md:w-6 md:h-6" />
           </button>
         </div>
       </nav>
@@ -112,40 +113,50 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenCart, isDarkPage }) => {
       <AnimatePresence>
         {isMobileMenuOpen && (
           <motion.div
-            initial={{ opacity: 0, x: '-100%' }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: '-100%' }}
-            transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-            className="fixed inset-0 z-[60] bg-white p-6 md:hidden"
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            className="fixed inset-0 z-[60] bg-white p-6 flex flex-col"
           >
-            <div className="flex justify-between items-center mb-16">
+            <div className="flex justify-between items-center h-16 mb-12">
               <Link 
                 to="/"
-                className="text-2xl font-bold tracking-[0.1em] italic"
+                className="text-xl font-bold tracking-tighter italic"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 AURAX
               </Link>
-              <button onClick={() => setIsMobileMenuOpen(false)}>
+              <button onClick={() => setIsMobileMenuOpen(false)} className="p-2">
                 <X className="w-6 h-6" />
               </button>
             </div>
-            <div className="flex flex-col space-y-8">
-              {navLinks.map((link) => (
-                <Link
+
+            <div className="flex flex-col space-y-6">
+              {navLinks.map((link, idx) => (
+                <motion.div
                   key={link.name}
-                  to={link.path}
-                  className="text-4xl font-light tracking-tight hover:italic text-left transition-all"
-                  onClick={() => setIsMobileMenuOpen(false)}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: idx * 0.1 }}
                 >
-                  {link.name}
-                </Link>
+                  <Link
+                    to={link.path}
+                    className="text-4xl font-bold tracking-tighter uppercase hover:italic"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    {link.name}
+                  </Link>
+                </motion.div>
               ))}
             </div>
-            <div className="absolute bottom-12 left-6 right-6 pt-8 border-t border-gray-100 flex justify-between uppercase text-[10px] tracking-[0.2em] font-medium text-black/40">
-              <button onClick={() => setIsMobileMenuOpen(false)}>Account</button>
-              <button onClick={() => setIsMobileMenuOpen(false)}>Support</button>
-              <button onClick={() => setIsMobileMenuOpen(false)}>Legal</button>
+
+            <div className="mt-auto pb-10 flex flex-col gap-8">
+              <div className="h-[1px] bg-black/5 w-full" />
+              <div className="flex justify-between uppercase text-[9px] tracking-[0.2em] font-bold text-black/40">
+                <button onClick={() => setIsMobileMenuOpen(false)}>Account</button>
+                <button onClick={() => setIsMobileMenuOpen(false)}>Support</button>
+                <button onClick={() => setIsMobileMenuOpen(false)}>Dubai, UAE</button>
+              </div>
             </div>
           </motion.div>
         )}
