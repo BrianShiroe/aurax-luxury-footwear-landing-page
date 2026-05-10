@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
 import { CartProvider } from './context/CartContext';
 import { Navbar } from './components/layout/Navbar';
@@ -17,8 +17,14 @@ import { motion, AnimatePresence } from 'motion/react';
 const AppContent: React.FC = () => {
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [currentProduct, setCurrentProduct] = useState<Product | null>(null);
+  
   const location = useLocation();
   const state = location.state as { product?: Product } | null;
+
+  // Handles smooth scroll to top on every route change
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, [location.pathname]);
 
   const isDarkPage = location.pathname === '/innovation';
 
@@ -38,9 +44,10 @@ const AppContent: React.FC = () => {
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.4, ease: "easeInOut" }}
           >
-            <Routes>
-              <Route path="/" element={<HomePage onProductClick={(p) => setCurrentProduct(p)} />} />
-              <Route path="/shop" element={<ShopPage onProductClick={(p) => setCurrentProduct(p)} />} />
+            {/* location={location} is critical for smooth AnimatePresence transitions */}
+            <Routes location={location}>
+              <Route path="/" element={<HomePage onProductClick={setCurrentProduct} />} />
+              <Route path="/shop" element={<ShopPage onProductClick={setCurrentProduct} />} />
               <Route path="/product/:id" element={<ProductPage product={state?.product || currentProduct} />} />
               <Route path="/collections" element={<CollectionsPage />} />
               <Route path="/innovation" element={<InnovationPage />} />
@@ -48,7 +55,6 @@ const AppContent: React.FC = () => {
               <Route path="/checkout" element={<CheckoutPage />} />
             </Routes>
 
-            {/* Global Footer - hide on checkout */}
             {location.pathname !== '/checkout' && <Footer />}
           </motion.div>
         </AnimatePresence>
@@ -59,9 +65,13 @@ const AppContent: React.FC = () => {
         onClose={() => setIsCartOpen(false)}
       />
       
-      {/* Floating Checkout Trigger */}
+      {/* Floating Checkout Trigger (Mobile) */}
       {!isCartOpen && location.pathname !== '/checkout' && (
-        <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} className="fixed bottom-6 right-6 z-40 md:hidden">
+        <motion.div 
+          initial={{ scale: 0 }} 
+          animate={{ scale: 1 }} 
+          className="fixed bottom-6 right-6 z-40 md:hidden"
+        >
           <button 
             onClick={() => setIsCartOpen(true)}
             className="bg-black text-white p-6 rounded-full shadow-2xl flex items-center justify-center hover:scale-105 transition-transform"
