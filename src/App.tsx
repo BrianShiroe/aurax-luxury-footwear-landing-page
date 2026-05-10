@@ -1,5 +1,4 @@
-import React, { useState, Suspense } from 'react';
-import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';
+import React, { useState } from 'react';
 import { CartProvider } from './context/CartContext';
 import { Navbar } from './components/layout/Navbar';
 import { Footer } from './components/layout/Footer';
@@ -11,7 +10,6 @@ import { ShopPage } from './pages/ShopPage';
 import { CollectionsPage } from './pages/CollectionsPage';
 import { InnovationPage } from './pages/InnovationPage';
 import { StoryPage } from './pages/StoryPage';
-import { PRODUCTS } from './constants';
 import { Product } from './types';
 import { motion, AnimatePresence } from 'motion/react';
 
@@ -22,7 +20,6 @@ const AppContent: React.FC = () => {
   const [currentProduct, setCurrentProduct] = useState<Product | null>(null);
   const [view, setView] = useState<View>('home');
 
-  // Unified navigation handler
   const navigateTo = (newView: View, product: Product | null = null) => {
     if (product) setCurrentProduct(product);
     setView(newView);
@@ -30,108 +27,57 @@ const AppContent: React.FC = () => {
     setIsCartOpen(false);
   };
 
+  // 1. Refactored Page Switcher
+  const renderView = () => {
+    switch (view) {
+      case 'home':
+        return <HomePage onProductClick={(p) => navigateTo('product', p)} onNavigate={navigateTo} />;
+      case 'shop':
+        return <ShopPage onProductClick={(p) => navigateTo('product', p)} />;
+      case 'collections':
+        return <CollectionsPage />;
+      case 'innovation':
+        return <InnovationPage />;
+      case 'story':
+        return <StoryPage />;
+      case 'product':
+        return currentProduct ? (
+          <ProductPage 
+            product={currentProduct} 
+            onBack={() => setView('shop')} 
+            onProductClick={(p) => navigateTo('product', p)} 
+          />
+        ) : null;
+      case 'checkout':
+        return <CheckoutPage onBack={() => setView('home')} />;
+      default:
+        return null;
+    }
+  };
+
   return (
     <div className="relative font-sans text-black overflow-x-hidden">
       <Navbar 
         onOpenCart={() => setIsCartOpen(true)} 
-        onNavigate={(v) => navigateTo(v)}
+        onNavigate={navigateTo}
         isDarkPage={view === 'innovation'}
       />
       
-      <AnimatePresence mode="wait">
-        {view === 'home' && (
+      <main className="min-h-screen">
+        <AnimatePresence mode="wait">
           <motion.div
-            key="home"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.5 }}
-          >
-            <HomePage 
-              onProductClick={(p) => navigateTo('product', p)} 
-              onNavigate={(v) => navigateTo(v)}
-            />
-            <Footer onNavigate={(v) => navigateTo(v)} />
-          </motion.div>
-        )}
-
-        {view === 'shop' && (
-          <motion.div
-            key="shop"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-          >
-            <ShopPage onProductClick={(p) => navigateTo('product', p)} />
-            <Footer onNavigate={(v) => navigateTo(v)} />
-          </motion.div>
-        )}
-
-        {view === 'collections' && (
-          <motion.div
-            key="collections"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-          >
-            <CollectionsPage />
-            <Footer onNavigate={(v) => navigateTo(v)} />
-          </motion.div>
-        )}
-
-        {view === 'innovation' && (
-          <motion.div
-            key="innovation"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-          >
-            <InnovationPage />
-            <Footer onNavigate={(v) => navigateTo(v)} />
-          </motion.div>
-        )}
-
-        {view === 'story' && (
-          <motion.div
-            key="story"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-          >
-            <StoryPage />
-            <Footer onNavigate={(v) => navigateTo(v)} />
-          </motion.div>
-        )}
-
-        {view === 'product' && currentProduct && (
-          <motion.div
-            key="product"
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -20 }}
-            transition={{ type: 'spring', damping: 25, stiffness: 120 }}
-          >
-            <ProductPage 
-              product={currentProduct} 
-              onBack={() => setView('shop')} 
-              onProductClick={(p) => navigateTo('product', p)}
-            />
-            <Footer onNavigate={(v) => navigateTo(v)} />
-          </motion.div>
-        )}
-
-        {view === 'checkout' && (
-          <motion.div
-            key="checkout"
-            initial={{ opacity: 0, y: 20 }}
+            key={view}
+            initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.4, ease: "easeInOut" }}
           >
-            <CheckoutPage onBack={() => setView('home')} />
-            <Footer onNavigate={(v) => navigateTo(v)} />
+            {renderView()}
+            {/* 2. Global Footer: No need to repeat it in every block */}
+            {view !== 'checkout' && <Footer onNavigate={navigateTo} />}
           </motion.div>
-        )}
-      </AnimatePresence>
+        </AnimatePresence>
+      </main>
 
       <CartDrawer 
         isOpen={isCartOpen} 
@@ -139,45 +85,27 @@ const AppContent: React.FC = () => {
         onCheckout={() => navigateTo('checkout')}
       />
       
-      {/* Floating Checkout Trigger (Mobile) */}
+      {/* 3. Floating Checkout Trigger */}
       {!isCartOpen && view !== 'checkout' && (
-        <motion.div 
-            initial={{ y: 100 }}
-            animate={{ y: 0 }}
-            className="fixed bottom-6 right-6 z-40 md:hidden"
-        >
-            <button 
-                onClick={() => setIsCartOpen(true)}
-                className="bg-black text-white p-6 rounded-full shadow-2xl flex items-center justify-center"
-            >
-                <div className="relative">
-                    <span className="sr-only">Cart</span>
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-                    </svg>
-                </div>
-            </button>
+        <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} className="fixed bottom-6 right-6 z-40 md:hidden">
+          <button 
+            onClick={() => setIsCartOpen(true)}
+            className="bg-black text-white p-6 rounded-full shadow-2xl flex items-center justify-center hover:scale-105 transition-transform"
+          >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+            </svg>
+          </button>
         </motion.div>
       )}
-
-      {/* Global Cursor (Optional/Luxury) */}
-      <div className="hidden lg:block fixed w-8 h-8 pointer-events-none z-[9999] mix-blend-difference">
-         <motion.div 
-            className="w-full h-full border border-white rounded-full"
-            animate={{ scale: [1, 1.2, 1] }}
-            transition={{ repeat: Infinity, duration: 2 }}
-         />
-      </div>
     </div>
   );
 };
 
 export default function App() {
   return (
-    <Router>
-      <CartProvider>
-        <AppContent />
-      </CartProvider>
-    </Router>
+    <CartProvider>
+      <AppContent />
+    </CartProvider>
   );
 }
