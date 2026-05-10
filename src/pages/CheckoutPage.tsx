@@ -10,24 +10,34 @@ export const CheckoutPage: React.FC = () => {
   const [step] = useState(1);
 
   const handleBack = () => {
-    navigate('/');
+    navigate(-1); // Changed to -1 to return to the previous page (Shop or Product)
   };
 
   if (cart.length === 0) {
     return (
         <div className="min-h-screen flex flex-col items-center justify-center bg-white p-6">
-            <h2 className="text-3xl font-bold mb-8 uppercase tracking-widest italic">Bag is empty</h2>
-            <button onClick={handleBack} className="bg-black text-white px-8 py-4 text-[10px] uppercase font-bold tracking-widest cursor-pointer">Return to Shop</button>
+            <h2 className="text-2xl md:text-3xl font-bold mb-8 uppercase tracking-[0.3em] italic text-black/20">Bag is empty</h2>
+            <button 
+              onClick={handleBack} 
+              className="bg-black text-white px-10 py-5 text-[10px] uppercase font-black tracking-[0.2em] cursor-pointer hover:scale-105 transition-transform"
+            >
+              Return to Shop
+            </button>
         </div>
     );
   }
 
   return (
-    <div className="bg-white min-h-screen pt-32 pb-32">
+    <div className="bg-white min-h-screen pt-20 md:pt-32 pb-20 md:pb-32">
       <div className="max-w-screen-xl mx-auto px-6">
-        <div className="flex flex-col lg:flex-row gap-24">
-          <CheckoutForm onBack={handleBack} step={step} />
-          <CheckoutSummary cart={cart} totalPrice={totalPrice} />
+        {/* Mobile: Summary moves to top or bottom? Standard UX puts summary at bottom on mobile */}
+        <div className="flex flex-col lg:flex-row gap-16 lg:gap-24">
+          <div className="flex-1 order-2 lg:order-1">
+             <CheckoutForm onBack={handleBack} step={step} />
+          </div>
+          <div className="w-full lg:w-[400px] order-1 lg:order-2">
+             <CheckoutSummary cart={cart} totalPrice={totalPrice} />
+          </div>
         </div>
       </div>
     </div>
