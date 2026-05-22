@@ -69,12 +69,21 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenCart, isDarkPage }) => {
         {/* ================= LAYER 1: TOP UTILITY HEADER ================= */}
         <div className={cn("w-full h-8 px-4 sm:px-6 xl:px-12 flex items-center justify-between border-b text-[8px] sm:text-[9px] md:text-[10px] uppercase tracking-[0.15em] sm:tracking-[0.2em] font-bold transition-colors duration-500 select-none relative", borderTheme)}>
           
+          {/* Static Links + SHOP Button placement */}
           <div className="flex items-center gap-4 sm:gap-6 z-10">
             {staticLinks.map((link) => (
               <Link key={link.name} to={link.path} className={cn("transition-colors duration-300", topThemeText)}>
                 {link.name}
               </Link>
             ))}
+            
+            {/* Dedicated SHOP Button added right after the story link */}
+            <Link 
+              to="/shop" 
+              className="text-red-500 hover:text-red-600 font-black tracking-[0.2em] transition-colors duration-300"
+            >
+              SHOP
+            </Link>
           </div>
 
           {/* Centered Search for Tablet Viewports */}
@@ -193,7 +202,6 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenCart, isDarkPage }) => {
                   .find((cat) => cat.name === activeDropdown)
                   ?.groups?.map((group) => (
                     <div key={group.title} className="flex flex-col space-y-4">
-                      {/* Bold Bolder Modern Footwear Segment Headers */}
                       <span className="text-[10px] font-black tracking-widest text-neutral-900 uppercase block border-b border-neutral-100 pb-1">
                         {group.title}
                       </span>
