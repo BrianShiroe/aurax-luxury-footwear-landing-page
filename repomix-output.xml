@@ -60,11 +60,14 @@ src/components/innovation/InnovationHero.tsx
 src/components/innovation/LabShowcase.tsx
 src/components/innovation/TechGrid.tsx
 src/components/layout/Footer.tsx
+src/components/layout/menuData.ts
+src/components/layout/MobileMenuDrawer.tsx
 src/components/layout/Navbar.tsx
 src/components/product/ProductCard.tsx
 src/components/product/ProductGallery.tsx
 src/components/product/ProductInfo.tsx
 src/components/product/ProductRecommendations.tsx
+src/components/shop/FilterGroup.tsx
 src/components/story/Philosophy.tsx
 src/components/story/StoryHero.tsx
 src/constants.ts
@@ -1507,6 +1510,452 @@ export const Mission: React.FC = () => {
 };
 </file>
 
+<file path="src/components/layout/menuData.ts">
+export interface SubCategoryItem {
+  name: string;
+  path: string;
+}
+
+export interface NavigationGroup {
+  title: string;
+  items: SubCategoryItem[];
+}
+
+export interface CategoryStructure {
+  name: string;
+  path: string;
+  isSale?: boolean;
+  hasDropdown?: boolean;
+  groups?: NavigationGroup[];
+}
+
+export const staticLinks = [
+  { name: 'Innovation', path: '/innovation' },
+  { name: 'Story', path: '/story' },
+];
+
+export const utilityLinks = [
+  { name: 'Help', path: '/help' },
+  { name: 'Join Us', path: '/join' },
+  { name: 'Sign In', path: '/signin' },
+];
+
+export const shopCategories: CategoryStructure[] = [
+  {
+    name: 'New',
+    path: '/shop?category=new',
+    hasDropdown: true,
+    groups: [
+      {
+        title: 'LATEST DROPS',
+        items: [
+          { name: 'Phantom Series V2', path: '/shop?search=phantom' },
+          { name: 'Kinetic Archive 2026', path: '/shop?search=kinetic' },
+          { name: 'Aeroknit Restocks', path: '/shop?search=aeroknit' },
+        ],
+      },
+      {
+        title: 'TRENDING CURATIONS',
+        items: [
+          { name: 'High-Fashion Technical', path: '/shop?tag=techwear' },
+          { name: 'Monochrome Pack', path: '/shop?color=monochrome' },
+          { name: 'Eco-Polymer Capsules', path: '/shop?material=eco' },
+        ],
+      },
+      {
+        title: 'STUDIO FOCUS',
+        items: [
+          { name: 'Stockholm Conceptual Lab', path: '/story' },
+          { name: 'Limited Launch Matrix', path: '/featured' },
+        ],
+      }
+    ]
+  },
+  {
+    name: 'Men',
+    path: '/shop?category=men',
+    hasDropdown: true,
+    groups: [
+      {
+        title: 'SHOP BY SILHOUETTE',
+        items: [
+          { name: 'Architectural Sneakers', path: '/shop?category=men&type=sneakers' },
+          { name: 'Kinetic Running Modules', path: '/shop?category=men&type=running' },
+          { name: 'Structural Boots', path: '/shop?category=men&type=boots' },
+          { name: 'Minimalist Sliders', path: '/shop?category=men&type=sliders' },
+        ],
+      },
+      {
+        title: 'PERFORMANCE & SPORT',
+        items: [
+          { name: 'Track & Laboratory Elite', path: '/shop?category=men&type=sport' },
+          { name: 'Trail Cross-Engineers', path: '/shop?category=men&type=trail' },
+          { name: 'Court Matrix Lows', path: '/shop?category=men&type=basketball' },
+        ],
+      },
+      {
+        title: 'PROPRIETARY TECH SPEC',
+        items: [
+          { name: 'EVO-SOLE™ Carbon Series', path: '/innovation?tech=evo-sole' },
+          { name: 'AURAX-KNIT™ Adaptive', path: '/innovation?tech=aurax-knit' },
+          { name: 'T-STABILITY™ Plates', path: '/innovation?tech=t-stability' },
+        ],
+      }
+    ]
+  },
+  {
+    name: 'Women',
+    path: '/shop?category=women',
+    hasDropdown: true,
+    groups: [
+      {
+        title: 'SHOP BY SILHOUETTE',
+        items: [
+          { name: 'Sculpted High-Platform Matrix', path: '/shop?category=women&type=platforms' },
+          { name: 'Avant-Garde Technical Trainers', path: '/shop?category=women&type=trainers' },
+          { name: 'Aerodynamic Run Modules', path: '/shop?category=women&type=running' },
+          { name: 'Modular Studio Sandals', path: '/shop?category=women&type=sandals' },
+        ],
+      },
+      {
+        title: 'CAPSULE COLLECTIONS',
+        items: [
+          { name: 'The Minimalist Editorial', path: '/shop?collection=editorial' },
+          { name: 'Cyber-Knit Future Pack', path: '/shop?collection=cyberknit' },
+          { name: 'Earth-Core Raw Textures', path: '/shop?collection=earth' },
+        ],
+      },
+      {
+        title: 'ENGINEERING ELEMENTS',
+        items: [
+          { name: 'Micro-Weight Polymers', path: '/innovation' },
+          { name: 'Zero-Shock Compression Plugs', path: '/innovation' },
+        ],
+      }
+    ]
+  },
+  {
+    name: 'Kids',
+    path: '/shop?category=kids',
+    hasDropdown: true,
+    groups: [
+      {
+        title: 'SIZING GENERATIONS',
+        items: [
+          { name: 'Older Kids (Sizes 3.5Y - 7Y)', path: '/shop?category=kids&age=older' },
+          { name: 'Younger Kids (Sizes 10.5C - 3Y)', path: '/shop?category=kids&age=younger' },
+          { name: 'Toddlers & Infants (1C - 10C)', path: '/shop?category=kids&age=toddler' },
+        ],
+      },
+      {
+        title: 'PERFORMANCE & DURABILITY',
+        items: [
+          { name: 'Shield-Knit Everyday Sneaker', path: '/shop?category=kids&type=durable' },
+          { name: 'Easy-Lock Speedlace Runners', path: '/shop?category=kids&type=speedlace' },
+        ],
+      }
+    ]
+  },
+  {
+    name: 'Sport',
+    path: '/shop?category=sport',
+    hasDropdown: true,
+    groups: [
+      {
+        title: 'ATHLETIC DISCIPLINES',
+        items: [
+          { name: 'Marathon & Road Micro-Pacing', path: '/shop?category=sport&sport=run' },
+          { name: 'Technical Trail & Mountain Cleats', path: '/shop?category=sport&sport=trail' },
+          { name: 'High-Impact Court Dynamics', path: '/shop?category=sport&sport=court' },
+          { name: 'Weightlifting Base Stabilizers', path: '/shop?category=sport&sport=lift' },
+        ],
+      }
+    ]
+  },
+  {
+    name: 'Sportswear',
+    path: '/shop?category=sportswear',
+    hasDropdown: false
+  },
+  {
+    name: 'Teams',
+    path: '/shop?category=national-teams',
+    hasDropdown: true,
+    groups: [
+      {
+        title: 'FEDERATION ENGINEERING',
+        items: [
+          { name: 'Global Track & Field Editions', path: '/shop?category=national-teams&type=track' },
+          { name: 'National Lab Collaborations', path: '/shop?category=national-teams&type=collab' },
+        ],
+      }
+    ]
+  },
+  {
+    name: 'Sale',
+    path: '/shop?category=sale',
+    isSale: true,
+    hasDropdown: true,
+    groups: [
+      {
+        title: 'ARCHIVAL REDUCTIONS',
+        items: [
+          { name: '30% Off Seasonal Rotation', path: '/shop?category=sale&discount=30' },
+          { name: '50% Off Final Vault Archive', path: '/shop?category=sale&discount=50' },
+        ],
+      },
+      {
+        title: 'FILTER BY SIZING MATRIX',
+        items: [
+          { name: 'Men’s Clearance Grid', path: '/shop?category=sale&gender=men' },
+          { name: 'Women’s Clearance Grid', path: '/shop?category=sale&gender=women' },
+        ],
+      }
+    ]
+  },
+];
+</file>
+
+<file path="src/components/layout/MobileMenuDrawer.tsx">
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Search, X, ChevronDown } from 'lucide-react';
+import { cn } from '../../lib/utils';
+import { shopCategories, staticLinks, utilityLinks } from './menuData';
+
+interface MobileMenuDrawerProps {
+  isOpen: boolean;
+  onClose: () => void;
+}
+
+export const MobileMenuDrawer: React.FC<MobileMenuDrawerProps> = ({ isOpen, onClose }) => {
+  const [expandedCategory, setExpandedCategory] = useState<string | null>(null);
+  const [searchQuery, setSearchQuery] = useState('');
+  const navigate = useNavigate();
+
+  if (!isOpen) return null;
+
+  const toggleAccordion = (name: string) => {
+    setExpandedCategory(expandedCategory === name ? null : name);
+  };
+
+  // Mobile handler to route into the search parameter landscape
+  const handleSearchSubmit = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter' && searchQuery.trim()) {
+      navigate(`/shop?search=${encodeURIComponent(searchQuery.trim())}`);
+      setSearchQuery('');
+      (e.target as HTMLInputElement).blur();
+      onClose(); // Auto-closes the drawer layout upon navigation search submission
+    }
+  };
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: -10 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -10 }}
+      transition={{ duration: 0.35, ease: [0.215, 0.610, 0.355, 1.000] }}
+      className="fixed inset-0 z-[60] bg-white p-4 sm:p-6 flex flex-col text-black h-screen w-full select-none overflow-hidden"
+    >
+      {/* Top Bar inside Overlay */}
+      <div className="flex justify-between items-center h-16 mb-2 flex-shrink-0">
+        <Link to="/" className="text-xl font-black tracking-tighter italic" onClick={onClose}>
+          AURAX
+        </Link>
+        <button onClick={onClose} className="p-2 cursor-pointer touch-manipulation">
+          <X className="w-6 h-6" />
+        </button>
+      </div>
+
+      {/* Mobile Input Search Filter */}
+      <div className="relative mb-5 flex-shrink-0">
+        <input 
+          type="text" 
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          onKeyDown={handleSearchSubmit}
+          placeholder="SEARCH CATALOG..."
+          className="w-full bg-gray-50 text-[11px] font-bold tracking-widest uppercase p-4 pl-12 rounded-none outline-none border-none focus:bg-gray-100 transition-colors"
+        />
+        <Search className="w-4 h-4 absolute left-4 top-1/2 -translate-y-1/2 text-black/40" />
+      </div>
+
+      {/* Scrollable Navigation Tree */}
+      <div className="flex-1 overflow-y-auto no-scrollbar space-y-6 pb-6">
+        <div className="space-y-1.5">
+          <span className="text-[9px] uppercase tracking-[0.3em] text-black/30 font-black block pl-1 mb-2">Shop Categories</span>
+          
+          <div className="flex flex-col gap-1">
+            {shopCategories.map((cat, idx) => {
+              const isExpanded = expandedCategory === cat.name;
+
+              return (
+                <motion.div
+                  key={cat.name}
+                  initial={{ opacity: 0, y: 5 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: idx * 0.02 }}
+                  className="w-full border-b border-black/[0.03]"
+                >
+                  {cat.hasDropdown ? (
+                    <>
+                      <button
+                        onClick={() => toggleAccordion(cat.name)}
+                        className={cn(
+                          "w-full text-xs uppercase font-black tracking-wider flex items-center justify-between p-4 bg-gray-50/50 text-left",
+                          cat.isSale ? "text-red-500" : "text-black/80"
+                        )}
+                      >
+                        <span>{cat.name}</span>
+                        <ChevronDown className={cn("w-3.5 h-3.5 transition-transform duration-300 stroke-[3]", isExpanded && "rotate-180")} />
+                      </button>
+
+                      <AnimatePresence initial={false}>
+                        {isExpanded && (
+                          <motion.div
+                            initial={{ height: 0, opacity: 0 }}
+                            animate={{ height: "auto", opacity: 1 }}
+                            exit={{ height: 0, opacity: 0 }}
+                            transition={{ duration: 0.25, ease: "easeInOut" }}
+                            className="overflow-hidden bg-gray-50/20 px-4"
+                          >
+                            {cat.groups?.map((group) => (
+                              <div key={group.title} className="py-3">
+                                <span className="text-[9px] font-black tracking-widest text-neutral-900 uppercase block mb-2 pb-0.5 border-b border-black/5">
+                                  {group.title}
+                                </span>
+                                <div className="flex flex-col gap-2 pl-1">
+                                  {group.items.map((item) => (
+                                    <Link
+                                      key={item.name}
+                                      to={item.path}
+                                      onClick={onClose}
+                                      className="text-[11px] uppercase font-bold tracking-wide py-1 block text-black/60 hover:text-black"
+                                    >
+                                      {item.name}
+                                    </Link>
+                                  ))}
+                                </div>
+                              </div>
+                            ))}
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </>
+                  ) : (
+                    <Link
+                      to={cat.path}
+                      className={cn(
+                        "text-xs uppercase font-black tracking-wider block p-4 bg-gray-50/50",
+                        cat.isSale ? "text-red-500 bg-red-50/10" : "text-black/80"
+                      )}
+                      onClick={onClose}
+                    >
+                      {cat.name}
+                    </Link>
+                  )}
+                </motion.div>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Company & Studio Links */}
+        <div className="pt-5 border-t border-black/5 space-y-3">
+          <span className="text-[9px] uppercase tracking-[0.3em] text-black/30 font-black block pl-1">Company & Studio</span>
+          <div className="grid grid-cols-2 gap-y-2 gap-x-4">
+            {[...staticLinks, ...utilityLinks].map((link) => (
+              <Link
+                key={link.name}
+                to={link.path}
+                className="text-xs font-bold tracking-wider uppercase text-black/70 hover:text-black active:opacity-50 transition-colors block py-2 px-1"
+                onClick={onClose}
+              >
+                {link.name}
+              </Link>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Baseline Footer */}
+      <div className="pt-4 border-t border-black/5 flex-shrink-0 mt-auto">
+        <div className="flex justify-between items-center uppercase text-[8px] tracking-[0.2em] font-black text-black/40">
+          <span>LABORATORY MATRIX V1.0</span>
+          <span className="font-mono text-black/20">DUBAI, UAE</span>
+        </div>
+      </div>
+    </motion.div>
+  );
+};
+</file>
+
+<file path="src/components/shop/FilterGroup.tsx">
+import React, { useState } from 'react';
+import { ChevronDown, Check } from 'lucide-react';
+import { motion, AnimatePresence } from 'motion/react';
+
+interface FilterGroupProps {
+  title: string;
+  items: { label: string; value: string }[];
+  onSelect: (value: string) => void;
+  activeValue: string | null;
+}
+
+export const FilterGroup: React.FC<FilterGroupProps> = ({ title, items, onSelect, activeValue }) => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <div className="border-b border-neutral-100 py-2">
+      <button 
+        onClick={() => setIsOpen(!isOpen)}
+        className="w-full flex justify-between items-center py-3 text-[9px] font-black tracking-[0.2em] uppercase text-black hover:text-red-500 transition-colors cursor-pointer"
+      >
+        {title}
+        <ChevronDown className={`w-3 h-3 transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`} />
+      </button>
+      
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div initial={{ height: 0 }} animate={{ height: 'auto' }} exit={{ height: 0 }} className="overflow-hidden">
+            <ul className="space-y-3 pb-4">
+              {items.map((item) => {
+                const isActive = activeValue === item.value;
+                return (
+                  <li key={item.value}>
+                    <button 
+                      onClick={() => onSelect(item.value)} 
+                      className="group flex items-center gap-3 w-full text-left cursor-pointer"
+                    >
+                      {/* Interactive Checkbox with Icon */}
+                      <div className={`w-4 h-4 border flex items-center justify-center transition-all duration-300 ${
+                        isActive ? 'bg-black border-black' : 'border-neutral-300 group-hover:border-black'
+                      }`}>
+                        <Check 
+                          className={`w-3 h-3 text-white transition-opacity duration-300 ${isActive ? 'opacity-100' : 'opacity-0'}`} 
+                          strokeWidth={4}
+                        />
+                      </div>
+                      
+                      <span className={`text-[11px] font-bold uppercase transition-colors ${
+                        isActive ? 'text-black' : 'text-neutral-500 group-hover:text-black'
+                      }`}>
+                        {item.label}
+                      </span>
+                    </button>
+                  </li>
+                );
+              })}
+            </ul>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+};
+</file>
+
 <file path="src/constants.ts">
 import { Product } from "./types";
 
@@ -1516,15 +1965,14 @@ export const PRODUCTS: Product[] = [
     name: "AERO-X1",
     category: "Performance",
     price: 340,
-    description:
-      "Ultra-lightweight performance runner designed for speed and agility. Features our proprietary carbon-fiber plate technology.",
+    description: "Ultra-lightweight performance runner designed for speed and agility.",
     images: [
       "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&q=80&w=1000",
-      "https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?auto=format&fit=crop&q=80&w=1000",
+      "https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?auto=format&fit=crop&q=80&w=1000"
     ],
-    colors: ["#FFFFFF", "#111111", "#B0B0B0"],
-    sizes: ["7", "8", "9", "10", "11", "12"],
-    details: ["Engineered knit upper", "React-Z cushioning", "3 degree offset", "Reinforced heel"],
+    colors: ["#FFFFFF", "#111111"],
+    sizes: ["7", "8", "9", "10", "11"],
+    details: ["Carbon plate", "React-Z foam"],
     isFeatured: true,
   },
   {
@@ -1532,15 +1980,14 @@ export const PRODUCTS: Product[] = [
     name: "AURAX MONO",
     category: "Minimal Essentials",
     price: 280,
-    description:
-      "The ultimate minimalist sneaker. Hand-crafted from Italian pebble-grain leather with a focus on silhouette and pure form.",
+    description: "Hand-crafted Italian leather with a focus on pure form.",
     images: [
       "https://images.unsplash.com/photo-1549298916-b41d501d3772?auto=format&fit=crop&q=80&w=1000",
-      "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?auto=format&fit=crop&q=80&w=1000",
+      "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?auto=format&fit=crop&q=80&w=1000"
     ],
     colors: ["#000000", "#F5F5F7"],
-    sizes: ["6", "7", "8", "9", "10", "11", "12"],
-    details: ["Italian calfskin", "Margom rubber sole", "Hand-stitched construction", "Minimal branding"],
+    sizes: ["8", "9", "10", "11"],
+    details: ["Italian calfskin", "Margom sole"],
     isFeatured: true,
   },
   {
@@ -1548,14 +1995,14 @@ export const PRODUCTS: Product[] = [
     name: "VOID-TECH",
     category: "Streetwear",
     price: 450,
-    description: "Futuristic technical sneaker with architectural elements and multi-layered cushioning system.",
+    description: "Architectural elements with a multi-layered cushioning system.",
     images: [
       "https://images.unsplash.com/photo-1514989940723-e8e51635b782?auto=format&fit=crop&q=80&w=1000",
-      "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&q=80&w=1000",
+      "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&q=80&w=1000"
     ],
-    colors: ["#111111", "#Silver"],
-    sizes: ["8", "9", "10", "11", "12"],
-    details: ["Gore-Tex internal membrane", "Vibram outsole", "Modular design", "Limited release"],
+    colors: ["#111111", "#C0C0C0"],
+    sizes: ["9", "10", "11", "12"],
+    details: ["Gore-Tex", "Vibram sole"],
     isFeatured: true,
   },
   {
@@ -1563,43 +2010,71 @@ export const PRODUCTS: Product[] = [
     name: "APEX RUNNER",
     category: "Running",
     price: 260,
-    description: "High-rebound cushioning meets sleek aesthetic. The perfect balance for long distance and daily wear.",
+    description: "High-rebound cushioning for long distance daily wear.",
     images: [
       "https://images.unsplash.com/photo-1460353581641-37baddab0fa2?auto=format&fit=crop&q=80&w=1000",
-      "https://images.unsplash.com/photo-1539185441755-769473a23570?auto=format&fit=crop&q=80&w=1000",
+      "https://images.unsplash.com/photo-1539185441755-769473a23570?auto=format&fit=crop&q=80&w=1000"
     ],
     colors: ["#E0E0E0", "#111111"],
-    sizes: ["7", "8", "9", "10", "11", "12"],
-    details: ["Breathable mesh", "TPU midfoot support", "Continental outsole", "Sustainability focused"],
+    sizes: ["7", "8", "9", "10"],
+    details: ["Breathable mesh", "TPU support"],
   },
   {
     id: "5",
     name: "REIGN L-E",
     category: "Limited Edition",
     price: 890,
-    description: "Our most exclusive piece. Featuring rare materials and a unique collaborative design approach.",
+    description: "Exclusive production featuring rare technical materials.",
     images: [
-      "https://images.unsplash.com/photo-1539185441755-769473a23570?auto=format&fit=crop&q=80&w=1000",
       "https://images.unsplash.com/photo-1552346154-21d32810aba3?auto=format&fit=crop&q=80&w=1000",
+      "https://images.unsplash.com/photo-1539185441755-769473a23570?auto=format&fit=crop&q=80&w=1000"
     ],
     colors: ["#D4D4D8", "#111111"],
     sizes: ["9", "10", "11"],
-    details: ["Numbered production", "Premium packaging", "VIP authentication", "Lifetime warranty"],
+    details: ["Numbered", "VIP Auth"],
   },
   {
     id: "6",
     name: "NOVA LUX",
     category: "Luxury Sneakers",
     price: 520,
-    description: "Where high-fashion meet athletic DNA. Sleek, polished, and unmistakably premium.",
+    description: "Sleek, polished, and unmistakably premium high-fashion.",
     images: [
       "https://images.unsplash.com/photo-1552346154-21d32810aba3?auto=format&fit=crop&q=80&w=1000",
-      "https://images.unsplash.com/photo-1514989940723-e8e51635b782?auto=format&fit=crop&q=80&w=1000",
+      "https://images.unsplash.com/photo-1514989940723-e8e51635b782?auto=format&fit=crop&q=80&w=1000"
     ],
     colors: ["#FFFFFF", "#000000"],
-    sizes: ["6", "7", "8", "9", "10", "11", "12"],
-    details: ["Nappa leather", "Memory foam insole", "Gold-leaf accents", "Luxe dustbag included"],
+    sizes: ["7", "8", "9", "10"],
+    details: ["Nappa leather", "Gold accents"],
   },
+  {
+    id: "7",
+    name: "KINETIC FLOW",
+    category: "Running",
+    price: 210,
+    description: "Adaptive energy-return sole unit for city exploration.",
+    images: [
+      "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?auto=format&fit=crop&q=80&w=1000",
+      "https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?auto=format&fit=crop&q=80&w=1000"
+    ],
+    colors: ["#111111", "#3B82F6"],
+    sizes: ["8", "9", "10", "11"],
+    details: ["TPU core", "Reflective"],
+  },
+  {
+    id: "8",
+    name: "URBAN ARCHITECT",
+    category: "Streetwear",
+    price: 310,
+    description: "Structured silhouette with rugged materials for concrete landscapes.",
+    images: [
+      "https://images.unsplash.com/photo-1543508282-6319a3e2621f?auto=format&fit=crop&q=80&w=1000",
+      "https://images.unsplash.com/photo-1525966222134-fcfa99b8ae77?auto=format&fit=crop&q=80&w=1000"
+    ],
+    colors: ["#71717A", "#111111"],
+    sizes: ["9", "10", "11", "12"],
+    details: ["Ballistic nylon", "Metal eyelets"],
+  }
 ];
 
 export const CATEGORIES = [
@@ -1847,98 +2322,6 @@ export const ProductPage: React.FC<ProductPageProps> = ({ product }) => {
             recommendations={recommendations} 
             onProductClick={handleProductClick} 
         />
-      </div>
-    </div>
-  );
-};
-</file>
-
-<file path="src/pages/ShopPage.tsx">
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import { motion } from 'motion/react';
-import { ProductCard } from '../components/product/ProductCard';
-import { PRODUCTS, CATEGORIES } from '../constants';
-import { Product } from '../types';
-import { cn } from '../lib/utils';
-
-interface ShopPageProps {
-  onProductClick: (product: Product) => void;
-}
-
-export const ShopPage: React.FC<ShopPageProps> = ({ onProductClick }) => {
-  const [activeCategory, setActiveCategory] = React.useState('All');
-  const navigate = useNavigate();
-
-  const filteredProducts = activeCategory === 'All' 
-    ? PRODUCTS 
-    : PRODUCTS.filter(p => p.category === activeCategory);
-
-  const handleProductNavigation = (product: Product) => {
-    // 1. Update legacy context state
-    onProductClick(product);
-    
-    // 2. Trigger URL navigation and pass product in router state
-    navigate(`/product/${product.id}`, { state: { product } });
-    
-    // 3. Ensure window starts at the top of the details page
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-
-  return (
-    <div className="bg-white min-h-screen pt-24 md:pt-32 pb-20 px-6 md:px-12">
-      <div className="max-w-screen-2xl mx-auto">
-        <header className="mb-16 md:mb-24">
-          <motion.h1 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-[12vw] md:text-8xl font-bold tracking-tighter mb-8 md:mb-12"
-          >
-            SHOP <span className="italic text-black/10">ALL</span>
-          </motion.h1>
-          
-          {/* Scrollable categories on mobile for better UX */}
-          <div className="flex flex-row overflow-x-auto no-scrollbar md:flex-wrap gap-x-8 gap-y-4 border-b border-gray-100 pb-6 md:pb-8">
-            {CATEGORIES.map(cat => (
-              <button
-                key={cat}
-                onClick={() => setActiveCategory(cat)}
-                className={cn(
-                  "text-[9px] md:text-[10px] uppercase tracking-[0.3em] font-bold transition-all whitespace-nowrap",
-                  activeCategory === cat ? "text-black italic underline underline-offset-8" : "text-black/30 hover:text-black"
-                )}
-              >
-                {cat}
-              </button>
-            ))}
-          </div>
-        </header>
-
-        {/* Responsive Grid: 1 column on mobile, 4 on desktop */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-8 gap-y-16 md:gap-y-20">
-          {filteredProducts.map((product, index) => (
-            <motion.div
-              key={product.id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.03 }}
-            >
-              <ProductCard 
-                product={product} 
-                onClick={() => handleProductNavigation(product)} 
-              />
-            </motion.div>
-          ))}
-        </div>
-
-        {/* Empty State */}
-        {filteredProducts.length === 0 && (
-          <div className="py-40 text-center">
-            <p className="text-[10px] uppercase tracking-[0.4em] text-black/30 font-bold">
-              No architectural pieces found in this category.
-            </p>
-          </div>
-        )}
       </div>
     </div>
   );
@@ -2589,309 +2972,117 @@ export const Footer: React.FC = () => {
 };
 </file>
 
-<file path="src/components/layout/Navbar.tsx">
-import React, { useState, useEffect } from 'react';
-import { Search, Menu, X, Heart } from 'lucide-react';
-import { Link, useLocation } from 'react-router-dom';
-import { motion, AnimatePresence } from 'motion/react';
-import { useCart } from '../../context/CartContext';
-import { cn } from '../../lib/utils';
+<file path="src/pages/ShopPage.tsx">
+import React, { useMemo } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { motion } from 'motion/react';
+import { ProductCard } from '../components/product/ProductCard';
+import { FilterGroup } from '../components/shop/FilterGroup';
+import { PRODUCTS } from '../constants';
+import { Product } from '../types';
 
-interface NavbarProps {
-  onOpenCart: () => void;
-  isDarkPage?: boolean;
-}
-
-export const Navbar: React.FC<NavbarProps> = ({ onOpenCart, isDarkPage }) => {
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [searchFocused, setSearchFocused] = useState(false);
-  const { totalItems } = useCart();
+export const ShopPage: React.FC<{ onProductClick: (p: Product) => void }> = ({ onProductClick }) => {
+  const navigate = useNavigate();
   const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
 
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  useEffect(() => {
-    setIsMobileMenuOpen(false);
-  }, [location]);
-
-  const staticLinks = [
-    { name: 'Innovation', path: '/innovation' },
-    { name: 'Story', path: '/story' },
+  // Expanded Filter Configuration
+  const filterConfig = [
+    { 
+      title: "Gender", key: "gender", 
+      items: [{label: "Men", value: "men"}, {label: "Women", value: "women"}, {label: "Unisex", value: "unisex"}] 
+    },
+    { 
+      title: "Colour", key: "colour", 
+      items: [{label: "Black", value: "black"}, {label: "White", value: "white"}, {label: "Grey", value: "grey"}, {label: "Blue", value: "blue"}] 
+    },
+    { 
+      title: "Price Range", key: "price", 
+      items: [{label: "Under 500 AED", value: "low"}, {label: "500 - 1000 AED", value: "mid"}, {label: "Over 1000 AED", value: "high"}] 
+    },
+    { 
+      title: "Shoe Size", key: "size", 
+      items: [{label: "40", value: "40"}, {label: "41", value: "41"}, {label: "42", value: "42"}, {label: "43", value: "43"}] 
+    },
+    { 
+      title: "Technology", key: "tech", 
+      items: [{label: "Dri-FIT", value: "dri-fit"}, {label: "GORE-TEX", value: "gore-tex"}, {label: "Air Zoom", value: "zoom"}] 
+    },
+    { 
+      title: "Fit", key: "fit", 
+      items: [{label: "Loose", value: "loose"}, {label: "Standard", value: "standard"}, {label: "Slim", value: "slim"}] 
+    },
+    { 
+      title: "Surface", key: "surface", 
+      items: [{label: "Road", value: "road"}, {label: "Trail", value: "trail"}, {label: "Track", value: "track"}] 
+    }
   ];
 
-  const utilityLinks = [
-    { name: 'Help', path: '/help' },
-    { name: 'Join Us', path: '/join' },
-    { name: 'Sign In', path: '/signin' },
-  ];
+  const handleFilterSelect = (key: string, value: string) => {
+    const params = new URLSearchParams(location.search);
+    if (params.get(key) === value) params.delete(key);
+    else params.set(key, value);
+    navigate(`/shop?${params.toString()}`);
+  };
 
-  const shopCategories = [
-    { name: 'New', path: '/shop?category=new' },
-    { name: 'Men', path: '/shop?category=men' },
-    { name: 'Women', path: '/shop?category=women' },
-    { name: 'Kids', path: '/shop?category=kids' },
-    { name: 'Sport', path: '/shop?category=sport' },
-    { name: 'Sportswear', path: '/shop?category=sportswear' },
-    { name: 'Teams', path: '/shop?category=national-teams' },
-    { name: 'Sale', path: '/shop?category=sale', isSale: true },
-  ];
-
-  // Global Theme States (Tailwind v4 Compliant)
-  const mainThemeText = isScrolled 
-    ? 'text-black' 
-    : (isDarkPage ? 'text-white' : 'text-black');
-
-  const topThemeText = isScrolled 
-    ? 'text-black/50 hover:text-black' 
-    : (isDarkPage ? 'text-white/50 hover:text-white' : 'text-black/50 hover:text-black');
-
-  const categoryThemeText = isScrolled 
-    ? 'text-black/70 hover:text-black' 
-    : (isDarkPage ? 'text-white/70 hover:text-white' : 'text-black/70 hover:text-black');
-
-  const borderTheme = isScrolled 
-    ? 'border-black/5' 
-    : (isDarkPage ? 'border-white/10' : 'border-black/5');
-
-  const iconCircleBorder = isScrolled 
-    ? 'border-black' 
-    : (isDarkPage ? 'border-white' : 'border-black');
+  const filteredProducts = useMemo(() => {
+    return PRODUCTS.filter((product) => {
+      // Add your business logic here using searchParams.get('key')
+      return true; 
+    });
+  }, [location.search]);
 
   return (
-    <>
-      <header
-        className={cn(
-          'fixed top-0 left-0 w-full z-50 transition-all duration-500 flex flex-col',
-          isScrolled 
-            ? 'bg-white/95 backdrop-blur-md border-b border-black/5 shadow-xs' 
-            : 'bg-transparent'
-        )}
-      >
-        {/* ================= LAYER 1: TOP UTILITY HEADER (With Centered Tablet Search) ================= */}
-        <div 
-          className={cn(
-            "w-full h-8 px-4 sm:px-6 xl:px-12 flex items-center justify-between border-b text-[8px] sm:text-[9px] md:text-[10px] uppercase tracking-[0.15em] sm:tracking-[0.2em] font-bold transition-colors duration-500 select-none relative",
-            borderTheme
-          )}
-        >
-          {/* Static Pages */}
-          <div className="flex items-center gap-4 sm:gap-6 z-10">
-            {staticLinks.map((link) => (
-              <Link key={link.name} to={link.path} className={cn("transition-colors duration-300", topThemeText)}>
-                {link.name}
-              </Link>
-            ))}
-          </div>
-
-          {/* Absolute Centered Search Bar for Tablet Viewports only */}
-          <div className="hidden md:flex lg:hidden absolute left-1/2 -translate-x-1/2 items-center w-full max-w-xs px-4 z-0">
-            <div className="relative w-full">
-              <input 
-                type="text"
-                placeholder="SEARCH CATALOGUE..."
-                className={cn(
-                  "w-full bg-black/[0.04] text-[8px] font-bold tracking-widest uppercase rounded-full py-1 pl-8 pr-3 outline-none transition-all placeholder-black/30 focus:bg-black/[0.07]",
-                  isDarkPage && !isScrolled && "bg-white/10 text-white placeholder-white/30 border border-white/5 focus:bg-white/15"
-                )}
-              />
-              <Search className={cn("w-3 h-3 absolute left-3 top-1/2 -translate-y-1/2 opacity-40", mainThemeText)} />
-            </div>
-          </div>
-
-          {/* User Utilities */}
-          <div className="flex items-center gap-3 sm:gap-5 z-10">
-            {utilityLinks.map((link) => (
-              <Link key={link.name} to={link.path} className={cn("transition-colors duration-300", topThemeText)}>
-                {link.name}
-              </Link>
-            ))}
-          </div>
+    <div className="bg-white min-h-screen pt-32 pb-20 px-6 md:px-12 max-w-[1700px] mx-auto flex gap-16 items-start">
+      
+      {/* SIDEBAR: Sticky and Scrollable */}
+      <aside className="hidden md:block w-64 flex-shrink-0 sticky top-32 h-[calc(100vh-8rem)] overflow-y-auto pr-4 scrollbar-hide">
+        <div className="mb-8 pb-8 border-b border-neutral-100 flex justify-between items-center">
+            <h2 className="text-[10px] font-black tracking-[0.2em] uppercase">Filters</h2>
+            <button 
+              onClick={() => navigate('/shop')} 
+              className="text-[8px] font-bold uppercase underline hover:text-red-500 transition-colors"
+            >
+              Reset
+            </button>
         </div>
 
-        {/* ================= LAYER 2: INTERACTIVE COMMERCE HEADER ================= */}
-        <div className="w-full h-16 xl:h-20 px-4 sm:px-6 xl:px-12 flex items-center justify-between relative">
-          
-          {/* Left Block: Logo */}
-          <Link 
-            to="/"
-            className={cn(
-              "text-lg sm:text-xl xl:text-2xl font-black tracking-tighter italic transition-colors duration-500 shrink-0 z-10",
-              mainThemeText
-            )}
-          >
-            AURAX
-          </Link>
-          
-          {/* Center Block: Main Categories (Visible on Desktop & Tablet) */}
-          <div className="hidden md:flex items-center gap-5 xl:gap-8 text-[10px] xl:text-[11px] uppercase tracking-[0.15em] xl:tracking-[0.2em] font-black absolute left-1/2 -translate-x-1/2 whitespace-nowrap z-0">
-            {shopCategories.map((cat) => (
-              <Link
-                key={cat.name}
-                to={cat.path}
-                className={cn(
-                  "transition-colors duration-300 py-0.5",
-                  categoryThemeText,
-                  cat.isSale && "text-red-500 hover:text-red-600 font-extrabold"
-                )}
-              >
-                {cat.name}
-              </Link>
-            ))}
-          </div>
-
-          {/* Right Block: Interface Controls */}
-          <div className="flex items-center gap-1 sm:gap-2 xl:gap-4 shrink-0 z-10">
-            
-            {/* Desktop Only Inline Search Workspace (Hidden below 1024px / lg breakpoint) */}
-            <div className="hidden lg:flex items-center relative group">
-              <input 
-                type="text"
-                placeholder="SEARCH SPECIFICATIONS..."
-                onFocus={() => setSearchFocused(true)}
-                onBlur={() => setSearchFocused(false)}
-                className={cn(
-                  "bg-black/[0.03] text-[9px] font-bold tracking-widest uppercase rounded-full py-2.5 pl-10 pr-4 outline-none transition-all duration-500 placeholder-black/30 w-36",
-                  searchFocused ? "w-52 bg-black/[0.05] ring-1 ring-black/10" : "group-hover:bg-black/[0.05]",
-                  isDarkPage && !isScrolled && "bg-white/10 text-white placeholder-white/40 border border-white/5 focus:bg-white/15"
-                )}
-              />
-              <Search className={cn("w-3.5 h-3.5 absolute left-4 pointer-events-none opacity-40", mainThemeText)} />
-            </div>
-
-            {/* Wishlist Core Trigger */}
-            <button 
-              className={cn("p-2 transition-all hover:scale-110 active:scale-95 cursor-pointer", mainThemeText)}
-              aria-label="View Wishlist"
-            >
-              <Heart className="w-4 h-4 xl:w-4.5 xl:h-4.5 stroke-[2.5]" />
-            </button>
-
-            {/* Bag Icon interface */}
-            <button 
-              onClick={onOpenCart}
-              className="flex items-center gap-1.5 group cursor-pointer p-2 relative"
-              aria-label="Open Shopping Bag"
-            >
-              <div className={cn(
-                "w-4.5 h-4.5 sm:w-5 sm:h-5 border rounded-full flex items-center justify-center transition-all duration-500 group-hover:bg-black group-hover:text-white group-hover:border-black",
-                iconCircleBorder,
-                mainThemeText
-              )}>
-                <span className="text-[8px] font-black">{totalItems}</span>
-              </div>
-              <span className={cn(
-                "text-[10px] uppercase tracking-[0.2em] font-black hidden xl:inline transition-colors duration-500",
-                mainThemeText
-              )}>
-                Bag
-              </span>
-            </button>
-            
-            {/* Mobile Native Menu Trigger (Strictly handles phone screen resolutions under md breakpoint) */}
-            <button 
-              className={cn("p-2 transition-colors duration-500 cursor-pointer md:hidden", mainThemeText)}
-              onClick={() => setIsMobileMenuOpen(true)}
-              aria-label="Open Mobile Menu Overlay"
-            >
-              <Menu className="w-5 h-5" />
-            </button>
-          </div>
+        <div className="space-y-1">
+          {filterConfig.map(group => (
+            <FilterGroup 
+              key={group.key}
+              title={group.title}
+              items={group.items}
+              activeValue={searchParams.get(group.key)}
+              onSelect={(val) => handleFilterSelect(group.key, val)}
+            />
+          ))}
         </div>
-      </header>
+      </aside>
 
-      {/* ================= LAYER 3: FULLSCREEN MOBILE OVERLAY MENU DRAWER (Mobile Only) ================= */}
-      <AnimatePresence>
-        {isMobileMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.35, ease: [0.215, 0.610, 0.355, 1.000] }}
-            className="fixed inset-0 z-[60] bg-white p-4 sm:p-6 flex flex-col text-black h-screen w-full select-none overflow-hidden"
-          >
-            {/* Top Bar inside Overlay */}
-            <div className="flex justify-between items-center h-16 mb-2 flex-shrink-0">
-              <Link to="/" className="text-xl font-black tracking-tighter italic" onClick={() => setIsMobileMenuOpen(false)}>
-                AURAX
-              </Link>
-              <button onClick={() => setIsMobileMenuOpen(false)} className="p-2 cursor-pointer touch-manipulation">
-                <X className="w-6 h-6" />
-              </button>
-            </div>
+      {/* MAIN GRID */}
+      <main className="flex-1">
+        <header className="mb-16 border-b border-neutral-100 pb-8">
+          <h1 className="text-7xl font-bold tracking-tighter uppercase">CATALOGUE</h1>
+          <p className="text-[10px] font-mono mt-4 text-black/40 uppercase">INDEX COUNT: {filteredProducts.length} UNITS</p>
+        </header>
 
-            {/* Mobile Native Navigation Input Search Filter */}
-            <div className="relative mb-5 flex-shrink-0">
-              <input 
-                type="text" 
-                placeholder="SEARCH CATALOG..."
-                className="w-full bg-gray-50 text-[11px] font-bold tracking-widest uppercase p-4 pl-12 rounded-none outline-none border-none focus:bg-gray-100 transition-colors"
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-8 gap-y-16">
+          {filteredProducts.map((product) => (
+            <motion.div 
+              key={product.id}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+            >
+              <ProductCard 
+                product={product} 
+                onClick={() => onProductClick(product)} 
               />
-              <Search className="w-4 h-4 absolute left-4 top-1/2 -translate-y-1/2 text-black/40" />
-            </div>
-
-            {/* Scrollable Content (Categories inside burger menu for mobile viewports) */}
-            <div className="flex-1 overflow-y-auto no-scrollbar space-y-6 pb-6">
-              <div className="space-y-2.5">
-                <span className="text-[9px] uppercase tracking-[0.3em] text-black/30 font-black block pl-1">Shop Categories</span>
-                <div className="grid grid-cols-2 gap-2">
-                  {shopCategories.map((cat, idx) => (
-                    <motion.div
-                      key={cat.name}
-                      initial={{ opacity: 0, y: 5 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: idx * 0.02 }}
-                    >
-                      <Link
-                        to={cat.path}
-                        className={cn(
-                          "text-xs uppercase font-black tracking-wider transition-all block p-3.5 bg-gray-50/70 hover:bg-gray-100 active:bg-gray-200",
-                          cat.isSale ? "text-red-500 border border-red-500/10 bg-red-50/20" : "text-black/80"
-                        )}
-                        onClick={() => setIsMobileMenuOpen(false)}
-                      >
-                        {cat.name}
-                      </Link>
-                    </motion.div>
-                  ))}
-                </div>
-              </div>
-
-              {/* Utility and Corporate Links */}
-              <div className="pt-5 border-t border-black/5 space-y-3">
-                <span className="text-[9px] uppercase tracking-[0.3em] text-black/30 font-black block pl-1">Company & Studio</span>
-                <div className="grid grid-cols-2 gap-y-2 gap-x-4">
-                  {[...staticLinks, ...utilityLinks].map((link) => (
-                    <Link
-                      key={link.name}
-                      to={link.path}
-                      className="text-xs font-bold tracking-wider uppercase text-black/70 hover:text-black active:opacity-50 transition-colors block py-2 px-1"
-                      onClick={() => setIsMobileMenuOpen(false)}
-                    >
-                      {link.name}
-                    </Link>
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            {/* Baseline Footer */}
-            <div className="pt-4 border-t border-black/5 flex-shrink-0 mt-auto">
-              <div className="flex justify-between items-center uppercase text-[8px] tracking-[0.2em] font-black text-black/40">
-                <span>LABORATORY MATRIX V1.0</span>
-                <span className="font-mono text-black/20">DUBAI, UAE</span>
-              </div>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </>
+            </motion.div>
+          ))}
+        </div>
+      </main>
+    </div>
   );
 };
 </file>
@@ -3025,6 +3216,291 @@ export default function App() {
     </CartProvider>
   );
 }
+</file>
+
+<file path="src/components/layout/Navbar.tsx">
+import React, { useState, useEffect } from 'react';
+import { Search, Menu, Heart, ChevronDown } from 'lucide-react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
+import { useCart } from '../../context/CartContext';
+import { cn } from '../../lib/utils';
+import { MobileMenuDrawer } from './MobileMenuDrawer';
+import { shopCategories, staticLinks, utilityLinks } from './menuData';
+
+interface NavbarProps {
+  onOpenCart: () => void;
+  isDarkPage?: boolean;
+}
+
+export const Navbar: React.FC<NavbarProps> = ({ onOpenCart, isDarkPage }) => {
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [searchFocused, setSearchFocused] = useState(false);
+  const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
+  const [searchQuery, setSearchQuery] = useState('');
+  
+  const { totalItems } = useCart();
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 20);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  useEffect(() => {
+    setIsMobileMenuOpen(false);
+    setActiveDropdown(null);
+  }, [location]);
+
+  // Global handler to commit queries into the route engine parameters
+  const handleSearchSubmit = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter' && searchQuery.trim()) {
+      navigate(`/shop?search=${encodeURIComponent(searchQuery.trim())}`);
+      setSearchQuery('');
+      (e.target as HTMLInputElement).blur();
+    }
+  };
+
+  // Dynamic Theme State Configurations
+  const mainThemeText = isScrolled || activeDropdown 
+    ? 'text-black' 
+    : (isDarkPage ? 'text-white' : 'text-black');
+
+  const topThemeText = isScrolled || activeDropdown 
+    ? 'text-black/50 hover:text-black' 
+    : (isDarkPage ? 'text-white/50 hover:text-white' : 'text-black/50 hover:text-black');
+
+  const categoryThemeText = isScrolled || activeDropdown 
+    ? 'text-black/60 hover:text-black' 
+    : (isDarkPage ? 'text-white/70 hover:text-white' : 'text-black/70 hover:text-black');
+
+  const borderTheme = isScrolled || activeDropdown 
+    ? 'border-black/5' 
+    : (isDarkPage ? 'border-white/10' : 'border-black/5');
+
+  const iconCircleBorder = isScrolled || activeDropdown 
+    ? 'border-black' 
+    : (isDarkPage ? 'border-white' : 'border-black');
+
+  return (
+    <>
+      <header
+        onMouseLeave={() => setActiveDropdown(null)}
+        className={cn(
+          'fixed top-0 left-0 w-full z-50 transition-all duration-500 flex flex-col',
+          isScrolled || activeDropdown
+            ? 'bg-white/95 backdrop-blur-md border-b border-black/5 shadow-xs' 
+            : 'bg-transparent'
+        )}
+      >
+        {/* ================= LAYER 1: TOP UTILITY HEADER ================= */}
+        <div className={cn("w-full h-8 px-4 sm:px-6 xl:px-12 flex items-center justify-between border-b text-[8px] sm:text-[9px] md:text-[10px] uppercase tracking-[0.15em] sm:tracking-[0.2em] font-bold transition-colors duration-500 select-none relative", borderTheme)}>
+          
+          {/* Static Links + SHOP Button placement */}
+          <div className="flex items-center gap-4 sm:gap-6 z-10">
+            {staticLinks.map((link) => (
+              <Link key={link.name} to={link.path} className={cn("transition-colors duration-300", topThemeText)}>
+                {link.name}
+              </Link>
+            ))}
+            
+            {/* Dedicated SHOP Button added right after the story link */}
+            <Link 
+              to="/shop" 
+              className="text-red-500 hover:text-red-600 font-black tracking-[0.2em] transition-colors duration-300"
+            >
+              SHOP
+            </Link>
+          </div>
+
+          {/* Centered Search for Tablet Viewports */}
+          <div className="hidden md:flex lg:hidden absolute left-1/2 -translate-x-1/2 items-center w-full max-w-xs px-4 z-0">
+            <div className="relative w-full">
+              <input 
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                onKeyDown={handleSearchSubmit}
+                placeholder="SEARCH CATALOGUE..."
+                className={cn(
+                  "w-full bg-black/[0.04] text-[8px] font-bold tracking-widest uppercase rounded-full py-1 pl-8 pr-3 outline-none transition-all placeholder-black/30 focus:bg-black/[0.07]",
+                  isDarkPage && !isScrolled && !activeDropdown && "bg-white/10 text-white placeholder-white/30 border border-white/5 focus:bg-white/15"
+                )}
+              />
+              <Search className={cn("w-3 h-3 absolute left-3 top-1/2 -translate-y-1/2 opacity-40", mainThemeText)} />
+            </div>
+          </div>
+
+          <div className="flex items-center gap-3 sm:gap-5 z-10">
+            {utilityLinks.map((link) => (
+              <Link key={link.name} to={link.path} className={cn("transition-colors duration-300", topThemeText)}>
+                {link.name}
+              </Link>
+            ))}
+          </div>
+        </div>
+
+        {/* ================= LAYER 2: INTERACTIVE COMMERCE HEADER ================= */}
+        <div className="w-full h-16 xl:h-20 px-4 sm:px-6 xl:px-12 flex items-center justify-between relative">
+          
+          <Link to="/" className={cn("text-lg sm:text-xl xl:text-2xl font-black tracking-tighter italic transition-colors duration-500 shrink-0 z-10", mainThemeText)}>
+            AURAX
+          </Link>
+          
+          {/* Main Desktop Category Navigation links */}
+          <div className="hidden md:flex items-center gap-4 xl:gap-6 text-[10px] xl:text-[11px] uppercase tracking-[0.15em] xl:tracking-[0.2em] font-black absolute left-1/2 -translate-x-1/2 whitespace-nowrap z-0">
+            {shopCategories.map((cat) => (
+              <div
+                key={cat.name}
+                className="relative py-5"
+                onMouseEnter={() => {
+                  if (cat.hasDropdown) setActiveDropdown(cat.name);
+                  else setActiveDropdown(null);
+                }}
+              >
+                <Link
+                  to={cat.path}
+                  className={cn(
+                    "transition-colors duration-300 py-1 inline-flex items-center gap-1.5",
+                    categoryThemeText,
+                    activeDropdown === cat.name && "text-black",
+                    cat.isSale && "text-red-500 hover:text-red-600 font-extrabold"
+                  )}
+                >
+                  <span>{cat.name}</span>
+                  {cat.hasDropdown && (
+                    <ChevronDown className={cn("w-2.5 h-2.5 transition-transform duration-300 stroke-[3.5]", activeDropdown === cat.name && "rotate-180")} />
+                  )}
+                </Link>
+              </div>
+            ))}
+          </div>
+
+          {/* Right Block: Interface Controls */}
+          <div className="flex items-center gap-1 sm:gap-2 xl:gap-4 shrink-0 z-10">
+            
+            {/* Desktop Only Inline Search Workspace */}
+            <div className="hidden lg:flex items-center relative group">
+              <input 
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                onKeyDown={handleSearchSubmit}
+                placeholder="SEARCH SPECIFICATIONS..."
+                onFocus={() => setSearchFocused(true)}
+                onBlur={() => setSearchFocused(false)}
+                className={cn(
+                  "bg-black/[0.03] text-[9px] font-bold tracking-widest uppercase rounded-full py-2.5 pl-10 pr-4 outline-none transition-all duration-500 placeholder-black/30 w-36",
+                  searchFocused ? "w-52 bg-black/[0.05] ring-1 ring-black/10" : "group-hover:bg-black/[0.05]",
+                  isDarkPage && !isScrolled && !activeDropdown && "bg-white/10 text-white placeholder-white/40 border border-white/5 focus:bg-white/15"
+                )}
+              />
+              <Search className={cn("w-3.5 h-3.5 absolute left-4 pointer-events-none opacity-40", mainThemeText)} />
+            </div>
+
+            {/* Wishlist Core Trigger */}
+            <button className={cn("p-2 transition-all hover:scale-110 active:scale-95 cursor-pointer", mainThemeText)} aria-label="View Wishlist">
+              <Heart className="w-4 h-4 xl:w-4.5 xl:h-4.5 stroke-[2.5]" />
+            </button>
+
+            {/* Bag Icon Interface */}
+            <button onClick={onOpenCart} className="flex items-center gap-1.5 group cursor-pointer p-2 relative" aria-label="Open Shopping Bag">
+              <div className={cn("w-4.5 h-4.5 sm:w-5 sm:h-5 border rounded-full flex items-center justify-center transition-all duration-500 group-hover:bg-black group-hover:text-white group-hover:border-black", iconCircleBorder, mainThemeText)}>
+                <span className="text-[8px] font-black">{totalItems}</span>
+              </div>
+              <span className={cn("text-[10px] uppercase tracking-[0.2em] font-black hidden xl:inline transition-colors duration-500", mainThemeText)}>
+                Bag
+              </span>
+            </button>
+            
+            {/* Mobile Native Menu Trigger */}
+            <button className={cn("p-2 transition-colors duration-500 cursor-pointer md:hidden", mainThemeText)} onClick={() => setIsMobileMenuOpen(true)} aria-label="Open Mobile Menu Overlay">
+              <Menu className="w-5 h-5" />
+            </button>
+          </div>
+        </div>
+
+        {/* ================= LAYER 2.5: DESKTOP MEGA DROPDOWN PANELS ================= */}
+        <AnimatePresence>
+          {activeDropdown && (
+            <motion.div
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: 'auto', opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+              className="w-full bg-white border-b border-black/5 hidden md:block overflow-hidden"
+            >
+              <div className="w-full max-w-7xl mx-auto px-6 xl:px-12 pt-6 pb-12 grid grid-cols-4 gap-8 select-none">
+                {shopCategories
+                  .find((cat) => cat.name === activeDropdown)
+                  ?.groups?.map((group) => (
+                    <div key={group.title} className="flex flex-col space-y-4">
+                      <span className="text-[10px] font-black tracking-widest text-neutral-900 uppercase block border-b border-neutral-100 pb-1">
+                        {group.title}
+                      </span>
+                      
+                      <ul className="flex flex-col space-y-2">
+                        {group.items.map((item) => (
+                          <li key={item.name}>
+                            <Link
+                              to={item.path}
+                              className="text-[11px] uppercase font-bold tracking-wider text-black/60 hover:text-black transition-colors block py-0.5"
+                            >
+                              {item.name}
+                            </Link>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  ))}
+
+                {/* Editorial Information Segment Block */}
+                <div className="col-span-1 bg-neutral-50 p-6 flex flex-col justify-between border border-black/[0.03]">
+                  <div className="space-y-1">
+                    <span className="text-[8px] font-mono tracking-widest text-black/30 uppercase block">SYSTEM BROADCAST</span>
+                    <h4 className="text-[11px] font-black tracking-wider uppercase text-black">SWISS LABORATORY INSPECTION</h4>
+                    <p className="text-[9px] text-black/50 leading-relaxed uppercase tracking-wide pt-1">
+                      Every single output matrix component passes manual aerospace tolerance scrutiny configurations prior to distribution allocation.
+                    </p>
+                  </div>
+                  <Link 
+                    to="/innovation" 
+                    className="text-[9px] font-black tracking-widest uppercase text-black underline underline-offset-4 pt-4 block hover:opacity-60 transition-opacity"
+                  >
+                    EXPLORE METRICS →
+                  </Link>
+                </div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </header>
+
+      {/* Backdrop Fog Curtain Filter Layer */}
+      <AnimatePresence>
+        {activeDropdown && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="fixed inset-0 bg-black/10 backdrop-blur-xs z-40 pointer-events-none hidden md:block"
+          />
+        )}
+      </AnimatePresence>
+
+      {/* ================= LAYER 3: FULLSCREEN MOBILE OVERLAY MENU DRAWER ================= */}
+      <AnimatePresence>
+        <MobileMenuDrawer isOpen={isMobileMenuOpen} onClose={() => setIsMobileMenuOpen(false)} />
+      </AnimatePresence>
+    </>
+  );
+};
 </file>
 
 </files>
