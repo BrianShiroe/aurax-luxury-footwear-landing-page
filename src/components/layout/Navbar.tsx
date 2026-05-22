@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Search, Menu, Heart, ChevronDown } from 'lucide-react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useCart } from '../../context/CartContext';
 import { cn } from '../../lib/utils';
@@ -17,9 +17,11 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenCart, isDarkPage }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [searchFocused, setSearchFocused] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
+  const [searchQuery, setSearchQuery] = useState('');
   
   const { totalItems } = useCart();
   const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -33,6 +35,15 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenCart, isDarkPage }) => {
     setIsMobileMenuOpen(false);
     setActiveDropdown(null);
   }, [location]);
+
+  // Global handler to commit queries into the route engine parameters
+  const handleSearchSubmit = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter' && searchQuery.trim()) {
+      navigate(`/shop?search=${encodeURIComponent(searchQuery.trim())}`);
+      setSearchQuery('');
+      (e.target as HTMLInputElement).blur();
+    }
+  };
 
   // Dynamic Theme State Configurations
   const mainThemeText = isScrolled || activeDropdown 
@@ -91,6 +102,9 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenCart, isDarkPage }) => {
             <div className="relative w-full">
               <input 
                 type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                onKeyDown={handleSearchSubmit}
                 placeholder="SEARCH CATALOGUE..."
                 className={cn(
                   "w-full bg-black/[0.04] text-[8px] font-bold tracking-widest uppercase rounded-full py-1 pl-8 pr-3 outline-none transition-all placeholder-black/30 focus:bg-black/[0.07]",
@@ -153,6 +167,9 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenCart, isDarkPage }) => {
             <div className="hidden lg:flex items-center relative group">
               <input 
                 type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                onKeyDown={handleSearchSubmit}
                 placeholder="SEARCH SPECIFICATIONS..."
                 onFocus={() => setSearchFocused(true)}
                 onBlur={() => setSearchFocused(false)}
@@ -211,12 +228,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenCart, isDarkPage }) => {
                           <li key={item.name}>
                             <Link
                               to={item.path}
-                              className={cn(
-                                "text-[11px] uppercase font-bold tracking-wider transition-colors block py-0.5",
-                                item.isFeatured 
-                                  ? "text-black font-black border-b border-black/10 inline-block mb-1 pb-0.5" 
-                                  : "text-black/60 hover:text-black"
-                              )}
+                              className="text-[11px] uppercase font-bold tracking-wider text-black/60 hover:text-black transition-colors block py-0.5"
                             >
                               {item.name}
                             </Link>

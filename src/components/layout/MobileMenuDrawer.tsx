@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Search, X, ChevronDown } from 'lucide-react';
 import { cn } from '../../lib/utils';
@@ -12,11 +12,23 @@ interface MobileMenuDrawerProps {
 
 export const MobileMenuDrawer: React.FC<MobileMenuDrawerProps> = ({ isOpen, onClose }) => {
   const [expandedCategory, setExpandedCategory] = useState<string | null>(null);
+  const [searchQuery, setSearchQuery] = useState('');
+  const navigate = useNavigate();
 
   if (!isOpen) return null;
 
   const toggleAccordion = (name: string) => {
     setExpandedCategory(expandedCategory === name ? null : name);
+  };
+
+  // Mobile handler to route into the search parameter landscape
+  const handleSearchSubmit = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter' && searchQuery.trim()) {
+      navigate(`/shop?search=${encodeURIComponent(searchQuery.trim())}`);
+      setSearchQuery('');
+      (e.target as HTMLInputElement).blur();
+      onClose(); // Auto-closes the drawer layout upon navigation search submission
+    }
   };
 
   return (
@@ -41,6 +53,9 @@ export const MobileMenuDrawer: React.FC<MobileMenuDrawerProps> = ({ isOpen, onCl
       <div className="relative mb-5 flex-shrink-0">
         <input 
           type="text" 
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          onKeyDown={handleSearchSubmit}
           placeholder="SEARCH CATALOG..."
           className="w-full bg-gray-50 text-[11px] font-bold tracking-widest uppercase p-4 pl-12 rounded-none outline-none border-none focus:bg-gray-100 transition-colors"
         />
@@ -97,15 +112,12 @@ export const MobileMenuDrawer: React.FC<MobileMenuDrawerProps> = ({ isOpen, onCl
                                       key={item.name}
                                       to={item.path}
                                       onClick={onClose}
-                                      className={cn(
-                                        "text-[11px] uppercase font-bold tracking-wide py-1 block",
-                                        item.isFeatured ? "text-black font-black" : "text-black/60"
-                                      )}
+                                      className="text-[11px] uppercase font-bold tracking-wide py-1 block text-black/60 hover:text-black"
                                     >
                                       {item.name}
                                     </Link>
                                   ))}
-                               </div>
+                                </div>
                               </div>
                             ))}
                           </motion.div>

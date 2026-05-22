@@ -1,7 +1,6 @@
 export interface SubCategoryItem {
   name: string;
   path: string;
-  isFeatured?: boolean;
 }
 
 export interface NavigationGroup {
@@ -37,7 +36,6 @@ export const shopCategories: CategoryStructure[] = [
       {
         title: 'LATEST DROPS',
         items: [
-          { name: 'All New Arrivals', path: '/shop?category=new', isFeatured: true },
           { name: 'Phantom Series V2', path: '/shop?search=phantom' },
           { name: 'Kinetic Archive 2026', path: '/shop?search=kinetic' },
           { name: 'Aeroknit Restocks', path: '/shop?search=aeroknit' },
@@ -68,7 +66,6 @@ export const shopCategories: CategoryStructure[] = [
       {
         title: 'SHOP BY SILHOUETTE',
         items: [
-          { name: 'All Footwear', path: '/shop?category=men', isFeatured: true },
           { name: 'Architectural Sneakers', path: '/shop?category=men&type=sneakers' },
           { name: 'Kinetic Running Modules', path: '/shop?category=men&type=running' },
           { name: 'Structural Boots', path: '/shop?category=men&type=boots' },
@@ -101,7 +98,6 @@ export const shopCategories: CategoryStructure[] = [
       {
         title: 'SHOP BY SILHOUETTE',
         items: [
-          { name: 'All Footwear', path: '/shop?category=women', isFeatured: true },
           { name: 'Sculpted High-Platform Matrix', path: '/shop?category=women&type=platforms' },
           { name: 'Avant-Garde Technical Trainers', path: '/shop?category=women&type=trainers' },
           { name: 'Aerodynamic Run Modules', path: '/shop?category=women&type=running' },
@@ -133,7 +129,6 @@ export const shopCategories: CategoryStructure[] = [
       {
         title: 'SIZING GENERATIONS',
         items: [
-          { name: 'All Youth Items', path: '/shop?category=kids', isFeatured: true },
           { name: 'Older Kids (Sizes 3.5Y - 7Y)', path: '/shop?category=kids&age=older' },
           { name: 'Younger Kids (Sizes 10.5C - 3Y)', path: '/shop?category=kids&age=younger' },
           { name: 'Toddlers & Infants (1C - 10C)', path: '/shop?category=kids&age=toddler' },
@@ -156,7 +151,6 @@ export const shopCategories: CategoryStructure[] = [
       {
         title: 'ATHLETIC DISCIPLINES',
         items: [
-          { name: 'All Sport Systems', path: '/shop?category=sport', isFeatured: true },
           { name: 'Marathon & Road Micro-Pacing', path: '/shop?category=sport&sport=run' },
           { name: 'Technical Trail & Mountain Cleats', path: '/shop?category=sport&sport=trail' },
           { name: 'High-Impact Court Dynamics', path: '/shop?category=sport&sport=court' },
@@ -178,7 +172,6 @@ export const shopCategories: CategoryStructure[] = [
       {
         title: 'FEDERATION ENGINEERING',
         items: [
-          { name: 'All Team Kits', path: '/shop?category=national-teams', isFeatured: true },
           { name: 'Global Track & Field Editions', path: '/shop?category=national-teams&type=track' },
           { name: 'National Lab Collaborations', path: '/shop?category=national-teams&type=collab' },
         ],
@@ -194,7 +187,6 @@ export const shopCategories: CategoryStructure[] = [
       {
         title: 'ARCHIVAL REDUCTIONS',
         items: [
-          { name: 'View All Clearance Matrix', path: '/shop?category=sale', isFeatured: true },
           { name: '30% Off Seasonal Rotation', path: '/shop?category=sale&discount=30' },
           { name: '50% Off Final Vault Archive', path: '/shop?category=sale&discount=50' },
         ],
