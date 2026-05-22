@@ -11,7 +11,8 @@ import { ShopPage } from './pages/ShopPage';
 import { CollectionsPage } from './pages/CollectionsPage';
 import { InnovationPage } from './pages/InnovationPage';
 import { StoryPage } from './pages/StoryPage';
-import { FeaturedPage } from './pages/FeaturedPage'; 
+import { FeaturedPage } from './pages/FeaturedPage';
+import { AboutPage } from './pages/AboutPage'; // Import the new page
 import { Product } from './types';
 import { motion, AnimatePresence } from 'motion/react';
 
@@ -20,25 +21,17 @@ const AppContent: React.FC = () => {
   const [currentProduct, setCurrentProduct] = useState<Product | null>(null);
   
   const location = useLocation();
-  
-  // Safely extract product from navigation state (used for instant loading)
   const state = location.state as { product?: Product } | null;
 
-  // Handle smooth scroll to top on every route change
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [location.pathname]);
 
-  // Navbar theme logic: Innovation and Featured often use dark editorial backgrounds
   const isDarkPage = location.pathname === '/innovation' || location.pathname === '/featured';
 
   return (
     <div className="relative font-sans text-black overflow-x-hidden">
-      {/* Dynamic Navbar */}
-      <Navbar 
-        onOpenCart={() => setIsCartOpen(true)} 
-        isDarkPage={isDarkPage}
-      />
+      <Navbar onOpenCart={() => setIsCartOpen(true)} isDarkPage={isDarkPage} />
       
       <main className="min-h-screen">
         <AnimatePresence mode="wait">
@@ -49,55 +42,25 @@ const AppContent: React.FC = () => {
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.4, ease: "easeInOut" }}
           >
-            {/* location={location} is passed to Routes to enable AnimatePresence exit animations */}
             <Routes location={location}>
-              <Route 
-                path="/" 
-                element={<HomePage onProductClick={setCurrentProduct} />} 
-              />
-              <Route 
-                path="/shop" 
-                element={<ShopPage onProductClick={setCurrentProduct} />} 
-              />
-              <Route 
-                path="/featured" 
-                element={<FeaturedPage />} 
-              />
-              <Route 
-                path="/product/:id" 
-                element={<ProductPage product={state?.product || currentProduct} />} 
-              />
-              <Route 
-                path="/collections" 
-                element={<CollectionsPage />} 
-              />
-              <Route 
-                path="/innovation" 
-                element={<InnovationPage />} 
-              />
-              <Route 
-                path="/story" 
-                element={<StoryPage />} 
-              />
-              <Route 
-                path="/checkout" 
-                element={<CheckoutPage />} 
-              />
+              <Route path="/" element={<HomePage onProductClick={setCurrentProduct} />} />
+              <Route path="/shop" element={<ShopPage onProductClick={setCurrentProduct} />} />
+              <Route path="/featured" element={<FeaturedPage />} />
+              <Route path="/product/:id" element={<ProductPage product={state?.product || currentProduct} />} />
+              <Route path="/collections" element={<CollectionsPage />} />
+              <Route path="/innovation" element={<InnovationPage />} />
+              <Route path="/story" element={<StoryPage />} />
+              <Route path="/about" element={<AboutPage />} /> {/* Added Route */}
+              <Route path="/checkout" element={<CheckoutPage />} />
             </Routes>
 
-            {/* Footer is hidden during checkout for a focused conversion funnel */}
             {location.pathname !== '/checkout' && <Footer />}
           </motion.div>
         </AnimatePresence>
       </main>
 
-      {/* Global Overlays */}
-      <CartDrawer 
-        isOpen={isCartOpen} 
-        onClose={() => setIsCartOpen(false)}
-      />
+      <CartDrawer isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
       
-      {/* Floating Action Button: Mobile Cart Trigger */}
       {!isCartOpen && location.pathname !== '/checkout' && (
         <motion.div 
           initial={{ scale: 0 }} 
