@@ -32,12 +32,19 @@ export const ShopPage: React.FC<{ onProductClick: (p: Product) => void }> = ({ o
     { 
       title: "Technology", key: "tech", 
       items: [{label: "Dri-FIT", value: "dri-fit"}, {label: "GORE-TEX", value: "gore-tex"}, {label: "Air Zoom", value: "zoom"}] 
+    },
+    { 
+      title: "Fit", key: "fit", 
+      items: [{label: "Loose", value: "loose"}, {label: "Standard", value: "standard"}, {label: "Slim", value: "slim"}] 
+    },
+    { 
+      title: "Surface", key: "surface", 
+      items: [{label: "Road", value: "road"}, {label: "Trail", value: "trail"}, {label: "Track", value: "track"}] 
     }
   ];
 
   const handleFilterSelect = (key: string, value: string) => {
     const params = new URLSearchParams(location.search);
-    // If clicking the same filter, remove it; otherwise, set it
     if (params.get(key) === value) params.delete(key);
     else params.set(key, value);
     navigate(`/shop?${params.toString()}`);
@@ -45,7 +52,7 @@ export const ShopPage: React.FC<{ onProductClick: (p: Product) => void }> = ({ o
 
   const filteredProducts = useMemo(() => {
     return PRODUCTS.filter((product) => {
-      // Logic for filtering would go here, mapping URL params to product attributes
+      // Add your business logic here using searchParams.get('key')
       return true; 
     });
   }, [location.search]);
@@ -53,14 +60,19 @@ export const ShopPage: React.FC<{ onProductClick: (p: Product) => void }> = ({ o
   return (
     <div className="bg-white min-h-screen pt-32 pb-20 px-6 md:px-12 max-w-[1700px] mx-auto flex gap-16 items-start">
       
-      {/* SIDEBAR */}
-      <aside className="hidden md:block w-64 flex-shrink-0 sticky top-32">
+      {/* SIDEBAR: Sticky and Scrollable */}
+      <aside className="hidden md:block w-64 flex-shrink-0 sticky top-32 h-[calc(100vh-8rem)] overflow-y-auto pr-4 scrollbar-hide">
         <div className="mb-8 pb-8 border-b border-neutral-100 flex justify-between items-center">
             <h2 className="text-[10px] font-black tracking-[0.2em] uppercase">Filters</h2>
-            <button onClick={() => navigate('/shop')} className="text-[8px] font-bold uppercase underline">Reset</button>
+            <button 
+              onClick={() => navigate('/shop')} 
+              className="text-[8px] font-bold uppercase underline hover:text-red-500 transition-colors"
+            >
+              Reset
+            </button>
         </div>
 
-        <div className="space-y-2">
+        <div className="space-y-1">
           {filterConfig.map(group => (
             <FilterGroup 
               key={group.key}
@@ -80,9 +92,18 @@ export const ShopPage: React.FC<{ onProductClick: (p: Product) => void }> = ({ o
           <p className="text-[10px] font-mono mt-4 text-black/40 uppercase">INDEX COUNT: {filteredProducts.length} UNITS</p>
         </header>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-8 gap-y-16">
           {filteredProducts.map((product) => (
-            <ProductCard key={product.id} product={product} onClick={() => onProductClick(product)} />
+            <motion.div 
+              key={product.id}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+            >
+              <ProductCard 
+                product={product} 
+                onClick={() => onProductClick(product)} 
+              />
+            </motion.div>
           ))}
         </div>
       </main>
