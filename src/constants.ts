@@ -907,3 +907,15 @@ export const PRODUCTS: Product[] = [
 ];
 
 export const CATEGORIES = ["men", "women", "kids", "new", "sale"];
+export const COLOR_MAP: Record<string, string> = {
+  "#FFFFFF": "White",
+  "#F5F5F7": "Off-White",
+  "#111111": "Black",
+  "#000000": "Black",
+  "#C0C0C0": "Silver",
+  "#E0E0E0": "Light Grey",
+  "#D4D4D8": "Grey",
+  "#3B82F6": "Blue",
+  "#71717A": "Dark Grey",
+  "#45332E": "Brown",
+};

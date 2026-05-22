@@ -10,16 +10,21 @@ interface FilterGroupProps {
 }
 
 export const FilterGroup: React.FC<FilterGroupProps> = ({ title, items, onSelect, activeValue }) => {
-  const [isOpen, setIsOpen] = useState(false);
+  // Initialize as open if there is an activeValue to improve UX
+  const [isOpen, setIsOpen] = useState(!!activeValue);
 
   return (
     <div className="border-b border-neutral-100 py-2">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="w-full flex justify-between items-center py-3 text-[9px] font-black tracking-[0.2em] uppercase text-black hover:text-red-500 transition-colors cursor-pointer"
+        className={`w-full flex justify-between items-center py-3 text-[9px] font-black tracking-[0.2em] uppercase transition-colors cursor-pointer ${
+          activeValue ? 'text-black' : 'text-black hover:text-red-500'
+        }`}
       >
         {title}
-        <ChevronDown className={`w-3 h-3 transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`} />
+        <ChevronDown 
+          className={`w-3 h-3 transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`} 
+        />
       </button>
 
       <AnimatePresence>
