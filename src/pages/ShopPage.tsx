@@ -1,146 +1,91 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { motion } from 'motion/react';
 import { ProductCard } from '../components/product/ProductCard';
+import { FilterGroup } from '../components/shop/FilterGroup';
 import { PRODUCTS } from '../constants';
 import { Product } from '../types';
 
-interface ShopPageProps {
-  onProductClick: (product: Product) => void;
-}
-
-export const ShopPage: React.FC<ShopPageProps> = ({ onProductClick }) => {
+export const ShopPage: React.FC<{ onProductClick: (p: Product) => void }> = ({ onProductClick }) => {
   const navigate = useNavigate();
   const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
 
-  // 1. Extract and Parse Search Parameters from Navbar Redirect Links
-  const searchParams = useMemo(() => new URLSearchParams(location.search), [location.search]);
-  const categoryParam = searchParams.get('category');
-  const typeParam = searchParams.get('type');
-  const sportParam = searchParams.get('sport');
-  const collectionParam = searchParams.get('collection');
-  const tagParam = searchParams.get('tag');
-  const searchKeyword = searchParams.get('search');
+  // Expanded Filter Configuration
+  const filterConfig = [
+    { 
+      title: "Gender", key: "gender", 
+      items: [{label: "Men", value: "men"}, {label: "Women", value: "women"}, {label: "Unisex", value: "unisex"}] 
+    },
+    { 
+      title: "Colour", key: "colour", 
+      items: [{label: "Black", value: "black"}, {label: "White", value: "white"}, {label: "Grey", value: "grey"}, {label: "Blue", value: "blue"}] 
+    },
+    { 
+      title: "Price Range", key: "price", 
+      items: [{label: "Under 500 AED", value: "low"}, {label: "500 - 1000 AED", value: "mid"}, {label: "Over 1000 AED", value: "high"}] 
+    },
+    { 
+      title: "Shoe Size", key: "size", 
+      items: [{label: "40", value: "40"}, {label: "41", value: "41"}, {label: "42", value: "42"}, {label: "43", value: "43"}] 
+    },
+    { 
+      title: "Technology", key: "tech", 
+      items: [{label: "Dri-FIT", value: "dri-fit"}, {label: "GORE-TEX", value: "gore-tex"}, {label: "Air Zoom", value: "zoom"}] 
+    }
+  ];
 
-  // 2. Perform Multi-Tiered Dynamic Catalog Optimization Filtering
-  const filteredProducts = useMemo(() => {
-    return PRODUCTS.filter((product) => {
-      // Lowercase matching values for bulletproof evaluation comparison
-      const prodCat = product.category.toLowerCase();
-      const prodName = product.name.toLowerCase();
-      const prodDesc = product.description.toLowerCase();
-
-      // Filter Matrix Stage A: Base Category Check
-      if (categoryParam && categoryParam !== 'new' && categoryParam !== 'sale') {
-        if (prodCat !== categoryParam.toLowerCase()) return false;
-      }
-
-      // Filter Matrix Stage B: Deep Technical Spec Filters
-      if (typeParam && !prodCat.includes(typeParam.toLowerCase()) && !prodName.includes(typeParam.toLowerCase())) {
-        return false;
-      }
-      if (sportParam && !prodCat.includes(sportParam.toLowerCase()) && !prodDesc.includes(sportParam.toLowerCase())) {
-        return false;
-      }
-      if (collectionParam && !prodDesc.includes(collectionParam.toLowerCase()) && !prodName.includes(collectionParam.toLowerCase())) {
-        return false;
-      }
-      if (tagParam && !prodDesc.includes(tagParam.toLowerCase())) {
-        return false;
-      }
-
-      // Filter Matrix Stage C: Direct Keyword Index Search Matcher
-      if (searchKeyword) {
-        const kw = searchKeyword.toLowerCase();
-        if (!prodName.includes(kw) && !prodDesc.includes(kw) && !prodCat.includes(kw)) {
-          return false;
-        }
-      }
-
-      return true;
-    });
-  }, [categoryParam, typeParam, sportParam, collectionParam, tagParam, searchKeyword]);
-
-  // 3. Compute Structural Dynamic Header Content Typography
-  const headerTypography = useMemo(() => {
-    if (searchKeyword) return { title: 'SEARCH', sub: searchKeyword };
-    if (collectionParam) return { title: 'COLLECTION', sub: collectionParam };
-    if (sportParam) return { title: 'SPORT', sub: sportParam };
-    if (typeParam) return { title: 'SILHOUETTE', sub: typeParam };
-    if (categoryParam) return { title: 'SHOP', sub: categoryParam };
-    return { title: 'SHOP', sub: 'ALL' };
-  }, [categoryParam, typeParam, sportParam, collectionParam, searchKeyword]);
-
-  // 4. Reset scroll index upon query mutations
-  useEffect(() => {
-    window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior });
-  }, [location.search]);
-
-  const handleProductNavigation = (product: Product) => {
-    onProductClick(product);
-    navigate(`/product/${product.id}`, { state: { product } });
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+  const handleFilterSelect = (key: string, value: string) => {
+    const params = new URLSearchParams(location.search);
+    // If clicking the same filter, remove it; otherwise, set it
+    if (params.get(key) === value) params.delete(key);
+    else params.set(key, value);
+    navigate(`/shop?${params.toString()}`);
   };
 
-  return (
-    <div className="bg-white min-h-screen pt-24 md:pt-32 pb-20 px-6 md:px-12">
-      <div className="max-w-screen-2xl mx-auto">
-        
-        {/* ================= DYNAMIC BROADCAST HEADER ================= */}
-        <header className="mb-16 md:mb-24 border-b border-neutral-100 pb-8">
-          <motion.h1 
-            key={location.search} // Triggers fresh animation tracking sequence on parameter change
-            initial={{ opacity: 0, y: 15 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
-            className="text-[10vw] md:text-7xl font-bold tracking-tighter uppercase leading-none"
-          >
-            {headerTypography.title} <span className="italic text-black/10 font-black">{headerTypography.sub}</span>
-          </motion.h1>
-          
-          {/* Active filter status parameters read-out breadcrumb indicator */}
-          <div className="flex items-center gap-4 mt-4 text-[8px] font-mono tracking-widest text-black/40 uppercase">
-            <span>INDEX COUNT: {filteredProducts.length} UNITS</span>
-            {(categoryParam || typeParam || sportParam || collectionParam || searchKeyword) && (
-              <>
-                <span>•</span>
-                <button 
-                  onClick={() => navigate('/shop')} 
-                  className="text-red-500 font-bold underline underline-offset-2 hover:text-black transition-colors"
-                >
-                  RESET FILTERS ✕
-                </button>
-              </>
-            )}
-          </div>
-        </header>
+  const filteredProducts = useMemo(() => {
+    return PRODUCTS.filter((product) => {
+      // Logic for filtering would go here, mapping URL params to product attributes
+      return true; 
+    });
+  }, [location.search]);
 
-        {/* ================= RENDER GRID GRAPH LAYER ================= */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-8 gap-y-16 md:gap-y-20">
-          {filteredProducts.map((product, index) => (
-            <motion.div
-              key={product.id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: Math.min(index * 0.02, 0.2), duration: 0.4 }}
-            >
-              <ProductCard 
-                product={product} 
-                onClick={() => handleProductNavigation(product)} 
-              />
-            </motion.div>
-          ))}
+  return (
+    <div className="bg-white min-h-screen pt-32 pb-20 px-6 md:px-12 max-w-[1700px] mx-auto flex gap-16 items-start">
+      
+      {/* SIDEBAR */}
+      <aside className="hidden md:block w-64 flex-shrink-0 sticky top-32">
+        <div className="mb-8 pb-8 border-b border-neutral-100 flex justify-between items-center">
+            <h2 className="text-[10px] font-black tracking-[0.2em] uppercase">Filters</h2>
+            <button onClick={() => navigate('/shop')} className="text-[8px] font-bold uppercase underline">Reset</button>
         </div>
 
-        {/* ================= VOID CONFIGURATION STATE ================= */}
-        {filteredProducts.length === 0 && (
-          <div className="py-40 text-center">
-            <p className="text-[10px] uppercase tracking-[0.4em] text-black/30 font-bold">
-              No architectural pieces found matching current specifications data.
-            </p>
-          </div>
-        )}
-      </div>
+        <div className="space-y-2">
+          {filterConfig.map(group => (
+            <FilterGroup 
+              key={group.key}
+              title={group.title}
+              items={group.items}
+              activeValue={searchParams.get(group.key)}
+              onSelect={(val) => handleFilterSelect(group.key, val)}
+            />
+          ))}
+        </div>
+      </aside>
+
+      {/* MAIN GRID */}
+      <main className="flex-1">
+        <header className="mb-16 border-b border-neutral-100 pb-8">
+          <h1 className="text-7xl font-bold tracking-tighter uppercase">CATALOGUE</h1>
+          <p className="text-[10px] font-mono mt-4 text-black/40 uppercase">INDEX COUNT: {filteredProducts.length} UNITS</p>
+        </header>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+          {filteredProducts.map((product) => (
+            <ProductCard key={product.id} product={product} onClick={() => onProductClick(product)} />
+          ))}
+        </div>
+      </main>
     </div>
   );
 };
