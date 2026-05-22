@@ -4,6 +4,8 @@ import { CartProvider } from './context/CartContext';
 import { Navbar } from './components/layout/Navbar';
 import { Footer } from './components/layout/Footer';
 import { CartDrawer } from './components/cart/CartDrawer';
+
+// Pages
 import { HomePage } from './pages/HomePage';
 import { ProductPage } from './pages/ProductPage';
 import { CheckoutPage } from './pages/CheckoutPage';
@@ -12,7 +14,13 @@ import { CollectionsPage } from './pages/CollectionsPage';
 import { InnovationPage } from './pages/InnovationPage';
 import { StoryPage } from './pages/StoryPage';
 import { FeaturedPage } from './pages/FeaturedPage';
-import { AboutPage } from './pages/AboutPage'; // Import the new page
+import { AboutPage } from './pages/AboutPage';
+
+// Support & Auth Pages
+import { HelpPage } from './pages/support/HelpPage';
+import { JoinUsPage } from './pages/support/JoinUsPage';
+import { SignInPage } from './pages/auth/SignInPage';
+
 import { Product } from './types';
 import { motion, AnimatePresence } from 'motion/react';
 
@@ -50,7 +58,13 @@ const AppContent: React.FC = () => {
               <Route path="/collections" element={<CollectionsPage />} />
               <Route path="/innovation" element={<InnovationPage />} />
               <Route path="/story" element={<StoryPage />} />
-              <Route path="/about" element={<AboutPage />} /> {/* Added Route */}
+              <Route path="/about" element={<AboutPage />} />
+              
+              {/* New Routes */}
+              <Route path="/help" element={<HelpPage />} />
+              <Route path="/join" element={<JoinUsPage />} />
+              <Route path="/signin" element={<SignInPage />} />
+              
               <Route path="/checkout" element={<CheckoutPage />} />
             </Routes>
 
