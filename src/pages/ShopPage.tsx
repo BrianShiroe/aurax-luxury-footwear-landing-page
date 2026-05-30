@@ -112,7 +112,7 @@ export const ShopPage: React.FC<{ onProductClick: (p: Product) => void }> = ({ o
   }, [searchParams]);
 
   return (
-    <div className="bg-white min-h-screen pt-32 pb-20 px-6 md:px-12 max-w-[1700px] mx-auto flex gap-16 items-start">
+    <div className="bg-white min-h-screen pt-24 md:pt-32 pb-20 px-4 md:px-12 max-w-[1700px] mx-auto flex flex-col md:flex-row md:gap-16 md:items-start">
       <aside className="hidden md:block w-64 flex-shrink-0 sticky top-32 h-[calc(100vh-8rem)] overflow-y-auto pr-4 scrollbar-hide">
         <div className="mb-8 pb-8 border-b border-neutral-100 flex justify-between items-center">
           <h2 className="text-[10px] font-black tracking-[0.2em] uppercase">Filters</h2>
@@ -131,17 +131,17 @@ export const ShopPage: React.FC<{ onProductClick: (p: Product) => void }> = ({ o
         </div>
       </aside>
 
-      <main className="flex-1">
-        <header className="mb-16 border-b border-neutral-100 pb-8">
-          <h1 className="text-7xl font-bold tracking-tighter uppercase">{activeLabel}</h1>
-          <p className="text-[10px] font-mono mt-4 text-black/40 uppercase">INDEX COUNT: {filteredProducts.length} UNITS</p>
+      <main className="flex-1 w-full">
+        <header className="mb-8 md:mb-16 border-b border-neutral-100 pb-6 md:pb-8">
+          <h1 className="text-4xl md:text-5xl lg:text-7xl font-bold tracking-tighter uppercase">{activeLabel}</h1>
+          <p className="text-[10px] font-mono mt-3 md:mt-4 text-black/40 uppercase">INDEX COUNT: {filteredProducts.length} UNITS</p>
         </header>
 
         <AnimatePresence mode="wait">
           <motion.div
             key={searchParams.toString()}
             initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-8 gap-y-16"
+            className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-6 md:gap-x-8 md:gap-y-16"
           >
             {filteredProducts.map((product) => (
               <ProductCard key={product.id} product={product} onClick={() => {
