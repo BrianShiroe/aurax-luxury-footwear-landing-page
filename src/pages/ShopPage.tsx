@@ -138,19 +138,32 @@ export const ShopPage: React.FC<{ onProductClick: (p: Product) => void }> = ({ o
         </header>
 
         <AnimatePresence mode="wait">
-          <motion.div
-            key={searchParams.toString()}
-            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-            className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-6 md:gap-x-8 md:gap-y-16"
-          >
-            {filteredProducts.map((product) => (
-              <ProductCard key={product.id} product={product} onClick={() => {
-                onProductClick(product);
-                navigate(`/product/${product.id}`, { state: { product } });
-                window.scrollTo({ top: 0, behavior: "smooth" });
-              }} />
-            ))}
-          </motion.div>
+          {filteredProducts.length === 0 ? (
+            <motion.div
+              key="no-products"
+              initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+              className="flex items-center justify-center py-20"
+            >
+              <div className="text-center">
+                <p className="text-xl md:text-2xl font-light text-neutral-600">No products available</p>
+                <p className="text-sm text-neutral-400 mt-2">Try adjusting your filters</p>
+              </div>
+            </motion.div>
+          ) : (
+            <motion.div
+              key={searchParams.toString()}
+              initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+              className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-6 md:gap-x-8 md:gap-y-16"
+            >
+              {filteredProducts.map((product) => (
+                <ProductCard key={product.id} product={product} onClick={() => {
+                  onProductClick(product);
+                  navigate(`/product/${product.id}`, { state: { product } });
+                  window.scrollTo({ top: 0, behavior: "smooth" });
+                }} />
+              ))}
+            </motion.div>
+          )}
         </AnimatePresence>
       </main>
     </div>
